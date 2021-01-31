@@ -1,6 +1,7 @@
-# LFGG
+# GGG
+Gaze Game Group
 
-LFGG, looking for game group is 
+LFGG, looking for game group is an app to find people to play games together with
 
 Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that link) will look like the following in your README:
 
@@ -8,7 +9,6 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
 **Required Must-have Stories**
 
- * [fill in your required user stories here]
  * [ ] Register
     * [ ] Login
     * [ ] User profile
@@ -23,7 +23,6 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
 **Optional Nice-to-have Stories**
 
- * [fill in your required user stories here]
  * [ ] Nice UI
  * [ ] Show current game status of poster
  * [ ] Sort priority posts to the top
