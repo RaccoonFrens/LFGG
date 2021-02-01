@@ -9,9 +9,7 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
 **Required Must-have Stories**
 
- * [ ] Register
-    * [ ] Login
-    * [ ] User profile
+
  * [ ] Make a public post
  * [ ] Edit/Delete Post
     * [ ] Have the post expire after x time
@@ -22,7 +20,9 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * [ ] Time of post (or relative time of post)
 
 **Optional Nice-to-have Stories**
-
+ * [ ] Register
+    * [ ] Login
+    * [ ] User profile
  * [ ] Nice UI
  * [ ] Show current game status of poster
  * [ ] Sort priority posts to the top
