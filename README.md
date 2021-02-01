@@ -9,7 +9,6 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
 **Required Must-have Stories**
 
-
  * [ ] Make a public post
  * [ ] Edit/Delete Post
     * [ ] Have the post expire after x time
@@ -31,34 +30,35 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * [ ] Update profile/account settings
  * [ ] Search (for post details, profile)
  * [ ] Friends
+ * [ ] Stat-tracking lobbies formed
+ * [ ] Achievements (IE raid leader) 
 
 ## 2. Screen Archetypes
 
- * Login Screen
-   * Login
+ * Login Screen 
+   * Users can log in to access their account and post history
  * Register Screen
-   * Register
+   * Users can register for an account to create posts
  * Profile Page
-   * User profile
+   * Shows user information such as timezones and games
  * Home
-   * Make a public post
-   * Have the post expire after x time
-   * Display other posts from a server
-   * Tag of game
-   * Filter by game
-   * Edit/delete post
+   * User can view public posts from a server
+   * Allow the user to make a public post
+   * User can set posts to expire after x time
+   * User can set posts with game tags
+   * User can parse the content of posts using a search bar 
+   * User can filter posts by game
+   * User can edit/delete their posts
+   * Home screen will feature a card style post display
  * New post
-   * Make a public post
-   * Have the post expire after x time
-   * Display other posts from a server
-   * Tag of game
-   * Filter by game
-   * Edit/delete post
+   * Screen for users to make a public post
+   * Users can decide to have the post expire after x time
+   * Users can chooses the game tag of the post 
  * Settings
-   * update profile/account settings
+   * Users can update profile/account settings
  * Post details
-   * Respond poster
-
+   * Users can respond to a post publically or privately to poster
+   * User can edit/delete their post
 ## 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
