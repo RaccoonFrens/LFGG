@@ -17,7 +17,8 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * [ ] Tag of game
     * [ ] Filter by tag
  * [ ] Time of post (or relative time of post)
-
+ * [ ] Push-notifications 
+ 
 **Optional Nice-to-have Stories**
  * [ ] Register
     * [ ] Login
