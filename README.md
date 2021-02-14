@@ -35,7 +35,8 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * [ ] Achievements (IE raid leader) 
 
 ## 2. Screen Archetypes
-
+ * [Miro wireframe](https://miro.com/app/board/o9J_lVrT3mQ=/)
+ 
  * Login Screen 
    * Users can log in to access their account and post history
  * Register Screen
