@@ -96,3 +96,51 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
    * Profile
    * New Post
    * Post Details
+
+## 4. Schema
+
+### Models
+
+#### Post
+| Property     | Type   | Description                | 
+| ----         | -----  | -----                      |
+| objectId     | String | unique id for the user post|
+| author       | User reference | author of the post      |
+| body         | String | post text |
+| tag          | String | game tag |
+| duration     | Date | expiration time |
+| size         | int | party size |
+| thread       | Array of comment references | replies to post |
+
+#### User
+| Property     | Type   | Description                | 
+| ----         | -----  | -----                      |
+| userId | String | unique id for the user |
+| username | String | username | 
+| email | String | user email |
+| posts | Array of references | posts created by user |
+
+#### Comment
+| Property     | Type   | Description                | 
+| ----         | -----  | -----                      |
+| objectId | String | unique id for comment |
+| author | User reference | author of comment |
+| body | String | comment text |
+
+### Networking
+- Home Screen
+  - (Read/GET) Query all active posts
+- View Post Detail Screen
+  - (Read/GET) Query replies to post
+  - (Create/POST) Create a reply
+- New Post Screen
+  - (Create/POST) Create a post
+- Edit Post Screen
+  - (Delete/DELETE) Delete a post
+  - (Update/PUT) Update a post
+- Profile Screen
+  - (Create/POST) Create bio
+  - (Update/PUT) Update bio
+  - (Update/PUT) Update top 3 games
+  - (Update/PUT) change username
+  - (Update/PUT) change email     
