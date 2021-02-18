@@ -36,7 +36,7 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 
 ## 2. Screen Archetypes
  * [Miro wireframe](https://miro.com/app/board/o9J_lVrT3mQ=/)
- <img src='Wireframe V1.jpg' title='Wireframe V1' width='450px' alt='Wireframe' />
+ <img src='Wireframe V1.jpg' title='Wireframe V1' width='600px' alt='Wireframe' />
  
  * Login Screen 
    * Users can log in to access their account and post history
