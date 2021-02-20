@@ -120,7 +120,6 @@ LFGG, looking for game group is an app to find people to play games together
 <img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/Wireframe%20V1.jpg?raw=true" width=600>
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
 #### Post
 | Property     | Type   | Description                | 
