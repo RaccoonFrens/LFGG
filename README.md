@@ -1,11 +1,29 @@
-# GGG
-Gaze Game Group
+Original App Design Project - README Template
+===
 
-LFGG, looking for game group is an app to find people to play games together with
+# LFGG
 
-Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that link) will look like the following in your README:
+## Table of Contents
+1. [Overview](#Overview)
+1. [Product Spec](#Product-Spec)
+1. [Wireframes](#Wireframes)
+2. [Schema](#Schema)
 
-## 1. User Stories (Required and Optional)
+## Overview
+### Description
+LFGG, looking for game group is an app to find people to play games together
+
+### App Evaluation
+- **Category:** Social
+- **Mobile:** Real-time updates and push notifications. Mobility to play and connect with easy access.
+- **Story:** Allows users to find teammates
+- **Market:** Anyone who plays online multiplayer games can make use of this app. 
+- **Habit:** Users can post every time they play a new/different game or whenever their friends are not online.
+- **Scope:** The basic functionality can be simply implemented consisting of querying posts and connecting them to users. Further development can be made to improve in-app messaging and UI customizations based on video games.
+
+## Product Spec
+
+### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
 
@@ -18,8 +36,9 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
     * [ ] Filter by tag
  * [ ] Time of post (or relative time of post)
  * [ ] Push-notifications 
- 
+
 **Optional Nice-to-have Stories**
+
  * [ ] Register
     * [ ] Login
     * [ ] User profile
@@ -34,11 +53,9 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * [ ] Stat-tracking lobbies formed
  * [ ] Achievements (IE raid leader) 
 
-## 2. Screen Archetypes
- * [Miro wireframe](https://miro.com/app/board/o9J_lVrT3mQ=/)
- <img src='Wireframe V1.jpg' title='Wireframe V1' width='600px' alt='Wireframe' />
- 
- * Login Screen 
+### 2. Screen Archetypes
+
+* Login Screen 
    * Users can log in to access their account and post history
  * Register Screen
    * Users can register for an account to create posts
@@ -62,7 +79,8 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
  * Post details
    * Users can respond to a post publically or privately to poster
    * User can edit/delete their post
-## 3. Navigation
+
+### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
@@ -98,10 +116,16 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
    * New Post
    * Post Details
 
-## 4. Schema
+## Wireframes
+<img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/Wireframe%20V1.jpg?raw=true" width=600>
 
+### [BONUS] Digital Wireframes & Mockups
+
+### [BONUS] Interactive Prototype
+
+## Schema 
+[This section will be completed in Unit 9]
 ### Models
-
 #### Post
 | Property     | Type   | Description                | 
 | ----         | -----  | -----                      |
@@ -127,21 +151,97 @@ Your [design product spec](https://hackmd.io/s/H1wGpVUh7) (described in that lin
 | objectId | String | unique id for comment |
 | author | User reference | author of comment |
 | body | String | comment text |
-
 ### Networking
 - Home Screen
   - (Read/GET) Query all active posts
+DatabaseReference ref = database.getReference("server/posts");
+ref.addValueEventListener(new ValueEventListener() {
+  @Override
+  public void onDataChange(DataSnapshot dataSnapshot) {
+    Post post = dataSnapshot.getValue(Post.class);
+    //TODO: add posts to UI
+  }
+
+  @Override
+  public void onCancelled(DatabaseError databaseError) {
+    System.out.println("The read failed: " + databaseError.getCode());
+  }
+});
 - View Post Detail Screen
   - (Read/GET) Query replies to post
+DatabaseReference ref = database.getReference("server/posts/postID/reply");
+ref.addValueEventListener(new ValueEventListener() {
+  @Override
+  public void onDataChange(DataSnapshot dataSnapshot) {
+    Reply reply = dataSnapshot.getValue(Reply.class);
+    //TODO: add replies to UI
+  }
+
+  @Override
+  public void onCancelled(DatabaseError databaseError) {
+    System.out.println("The read failed: " + databaseError.getCode());
+  }
+});
   - (Create/POST) Create a reply
 - New Post Screen
   - (Create/POST) Create a post
+DatabaseReference ref = ref.child("posts");
+Map<String, Post> posts = new HashMap<>();
+posts.put(postID, post);
+ref.setValueAsync(posts);
 - Edit Post Screen
   - (Delete/DELETE) Delete a post
+DatabaseReference ref = ref.child(String.format(url, postId));
+ref.remove();
   - (Update/PUT) Update a post
+DatabaseReference ref = ref.child("posts"));
+Map<String, Object> update = new HashMap<>();
+update.put(postId, post);
+ref.updateChildrenAsync(update);
+
 - Profile Screen
   - (Create/POST) Create bio
+DatabaseReference ref = ref.child("bio");
+Map<String, String> bio = new HashMap<>();
+posts.put(userId, bioText);
+ref.setValueAsync(bio);
   - (Update/PUT) Update bio
+DatabaseReference ref = ref.child(String.format(url, userId));
+Map<String, String> update = new HashMap<>();
+update.put(userId, bioText);
+ref.updateChildrenAsync(update);
   - (Update/PUT) Update top 3 games
-  - (Update/PUT) change username
-  - (Update/PUT) change email     
+DatabaseReference ref = ref.child(String.format(url, userId));
+Map<String, ArrayList<String>> update = new HashMap<>();
+update.put("games", gameList);
+ref.updateChildrenAsync(update);
+  - (Update/PUT) change email
+user.updateEmail(newEmail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Email updated successfully.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else{ 
+  Toast.makeText("Email already in use.",
+                            Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+  - (Update/PUT) change password
+  user.updatePassword(password)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ProfileActivity.this, "password updated.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+else{
+                            Toast.makeText(ProfileActivity.this, "failed to update password.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
