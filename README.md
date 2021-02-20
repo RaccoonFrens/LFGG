@@ -119,10 +119,6 @@ LFGG, looking for game group is an app to find people to play games together
 ## Wireframes
 <img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/Wireframe%20V1.jpg?raw=true" width=600>
 
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
-
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
@@ -153,7 +149,7 @@ LFGG, looking for game group is an app to find people to play games together
 | body | String | comment text |
 ### Networking
 - Home Screen
-  - (Read/GET) Query all active posts
+  - (Read/GET) Query all active posts<br/><br/>
 DatabaseReference ref = database.getReference("server/posts");
 ref.addValueEventListener(new ValueEventListener() {
   @Override
@@ -168,7 +164,7 @@ ref.addValueEventListener(new ValueEventListener() {
   }
 });
 - View Post Detail Screen
-  - (Read/GET) Query replies to post
+  - (Read/GET) Query replies to post<br/><br/>
 DatabaseReference ref = database.getReference("server/posts/postID/reply");
 ref.addValueEventListener(new ValueEventListener() {
   @Override
@@ -182,40 +178,44 @@ ref.addValueEventListener(new ValueEventListener() {
     System.out.println("The read failed: " + databaseError.getCode());
   }
 });
-  - (Create/POST) Create a reply
+  - (Create/POST) Create a reply<br/><br/>
+DatabaseReference ref = ref.child(String.format(url, postId);
+Map<String, String> reply = new HashMap<>();
+reply.put(userId, message);
+ref.setValueAsync(reply);
 - New Post Screen
-  - (Create/POST) Create a post
+  - (Create/POST) Create a post<br/><br/>
 DatabaseReference ref = ref.child("posts");
 Map<String, Post> posts = new HashMap<>();
 posts.put(postID, post);
 ref.setValueAsync(posts);
 - Edit Post Screen
-  - (Delete/DELETE) Delete a post
+  - (Delete/DELETE) Delete a post<br/><br/>
 DatabaseReference ref = ref.child(String.format(url, postId));
 ref.remove();
-  - (Update/PUT) Update a post
+  - (Update/PUT) Update a post<br/><br/>
 DatabaseReference ref = ref.child("posts"));
 Map<String, Object> update = new HashMap<>();
 update.put(postId, post);
 ref.updateChildrenAsync(update);
 
 - Profile Screen
-  - (Create/POST) Create bio
+  - (Create/POST) Create bio<br/><br/>
 DatabaseReference ref = ref.child("bio");
 Map<String, String> bio = new HashMap<>();
 posts.put(userId, bioText);
 ref.setValueAsync(bio);
-  - (Update/PUT) Update bio
+  - (Update/PUT) Update bio<br/><br/>
 DatabaseReference ref = ref.child(String.format(url, userId));
 Map<String, String> update = new HashMap<>();
 update.put(userId, bioText);
 ref.updateChildrenAsync(update);
-  - (Update/PUT) Update top 3 games
+  - (Update/PUT) Update top 3 games<br/><br/>
 DatabaseReference ref = ref.child(String.format(url, userId));
 Map<String, ArrayList<String>> update = new HashMap<>();
 update.put("games", gameList);
 ref.updateChildrenAsync(update);
-  - (Update/PUT) change email
+  - (Update/PUT) change email<br/><br/>
 user.updateEmail(newEmail)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -230,7 +230,7 @@ if (task.isSuccessful()) {
                         }
                     }
                 });
-  - (Update/PUT) change password
+  - (Update/PUT) change password<br/><br/>
   user.updatePassword(password)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
