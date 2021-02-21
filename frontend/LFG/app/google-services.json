@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1011449295197",
+    "firebase_url": "https://lfgg-78154-default-rtdb.firebaseio.com",
+    "project_id": "lfgg-78154",
+    "storage_bucket": "lfgg-78154.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011449295197:android:bb5c5f05901b57770ff8b4",
+        "android_client_info": {
+          "package_name": "com.example.lfg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011449295197-uf5ccd2hiudoph08b5qvukv5lo5cl7hp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDbWWb-3ID1Fv3Ep29Aw5eyjKAUhEHfNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1011449295197-uf5ccd2hiudoph08b5qvukv5lo5cl7hp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

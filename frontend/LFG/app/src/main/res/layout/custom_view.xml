@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ccc"
+    android:padding="5dp"><![CDATA[
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    ]]>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/listingCard"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="0dp"
+        app:cardBackgroundColor="#F4F4F4"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:contentPadding="5dp"
+        app:contentPaddingBottom="5dp"
+        app:contentPaddingLeft="5dp"
+        app:contentPaddingRight="5dp"
+        app:contentPaddingTop="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tag1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="174dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C8C8C8"
+                android:minWidth="60dp"
+                android:minHeight="20dp"
+                android:text="Casual" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="232dp"
+                android:layout_marginBottom="0dp"
+                android:contentDescription="Game logo"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/tag2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="60dp"
+                android:layout_marginBottom="40dp"
+                android:background="#C8C8C8"
+                android:minWidth="60dp"
+                android:minHeight="20dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tag3"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="174dp"
+                android:layout_marginEnd="138dp"
+                android:layout_marginBottom="6dp"
+                android:background="#C8C8C8"
+                android:minWidth="60dp"
+                android:minHeight="20dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/tag4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="60dp"
+                android:layout_marginBottom="6dp"
+                android:background="#C8C8C8"
+                android:minWidth="60dp"
+                android:minHeight="20dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/playerCount"
+                android:layout_width="51dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="3dp"
+                android:text="2/5"
+                android:textColor="#222222"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/timeLeft"
+                android:layout_width="160dp"
+                android:layout_height="65dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="158dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@+id/playerCount"
+                android:text="time left: 2 hours 34 mins"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

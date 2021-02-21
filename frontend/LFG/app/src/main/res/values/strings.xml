@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">LFGG</string>
+    <string-array name="game_array">
+        <item>Choose your game</item>
+        <item>Among Us</item>
+        <item>Call of Duty</item>
+        <item>Fortnite</item>
+        <item>Grand Theft Auto</item>
+        <item>League of Legends</item>
+        <item>Minecraft</item>
+        <item>Overwatch</item>
+        <item>Valorant</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="size_array">
+        <item>Choose your party vacancy</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11+</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
