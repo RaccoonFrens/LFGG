@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                 edit.apply();
                                 openMainActivity();
                                 Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
+
                             } else {
                                 Toast.makeText(LoginActivity.this, "Internal Token Error", Toast.LENGTH_SHORT);
                             }
@@ -144,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
     private void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void openRegisterActivity() {

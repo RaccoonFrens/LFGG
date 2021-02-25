@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 edit.putString("userToken", userToken);
                                                 edit.apply();
                                                 Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
-                                                openMainActivity();
+                                                openLoginActivity();
                                             } else {
                                                 Log.w(TAG, "Failed to retrieve token");
                                             }
