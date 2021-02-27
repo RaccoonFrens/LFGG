@@ -7,7 +7,8 @@ Original App Design Project - README Template
 1. [Overview](#Overview)
 1. [Product Spec](#Product-Spec)
 1. [Wireframes](#Wireframes)
-2. [Schema](#Schema)
+1. [Schema](#Schema)
+1. [Sprints](#Sprint)
 
 ## Overview
 ### Description
@@ -244,3 +245,8 @@ else{
                         }
                     }
                 });
+   
+## Sprints
+
+### Sprint #1
+<img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/LFGGSprint1.gif" width=250><br>
