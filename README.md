@@ -39,8 +39,8 @@ LFGG, looking for game group is an app to find people to play games together
 
 **Optional Nice-to-have Stories**
 
- * [ ] Register
-    * [ ] Login
+ * [x] Register
+    * [x] Login
     * [ ] User profile
  * [ ] Nice UI
  * [ ] Show current game status of poster
