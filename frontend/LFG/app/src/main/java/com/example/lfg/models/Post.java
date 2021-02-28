@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Post {
     String id;
+    String logoName;
+    String game;
     User author;
     String body;
     String tag;
@@ -15,7 +17,7 @@ public class Post {
     int size;
     List<Comment> replies;
 
-    public Post(){}
+public Post(){}
 
     public String getId() {
         return id;
@@ -79,5 +81,29 @@ public class Post {
 
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
+    }
+
+    public String getGame() { return game; }
+
+    public void setGame(String game) { this.game = game; }
+
+    public String getLogoName() { return logoName; }
+
+    public void setLogoName(String logoName) { this.logoName = logoName; }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", logoName='" + logoName + '\'' +
+                ", game='" + game + '\'' +
+                ", author=" + author +
+                ", body='" + body + '\'' +
+                ", tag='" + tag + '\'' +
+                ", createdAt=" + createdAt +
+                ", duration=" + duration +
+                ", size=" + size +
+                ", replies=" + replies +
+                '}';
     }
 }

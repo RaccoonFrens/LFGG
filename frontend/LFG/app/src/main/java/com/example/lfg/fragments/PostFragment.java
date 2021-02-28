@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,16 @@ import android.widget.TextView;
 
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
+import com.example.lfg.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 public class PostFragment extends Fragment {
@@ -28,6 +35,7 @@ public class PostFragment extends Fragment {
     private ImageView ivEdit;
     private ImageView ivBack;
     FragmentManager fragmentManager;
+
 
     public PostFragment() {
         // Required empty public constructor
@@ -78,4 +86,5 @@ public class PostFragment extends Fragment {
             }
         });
     }
+
 }
