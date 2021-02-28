@@ -7,7 +7,8 @@ Original App Design Project - README Template
 1. [Overview](#Overview)
 1. [Product Spec](#Product-Spec)
 1. [Wireframes](#Wireframes)
-2. [Schema](#Schema)
+1. [Schema](#Schema)
+1. [Sprints](#Sprints)
 
 ## Overview
 ### Description
@@ -39,8 +40,9 @@ LFGG, looking for game group is an app to find people to play games together
 
 **Optional Nice-to-have Stories**
 
- * [ ] Register
-    * [ ] Login
+ * [x] Register
+    * [x] Login
+    * [x] Logout
     * [ ] User profile
  * [ ] Nice UI
  * [ ] Show current game status of poster
@@ -244,3 +246,8 @@ else{
                         }
                     }
                 });
+   
+## Sprints
+
+### Sprint #1
+<img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/LFGGSprint1.gif" width=250><br>
