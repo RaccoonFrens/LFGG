@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -59,42 +61,6 @@ public class HomeFragment extends Fragment {
         rvPosts = view.findViewById(R.id.rvPosts);
         posts = new ArrayList<>();
 
-        //add new post then append to post array list
-        //set body
-        //set tag
-        //set size
-        /*
-        Post post = new Post();
-        post.setBody("RacconFrens");
-        post.setTag("test1");
-        post.setSize(3);
-        post.setLogoName("amongUs_logo.png");
-        posts.add(post);
-        posts.add(post);
-        posts.add(post);
-
-        Post post2 = new Post();
-        post2.setBody("test2");
-        post2.setTag("test2");
-        post2.setSize(12);
-        post2.setLogoName("pubg_logo.png");
-        posts.add(post2);
-
-        Post post3 = new Post();
-        post3.setBody("test3");
-        post3.setTag("test3");
-        post3.setSize(4);
-        post3.setLogoName("fortnite_logo.png");
-        posts.add(post3);
-
-        Post post4 = new Post();
-        post4.setBody("RacconFrens");
-        post4.setTag("test4");
-        post4.setSize(7);
-        post4.setLogoName("minecraft_logo.png");
-        posts.add(post4);
-        */
-
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClicked(int position) {
@@ -117,15 +83,15 @@ public class HomeFragment extends Fragment {
 
     private void loadData(){
         database.goOnline();
+
         DatabaseReference ref = database.getReference("posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Post> thePosts = new ArrayList<>();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    Post tempPost = new Post();
                     User tempUser = new User();
-                    tempUser.setId((String) child.child("author").child("id").getValue());
+                    Log.i("get", child.getKey());
+               /*     tempUser.setId((String) child.child("author").child("id").getValue());
                     tempUser.setUsername((String) child.child("author").child("username").getValue());
                     tempUser.setEmail((String) child.child("author").child("email").getValue());
                     //tempUser.setEmail(child.child("author").child("posts").getValue());
@@ -138,15 +104,50 @@ public class HomeFragment extends Fragment {
                     tempPost.setSize((int) ((long) child.child("size").getValue()));
                     tempPost.setLogoName("minecraft_logo.png");
                     //tempPost.setReplies(child.child("replies").getValue());
-                    //thePosts.add(tempPost);
-                    posts.add(tempPost);
+                    //thePosts.add(tempPost);*/
+                    String game = (String) child.child("game").getValue();
+                    int size = (int) ((long) child.child("size").getValue());
+                    long time = (long) child.child("timestamp").getValue();
+                    long timer = (long) child.child("timer").getValue();
+                    String logo = (String) child.child("logoName").getValue();
+                    String authorId = (String) child.child("user").getValue();
+                    Post currPost = new Post(game, size, logo, time+timer);
+                    Date postTimestamp = new Date(time+timer);
+                    Log.i("TIME", String.valueOf(time));
+                    long currentTimestamp = System.currentTimeMillis();
+                    Date currentTime = new Date(currentTimestamp);
+                    if(postTimestamp.before(currentTime)){
+                        String postId = child.getKey();
+                        ref.child(postId).removeValue();
+                        database.getReference("users").child(authorId).child("posts").child(postId).removeValue();
+                        Log.i("expired", "timestamp: " + postTimestamp.toString());
+                        Log.i("expired", "current time: " + currentTime.toString());
+                        //posts.add(currPost);
+                    }
+                    else{
+                        Log.i("active", game + " timestamp: " + postTimestamp.toString());
+                        Log.i("active", game + " current time: " + currentTime.toString());
+                        posts.add(currPost);
+                    }
+                    //currPost.setLogoName("fortnite_logo.png");
+
                 }
+
+                Collections.sort(posts, new Sortbytime());
                 postsAdapter.notifyDataSetChanged();
             }
             @Override public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "The read failed: " + databaseError.getCode());
             }
         });
+    }
+
+    class Sortbytime implements Comparator<Post>{
+
+        @Override
+        public int compare(Post a, Post b) {
+            return (int) (a.getTimeEnd() - b.getTimeEnd());
+        }
     }
 
 }

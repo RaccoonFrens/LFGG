@@ -8,6 +8,8 @@ public class User {
     String email;
     List<Post> posts;
 
+    public User(){}
+
     public String getId() {
         return id;
     }

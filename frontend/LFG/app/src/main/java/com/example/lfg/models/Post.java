@@ -1,23 +1,49 @@
 package com.example.lfg.models;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+@IgnoreExtraProperties
 public class Post {
     String id;
     String logoName;
     String game;
     User author;
+    String user;
     String body;
     String tag;
-    Date createdAt;
-    Date duration;
     int size;
     List<Comment> replies;
+    Map<String, String> timestamp;
+    long time;
+    long timer;
+    long timeEnd;
 
-public Post(){}
+    public Post(){}
+
+    public Post(String game, int size, Map<String, String> timestamp, String user, long timer){
+        this.game = game;
+        this.size = size;
+        this.timestamp = timestamp;
+        this.logoName = game + ".png";
+        this.user = user;
+        this.timer = timer;
+    }
+
+
+
+    public Post(String game, int size, String logoName, long timeEnd){
+        this.game = game;
+        this.size = size;
+        this.logoName = logoName;
+        this.timeEnd = timeEnd;
+    }
 
     public String getId() {
         return id;
@@ -51,22 +77,6 @@ public Post(){}
         this.tag = tag;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Date duration) {
-        this.duration = duration;
-    }
-
     public int getSize() {
         return size;
     }
@@ -91,6 +101,46 @@ public Post(){}
 
     public void setLogoName(String logoName) { this.logoName = logoName; }
 
+    public Map<String, String> getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Map<String, String> timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public long getTimer() {
+        return timer;
+    }
+
+    public void setTimer(long timer) {
+        this.timer = timer;
+    }
+
+    public long getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(long timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -98,12 +148,14 @@ public Post(){}
                 ", logoName='" + logoName + '\'' +
                 ", game='" + game + '\'' +
                 ", author=" + author +
+                ", user='" + user + '\'' +
                 ", body='" + body + '\'' +
                 ", tag='" + tag + '\'' +
-                ", createdAt=" + createdAt +
-                ", duration=" + duration +
                 ", size=" + size +
                 ", replies=" + replies +
+                ", timestamp=" + timestamp +
+                ", time=" + time +
+                ", timer=" + timer +
                 '}';
     }
 }

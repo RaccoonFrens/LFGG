@@ -20,6 +20,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.lfg.R;
+import com.example.lfg.models.Post;
+import com.example.lfg.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
+import java.util.Map;
 
 
 public class ComposeFragment extends Fragment {
@@ -88,10 +96,24 @@ public class ComposeFragment extends Fragment {
         final int hour          = npHour.getValue();
         final int minute        = npMinute.getValue();
         final String vacancy    = sPartyAmount.getSelectedItem().toString();
-        final int partyTimer    = hour * 60 + minute;
+        final long partyTimer    = (hour * 3600 + minute * 60) * 1000;
 
         Log.i(TAG, "Deets: " + postDetail + " Game tag: " + gameTag + " Timer: " + partyTimer + " minutes Vacancy: " + vacancy);
         Toast.makeText(getContext(), "save post clicked", Toast.LENGTH_SHORT).show();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference postsRef = database.getReference("posts");
+        DatabaseReference newPostRef = postsRef.push();
+        Map<String, String> timestamp = ServerValue.TIMESTAMP;
+        String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Post post = new Post(gameTag, Integer.parseInt(vacancy), timestamp, user, partyTimer);
+        newPostRef.setValue(post);
+
+        //update '/users' database
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String postId = newPostRef.getKey();
+        DatabaseReference currUserRef = database.getReference("users").child(uid + "/posts");
+        DatabaseReference newUserPostRef = currUserRef.child(postId);
+        newUserPostRef.setValue(post);
 
     }
 
