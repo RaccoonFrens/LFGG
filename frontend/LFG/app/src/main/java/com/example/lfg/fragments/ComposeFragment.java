@@ -20,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
@@ -118,8 +119,12 @@ public class ComposeFragment extends Fragment {
     }
 
     private void openHomeActivity() {
-        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
+        //final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+       // fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
+
+        MainActivity m = (MainActivity) getActivity();
+        m.fragmentManager.beginTransaction().hide(m.active).show(m.homeFragment).commit();
+        m.active = m.homeFragment;
     }
 
     private void setSpinnerListeners() {
@@ -127,7 +132,7 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i == 0){
-                    view.setBackgroundColor(Color.GRAY);
+                   //view.setBackgroundColor(Color.GRAY);
                     return;
                 }
                 //TODO: change background color according to game selected?
@@ -144,7 +149,7 @@ public class ComposeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i == 0){
-                    view.setBackgroundColor(Color.GRAY);
+                    //view.setBackgroundColor(Color.GRAY);
                     return;
                 }
             }

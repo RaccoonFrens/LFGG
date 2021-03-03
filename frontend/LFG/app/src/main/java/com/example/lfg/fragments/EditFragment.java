@@ -130,7 +130,7 @@ public class EditFragment extends Fragment {
 
     private void openHome() {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
+        fragmentManager.popBackStack("home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     private void setSpinnerListeners() {

@@ -29,7 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+    public final FragmentManager fragmentManager = getSupportFragmentManager();
+    public final Fragment homeFragment = new HomeFragment();
+    public final Fragment composeFragment = new ComposeFragment();
+    public final Fragment profileFragment  = new ProfileFragment();
+    public Fragment active = homeFragment;
     private BottomNavigationView bottomNavigationView;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
@@ -39,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        fragmentManager.beginTransaction().add(R.id.flContainer, profileFragment, "profileFragment").hide(profileFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.flContainer, composeFragment, "composeFragment").hide(composeFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.flContainer,homeFragment, "homeFragment").commit();
 
         prefs = getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -50,17 +58,20 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch(item.getItemId()){
                     case R.id.post:
-                        fragment = new ComposeFragment();
+                        fragmentManager.beginTransaction().hide(active).show(composeFragment).commit();
+                        active = composeFragment;
                         break;
                     case R.id.home:
-                        fragment = new HomeFragment();
+                        fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
+                        active = homeFragment;
                         break;
                     case R.id.profile:
                     default:
-                        fragment = new ProfileFragment();
+                        fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
+                        active = profileFragment;
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                //fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;
             }
         });
