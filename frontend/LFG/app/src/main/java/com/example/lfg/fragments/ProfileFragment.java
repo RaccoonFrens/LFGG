@@ -1,6 +1,7 @@
 package com.example.lfg.fragments;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,12 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lfg.LoginActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Post;
+import com.example.lfg.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
@@ -47,10 +52,13 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase database;
     List<Post> posts;
     private FirebaseAuth mAuth;
+    SharedPreferences prefs;
+    SharedPreferences.Editor edit;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
@@ -66,6 +74,14 @@ public class ProfileFragment extends Fragment {
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();
         btnLogout = view.findViewById(R.id.btnLogout);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvUserDetails = view.findViewById(R.id.tvUserDetails);
+        prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        edit = prefs.edit();
+        String username = prefs.getString("username", null);
+        if(username == null)
+            Toast.makeText(getContext(), "error loading username", Toast.LENGTH_SHORT).show();
+        tvUsername.setText(username);
 
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
@@ -107,6 +123,7 @@ public class ProfileFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                posts.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     if(!child.child("user").getValue().toString().equals(mUser.getUid())){
                         continue;

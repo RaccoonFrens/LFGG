@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                                             if (task.isSuccessful()) {
                                                 userToken = task.getResult().getToken();
-                                                 edit.putString("userToken", userToken);
+                                                edit.putString("userToken", userToken);
                                                 edit.apply();
                                                 openMainActivity();
                                             } else {

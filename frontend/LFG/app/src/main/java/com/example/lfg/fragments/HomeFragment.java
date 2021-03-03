@@ -2,6 +2,7 @@ package com.example.lfg.fragments;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,10 @@ import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,18 +40,28 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class HomeFragment extends Fragment {
     public static final String TAG = "PostFragment";
     private RecyclerView rvPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
+    SharedPreferences prefs;
+    SharedPreferences.Editor edit;
+    String scrollID;
+    int index;
 
     List<Post> posts;
 
     public HomeFragment() {
         // Required empty public constructor
+        scrollID = null;
+        index = 0;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,12 +76,16 @@ public class HomeFragment extends Fragment {
         rvPosts = view.findViewById(R.id.rvPosts);
         posts = new ArrayList<>();
 
+        prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        edit = prefs.edit();
+
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Post post = posts.get(position);
-                Fragment fragment = new PostFragment(post);
+                User postUser = post.getAuthor();
+                Fragment fragment = new PostFragment(post, postUser);
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
 
                 //TODO: show post details
@@ -88,6 +107,7 @@ public class HomeFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                posts.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     User tempUser = new User();
                     Log.i("get", child.getKey());
@@ -110,25 +130,37 @@ public class HomeFragment extends Fragment {
                     long time = (long) child.child("timestamp").getValue();
                     long timer = (long) child.child("timer").getValue();
                     String logo = (String) child.child("logoName").getValue();
-                    String authorId = (String) child.child("user").getValue();
-                    Post currPost = new Post(game, size, logo, time+timer);
-                    Date postTimestamp = new Date(time+timer);
+                    String userId = (String) child.child("user").getValue();
+                    Post currPost = new Post(game, size, logo, time + timer);
+                    String body = (String) child.child("body").getValue();
+                    currPost.setBody(body);
+                    Date postTimestamp = new Date(time + timer);
                     Log.i("TIME", String.valueOf(time));
                     long currentTimestamp = System.currentTimeMillis();
                     Date currentTime = new Date(currentTimestamp);
-                    if(postTimestamp.before(currentTime)){
+                    if (postTimestamp.before(currentTime)) {
                         String postId = child.getKey();
                         ref.child(postId).removeValue();
-                        database.getReference("users").child(authorId).child("posts").child(postId).removeValue();
+                        database.getReference("users").child(userId).child("posts").child(postId).removeValue();
                         Log.i("expired", "timestamp: " + postTimestamp.toString());
                         Log.i("expired", "current time: " + currentTime.toString());
                         //posts.add(currPost);
-                    }
-                    else{
+                    } else {
                         Log.i("active", game + " timestamp: " + postTimestamp.toString());
                         Log.i("active", game + " current time: " + currentTime.toString());
+                        String username = prefs.getString("username", null);
+                        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                        if (username == null)
+                            Toast.makeText(getContext(), "username not saved", Toast.LENGTH_SHORT).show();
+                        User postUser = new User(userId, username, email);
+                        currPost.setAuthor(postUser);
+                        currPost.setId(child.getKey());
+                        Log.i("POST", child.getKey());
                         posts.add(currPost);
+
                     }
+
+
                     //currPost.setLogoName("fortnite_logo.png");
 
                 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import com.example.lfg.fragments.ComposeFragment;
 import com.example.lfg.fragments.HomeFragment;
 import com.example.lfg.fragments.ProfileFragment;
 import com.example.lfg.models.Post;
+import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,13 +31,18 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
-
+    SharedPreferences prefs;
+    SharedPreferences.Editor edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        prefs = getSharedPreferences("data", MODE_PRIVATE);
+        edit = prefs.edit();
+        getUser();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -59,5 +66,27 @@ public class MainActivity extends AppCompatActivity {
         });
         bottomNavigationView.setSelectedItemId(R.id.home);
 
+    }
+
+    private void getUser() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.goOnline();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        database.getReference("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    DataSnapshot data = task.getResult();
+                    String username = (String) data.child("username").getValue();
+                    edit.putString("username", username);
+                    edit.apply();
+                }
+            }
+        });
     }
 }

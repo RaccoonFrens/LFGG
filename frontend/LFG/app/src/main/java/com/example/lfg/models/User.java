@@ -1,7 +1,10 @@
 package com.example.lfg.models;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
+@IgnoreExtraProperties
 public class User {
     String id;
     String username;
@@ -9,6 +12,17 @@ public class User {
     List<Post> posts;
 
     public User(){}
+
+    public User(String username, String email){
+        this.username = username;
+        this.email = email;
+    }
+
+    public User(String id, String username, String email){
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
 
     public String getId() {
         return id;

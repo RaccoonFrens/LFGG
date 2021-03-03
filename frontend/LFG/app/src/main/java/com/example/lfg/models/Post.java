@@ -14,8 +14,8 @@ public class Post {
     String id;
     String logoName;
     String game;
-    User author;
     String user;
+    User author;
     String body;
     String tag;
     int size;
@@ -117,14 +117,6 @@ public class Post {
         this.time = time;
     }
 
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public long getTimer() {
         return timer;
     }
@@ -141,14 +133,22 @@ public class Post {
         this.timeEnd = timeEnd;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
                 "id='" + id + '\'' +
                 ", logoName='" + logoName + '\'' +
                 ", game='" + game + '\'' +
-                ", author=" + author +
                 ", user='" + user + '\'' +
+                ", author=" + author +
                 ", body='" + body + '\'' +
                 ", tag='" + tag + '\'' +
                 ", size=" + size +
@@ -156,6 +156,7 @@ public class Post {
                 ", timestamp=" + timestamp +
                 ", time=" + time +
                 ", timer=" + timer +
+                ", timeEnd=" + timeEnd +
                 '}';
     }
 }

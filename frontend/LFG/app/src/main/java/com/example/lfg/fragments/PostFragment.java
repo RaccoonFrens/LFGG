@@ -31,7 +31,9 @@ import java.util.List;
 
 public class PostFragment extends Fragment {
     Post post;
+    User user;
     private TextView tvBody;
+    private TextView tvUsername;
     private ImageView ivEdit;
     private ImageView ivBack;
     FragmentManager fragmentManager;
@@ -45,6 +47,11 @@ public class PostFragment extends Fragment {
         this.post = post;
     }
 
+    public PostFragment(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,20 +63,21 @@ public class PostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvBody = view.findViewById(R.id.tvBody);
+        tvUsername = view.findViewById(R.id.tvUsername);
         ivEdit = view.findViewById(R.id.ivEdit);
         ivBack = view.findViewById(R.id.ivBack);
-        tvBody.setText(post.getBody());
+        String userid = post.getAuthor().getId();
         fragmentManager = getActivity().getSupportFragmentManager();
-        FirebaseUser author = null;
-        /**
-         * TODO: finish implementation
-         * check if current user is post author
-         */
-        if(FirebaseAuth.getInstance().getCurrentUser() !=  author){
+
+
+        if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userid)){
+            Log.i("PostFrag", userid);
             ivEdit.setVisibility(View.GONE);
         }
 
-        ivEdit.setVisibility(View.VISIBLE);  //TODO: remove when finished implementing
+        tvBody.setText(post.getBody());
+        tvUsername.setText(post.getAuthor().getUsername());
+
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,5 +94,6 @@ public class PostFragment extends Fragment {
             }
         });
     }
+
 
 }

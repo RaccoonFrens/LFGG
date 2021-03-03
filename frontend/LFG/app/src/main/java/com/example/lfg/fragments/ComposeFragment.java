@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +44,6 @@ public class ComposeFragment extends Fragment {
     public ComposeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,22 +99,27 @@ public class ComposeFragment extends Fragment {
         final long partyTimer    = (hour * 3600 + minute * 60) * 1000;
 
         Log.i(TAG, "Deets: " + postDetail + " Game tag: " + gameTag + " Timer: " + partyTimer + " minutes Vacancy: " + vacancy);
-        Toast.makeText(getContext(), "save post clicked", Toast.LENGTH_SHORT).show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postsRef = database.getReference("posts");
         DatabaseReference newPostRef = postsRef.push();
         Map<String, String> timestamp = ServerValue.TIMESTAMP;
         String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Post post = new Post(gameTag, Integer.parseInt(vacancy), timestamp, user, partyTimer);
+        post.setBody(postDetail);
         newPostRef.setValue(post);
 
         //update '/users' database
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String postId = newPostRef.getKey();
-        DatabaseReference currUserRef = database.getReference("users").child(uid + "/posts");
+        DatabaseReference currUserRef = database.getReference("users").child(user + "/posts");
         DatabaseReference newUserPostRef = currUserRef.child(postId);
         newUserPostRef.setValue(post);
 
+        openHomeActivity();
+    }
+
+    private void openHomeActivity() {
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
     }
 
     private void setSpinnerListeners() {

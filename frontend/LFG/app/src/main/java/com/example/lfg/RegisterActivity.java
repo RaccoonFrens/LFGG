@@ -12,18 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
 
-     private EditText etEmail;
+    private EditText etEmail;
     private EditText etPassword;
+    private EditText etUsername;
     private Button btnRegister;
     private Button btnLogin;
 
@@ -40,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
+        etUsername = findViewById(R.id.etUsername);
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
 
@@ -87,6 +92,14 @@ public class RegisterActivity extends AppCompatActivity {
                                                 edit.putString("userToken", userToken);
                                                 edit.apply();
                                                 Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
+
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                String uid = mAuth.getCurrentUser().getUid();
+                                                DatabaseReference currUserRef = database.getReference("users").child(uid);
+                                                String username = etUsername.getText().toString();
+                                                User user = new User(username, email);
+                                                currUserRef.setValue(user);
+
                                                 openLoginActivity();
                                             } else {
                                                 Log.w(TAG, "Failed to retrieve token");
@@ -137,6 +150,11 @@ public class RegisterActivity extends AppCompatActivity {
         if(etPassword.getText().toString().length() < 6){
             valid = false;
             etPassword.setError("Password must be longer than 6 characters");
+        }
+
+        if(etUsername.getText().toString().isEmpty()){
+            valid = false;
+            etUsername.setError("Field cannot be left blank");
         }
 
         return valid;

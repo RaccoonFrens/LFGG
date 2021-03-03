@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Arrays;
 
 public class EditFragment extends Fragment {
     public static final String TAG = "MainActivity";
@@ -36,6 +39,8 @@ public class EditFragment extends Fragment {
     private Button      btnDeletePost;
     private Button      btnOther;
     Post post;
+    FirebaseDatabase database;
+
     public EditFragment() {
         // Required empty public constructor
     }
@@ -62,20 +67,26 @@ public class EditFragment extends Fragment {
         btnDeletePost = view.findViewById(R.id.btnDeletePost);
         btnOther = view.findViewById(R.id.btnCancel);
 
+        database = FirebaseDatabase.getInstance();
+
         npHour.setMinValue(0);
         npHour.setMaxValue(23);
         npMinute.setMinValue(0);
         npMinute.setMaxValue(59);
 
+        etPostDetails.setText(post.getBody());
+
         ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.size_array, android.R.layout.simple_spinner_item);
         sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sPartyAmount.setAdapter(sizeAdapter);
+        sPartyAmount.setSelection(post.getSize());
 
         ArrayAdapter<CharSequence> gameAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.game_array, android.R.layout.simple_spinner_item);
         gameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGame.setAdapter(gameAdapter);
+        spinnerGame.setSelection(Arrays.asList(getResources().getStringArray(R.array.game_array)).indexOf(post.getGame()));
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +109,11 @@ public class EditFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "delete post clicked", Toast.LENGTH_SHORT).show();
+                String postId = post.getId();
+                String userId = post.getAuthor().getId();
+                database.getReference("posts").child(postId).removeValue();
+                database.getReference("users").child(userId).child("posts").child(postId).removeValue();
+                openHome();
             }
         });
 
@@ -112,6 +128,11 @@ public class EditFragment extends Fragment {
         setSpinnerListeners();
     }
 
+    private void openHome() {
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
+    }
+
     private void setSpinnerListeners() {
         spinnerGame.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -121,7 +142,7 @@ public class EditFragment extends Fragment {
                     return;
                 }
                 String game = spinnerGame.getSelectedItem().toString();
-                Toast.makeText(getContext(), "Selected: " + game, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selected: " + game, Toast.LENGTH_SHORT).show();
                 //TODO: change background color according to game selected?
             }
 
@@ -139,7 +160,7 @@ public class EditFragment extends Fragment {
                     return;
                 }
                 String thePartyAmount = sPartyAmount.getSelectedItem().toString();
-                Toast.makeText(getContext(), "Selected: " + thePartyAmount, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Selected: " + thePartyAmount, Toast.LENGTH_SHORT).show();
             }
 
             @Override
