@@ -18,8 +18,11 @@ import android.widget.TextView;
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
@@ -37,6 +40,7 @@ public class PostFragment extends Fragment {
     private ImageView ivEdit;
     private ImageView ivBack;
     FragmentManager fragmentManager;
+    FirebaseDatabase database;
 
 
     public PostFragment() {
@@ -68,6 +72,21 @@ public class PostFragment extends Fragment {
         ivBack = view.findViewById(R.id.ivBack);
         String userid = post.getUser();
         fragmentManager = getActivity().getSupportFragmentManager();
+        database.getReference("users").child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String username = (String) task.getResult().child("username").getValue();
+                    tvUsername.setText(username);
+                }
+            }
+        });
+
+
 
 
         if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userid)){
@@ -76,7 +95,6 @@ public class PostFragment extends Fragment {
         }
 
         tvBody.setText(post.getBody());
-        tvUsername.setText(post.getAuthor().getUsername());
 
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
