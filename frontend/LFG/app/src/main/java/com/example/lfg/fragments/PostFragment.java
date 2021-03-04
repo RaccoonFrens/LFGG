@@ -34,6 +34,7 @@ public class PostFragment extends Fragment {
     User user;
     private TextView tvBody;
     private TextView tvUsername;
+    private TextView tvTag;
     private ImageView ivEdit;
     private ImageView ivBack;
     FragmentManager fragmentManager;
@@ -64,6 +65,7 @@ public class PostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tvBody = view.findViewById(R.id.tvBody);
         tvUsername = view.findViewById(R.id.tvUsername);
+        tvTag = view.findViewById(R.id.tvTag);
         ivEdit = view.findViewById(R.id.ivEdit);
         ivBack = view.findViewById(R.id.ivBack);
         String userid = post.getAuthor().getId();
@@ -77,6 +79,8 @@ public class PostFragment extends Fragment {
 
         tvBody.setText(post.getBody());
         tvUsername.setText(post.getAuthor().getUsername());
+        tvTag.setText(post.getGame());
+        //tvTag.setText(post.getTag());
 
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
