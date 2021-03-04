@@ -66,7 +66,7 @@ public class PostFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         ivEdit = view.findViewById(R.id.ivEdit);
         ivBack = view.findViewById(R.id.ivBack);
-        String userid = post.getAuthor().getId();
+        String userid = post.getUser();
         fragmentManager = getActivity().getSupportFragmentManager();
 
 
