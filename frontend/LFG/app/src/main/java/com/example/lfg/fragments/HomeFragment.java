@@ -148,14 +148,15 @@ public class HomeFragment extends Fragment {
                     } else {
                         Log.i("active", game + " timestamp: " + postTimestamp.toString());
                         Log.i("active", game + " current time: " + currentTime.toString());
+                        /* for use later in ProfileFragment
                         String username = prefs.getString("username", null);
                         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                        if (username == null)
+                         if (username == null)
                             Toast.makeText(getContext(), "username not saved", Toast.LENGTH_SHORT).show();
                         User postUser = new User(userId, username, email);
                         currPost.setAuthor(postUser);
                         currPost.setId(child.getKey());
-                        Log.i("POST", child.getKey());
+                        Log.i("POST", child.getKey());*/
                         posts.add(currPost);
 
                     }
