@@ -149,8 +149,11 @@ public class ProfileFragment extends Fragment {
                     long time = (long) child.child("timestamp").getValue();
                     long timer = (long) child.child("timer").getValue();
                     String logo = (String) child.child("logoName").getValue();
-                    String authorId = (String) child.child("user").getValue();
+                    String userId = (String) child.child("user").getValue();
                     Post currPost = new Post(game, size, logo, time+timer);
+                    currPost.setUser(userId);
+                    String body = (String) child.child("body").getValue();
+                    currPost.setBody(body);
                     Date postTimestamp = new Date(time+timer);
                     Log.i("TIME", String.valueOf(time));
                     long currentTimestamp = System.currentTimeMillis();
@@ -158,7 +161,7 @@ public class ProfileFragment extends Fragment {
                     if(postTimestamp.before(currentTime)){
                         String postId = child.getKey();
                         ref.child(postId).removeValue();
-                        database.getReference("users").child(authorId).child("posts").child(postId).removeValue();
+                        database.getReference("users").child(userId).child("posts").child(postId).removeValue();
                         Log.i("expired", "timestamp: " + postTimestamp.toString());
                         Log.i("expired", "current time: " + currentTime.toString());
                         //posts.add(currPost);

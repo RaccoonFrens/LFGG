@@ -90,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 userToken = task.getResult().getToken();
                                                 edit.putString("userToken", userToken);
-                                                edit.apply();
+                                                edit.commit();
                                                 Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
 
                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();

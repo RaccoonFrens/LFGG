@@ -31,6 +31,7 @@ public class EditFragment extends Fragment {
     public static final String TAG = "MainActivity";
     private Spinner     sPartyAmount;
     private Spinner spinnerGame;
+    private Spinner spinnerTag;
     private EditText    etPostDetails;
     private EditText    etGameTags;
     private NumberPicker npHour;
@@ -40,6 +41,7 @@ public class EditFragment extends Fragment {
     private Button      btnOther;
     Post post;
     FirebaseDatabase database;
+    MainActivity m;
 
     public EditFragment() {
         // Required empty public constructor
@@ -59,6 +61,7 @@ public class EditFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sPartyAmount = view.findViewById(R.id.sPartyAmount);
         spinnerGame = view.findViewById(R.id.spinnerGame);
+        spinnerTag = view.findViewById(R.id.spinnerTag);
         etPostDetails = view.findViewById(R.id.etPostDetails);
         etGameTags = view.findViewById(R.id.etGameTags);
         npHour = view.findViewById(R.id.npHour);
@@ -66,6 +69,8 @@ public class EditFragment extends Fragment {
         btnPost = view.findViewById(R.id.btnPost);
         btnDeletePost = view.findViewById(R.id.btnDeletePost);
         btnOther = view.findViewById(R.id.btnCancel);
+
+        m = (MainActivity) getActivity();
 
         database = FirebaseDatabase.getInstance();
 
@@ -88,18 +93,25 @@ public class EditFragment extends Fragment {
         spinnerGame.setAdapter(gameAdapter);
         spinnerGame.setSelection(Arrays.asList(getResources().getStringArray(R.array.game_array)).indexOf(post.getGame()));
 
+        ArrayAdapter<CharSequence> tagAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tag_array, android.R.layout.simple_spinner_item);
+        tagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTag.setAdapter(tagAdapter);
+        spinnerTag.setSelection(Arrays.asList(getResources().getStringArray(R.array.tag_array)).indexOf(post.getTag()));
+
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!validInput())
                     return;
                 final String postDetail = etPostDetails.getText().toString();
-                final String gameTag    = spinnerGame.getSelectedItem().toString();
+                final String gameName    = spinnerGame.getSelectedItem().toString();
+                final String gameTag    = spinnerTag.getSelectedItem().toString();
                 final int hour          = npHour.getValue();
                 final int minute        = npMinute.getValue();
                 final String vacancy    = sPartyAmount.getSelectedItem().toString();
                 final int partyTimer    = hour * 60 + minute;
-
+                //TODO: implement
                 Log.i(TAG, "Deets: " + postDetail + " Game tag: " + gameTag + " Timer: " + partyTimer + " minutes Vacancy: " + vacancy);
                 Toast.makeText(getContext(), "save post clicked", Toast.LENGTH_SHORT).show();
             }
@@ -110,9 +122,14 @@ public class EditFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "delete post clicked", Toast.LENGTH_SHORT).show();
                 String postId = post.getId();
-                String userId = post.getAuthor().getId();
+                String userId = post.getUser();
                 database.getReference("posts").child(postId).removeValue();
                 database.getReference("users").child(userId).child("posts").child(postId).removeValue();
+                if(post.getComments() != null) {
+                    for (String commentId : post.getComments()) {
+                        database.getReference("comments").child(commentId).removeValue();
+                    }
+                }
                 openHome();
             }
         });
@@ -121,7 +138,7 @@ public class EditFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "other button clicked", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                m.fragmentManager.popBackStackImmediate();
             }
         });
 
@@ -129,8 +146,7 @@ public class EditFragment extends Fragment {
     }
 
     private void openHome() {
-        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.popBackStack("home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        m.fragmentManager.popBackStack("home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     private void setSpinnerListeners() {
@@ -151,6 +167,24 @@ public class EditFragment extends Fragment {
 
             }
         });
+
+
+        spinnerTag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0){
+                    view.setBackgroundColor(Color.GRAY);
+                    return;
+                }
+                String tag = spinnerTag.getSelectedItem().toString();
+                //Toast.makeText(getContext(), "Selected: " + tag, Toast.LENGTH_SHORT).show();
+                //TODO: change background color according to game selected?
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
 
         sPartyAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -183,6 +217,12 @@ public class EditFragment extends Fragment {
             valid = false;
             Log.i(TAG, "No game tag");
             Toast.makeText(getContext(), "Select a game", Toast.LENGTH_SHORT).show();
+        }
+
+        if(spinnerTag.getSelectedItemPosition() == 0){
+            valid = false;
+            Log.i(TAG, "No game tag");
+            Toast.makeText(getContext(), "Choose competitive or casual", Toast.LENGTH_SHORT).show();		            Toast.makeText(getContext(), "Select a game", Toast.LENGTH_SHORT).show();
         }
 
         if(npHour.getValue() *60 + npMinute.getValue() == 0){

@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 userToken = task.getResult().getToken();
                                 edit.putString("userToken", userToken);
-                                edit.apply();
+                                edit.commit();
                                 openMainActivity();
                                 Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
 

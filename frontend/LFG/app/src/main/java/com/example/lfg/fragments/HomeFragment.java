@@ -44,7 +44,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class HomeFragment extends Fragment {
-    public static final String TAG = "PostFragment";
+    public static final String TAG = "HomeFragment";
     private RecyclerView rvPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
@@ -111,29 +111,29 @@ public class HomeFragment extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     User tempUser = new User();
                     Log.i("get", child.getKey());
-               /*     tempUser.setId((String) child.child("author").child("id").getValue());
-                    tempUser.setUsername((String) child.child("author").child("username").getValue());
-                    tempUser.setEmail((String) child.child("author").child("email").getValue());
-                    //tempUser.setEmail(child.child("author").child("posts").getValue());
-                    tempPost.setId((String) child.child("id").getValue());
-                    tempPost.setAuthor(tempUser);
-                    tempPost.setBody((String) child.child("body").getValue());
-                    tempPost.setTag((String) child.child("tag").getValue());
-                    tempPost.setDuration((Date) child.child("duration").getValue());
-                    tempPost.setCreatedAt((Date) child.child("createdAt").getValue());
-                    tempPost.setSize((int) ((long) child.child("size").getValue()));
-                    tempPost.setLogoName("minecraft_logo.png");
-                    //tempPost.setReplies(child.child("replies").getValue());
-                    //thePosts.add(tempPost);*/
                     String game = (String) child.child("game").getValue();
                     int size = (int) ((long) child.child("size").getValue());
                     long time = (long) child.child("timestamp").getValue();
                     long timer = (long) child.child("timer").getValue();
                     String logo = (String) child.child("logoName").getValue();
                     String userId = (String) child.child("user").getValue();
+                    String id = (String) child.child("id").getValue();
                     Post currPost = new Post(game, size, logo, time + timer);
                     String body = (String) child.child("body").getValue();
                     currPost.setBody(body);
+                    currPost.setId(id);
+                    currPost.setUser(userId);
+                    DataSnapshot commentChild = child.child("comments");
+                    if(commentChild != null) {
+                        Log.i("comments", "success");
+                        List<String> commentIds = new ArrayList<>();
+                        for (DataSnapshot currComment : commentChild.getChildren()) {
+                            String commentId = (String) currComment.child("id").getValue();
+                            Log.i("comments", commentId);
+                            commentIds.add(commentId);
+                        }
+                        currPost.setComments(commentIds);
+                    }
                     Date postTimestamp = new Date(time + timer);
                     Log.i("TIME", String.valueOf(time));
                     long currentTimestamp = System.currentTimeMillis();
@@ -142,6 +142,11 @@ public class HomeFragment extends Fragment {
                         String postId = child.getKey();
                         ref.child(postId).removeValue();
                         database.getReference("users").child(userId).child("posts").child(postId).removeValue();
+                        if(currPost.getComments() != null) {
+                            for (String commentId : currPost.getComments()) {
+                                database.getReference("comments").child(commentId).removeValue();
+                            }
+                        }
                         Log.i("expired", "timestamp: " + postTimestamp.toString());
                         Log.i("expired", "current time: " + currentTime.toString());
                         //posts.add(currPost);
