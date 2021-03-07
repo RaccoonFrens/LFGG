@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.lfg.fragments.ComposeFragment;
 import com.example.lfg.fragments.HomeFragment;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public final Fragment composeFragment = new ComposeFragment();
     public final Fragment profileFragment  = new ProfileFragment();
     public Fragment active = homeFragment;
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
 
@@ -59,15 +60,21 @@ public class MainActivity extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.post:
                         fragmentManager.beginTransaction().hide(active).show(composeFragment).commit();
+                        fragmentManager.popBackStack();
+                        fragmentManager.popBackStack();
                         active = composeFragment;
                         break;
                     case R.id.home:
                         fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
+                        fragmentManager.popBackStack();
+                        fragmentManager.popBackStack();
                         active = homeFragment;
                         break;
                     case R.id.profile:
                     default:
                         fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
+                        fragmentManager.popBackStack();
+                        fragmentManager.popBackStack();
                         active = profileFragment;
                         break;
                 }
@@ -94,8 +101,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     DataSnapshot data = task.getResult();
                     String username = (String) data.child("username").getValue();
+                    Log.i("Username", data.toString());
+                    Log.i("Username", username);
+                    Toast.makeText(getApplicationContext(), username, Toast.LENGTH_SHORT).show();
                     edit.putString("username", username);
-                    edit.apply();
+                    edit.commit();
                 }
             }
         });

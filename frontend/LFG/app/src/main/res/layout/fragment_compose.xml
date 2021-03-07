@@ -42,6 +42,13 @@ tools:context=".fragments.ComposeFragment">
                 android:isScrollContainer="true"
                 tools:text="I've got a 2 stack looking for some back up rushing B, we playing mirage, D2, and inferno. Add me on steam here: https://steamcommunity.com/profiles/thelegend27" />
 
+
+            <Spinner
+                android:id="@+id/spinnerTag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/tag_array" />
+
             <Spinner
                 android:id="@+id/spinnerGame"
                 android:layout_width="match_parent"

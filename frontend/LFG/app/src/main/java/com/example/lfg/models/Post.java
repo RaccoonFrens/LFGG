@@ -24,6 +24,7 @@ public class Post {
     long time;
     long timer;
     long timeEnd;
+    List<String> comments;
 
     public Post(){}
 
@@ -139,6 +140,14 @@ public class Post {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
     }
 
     @Override

@@ -37,6 +37,7 @@ public class ComposeFragment extends Fragment {
     public static final String TAG = "ComposeFragment";
     private Spinner spinnerGame;
     private Spinner     sPartyAmount;
+    private Spinner spinnerTag;
     private EditText    etPostDetails;
     private NumberPicker npHour;
     private NumberPicker npMinute;
@@ -57,6 +58,7 @@ public class ComposeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spinnerGame = view.findViewById(R.id.spinnerGame);
+        spinnerTag = view.findViewById(R.id.spinnerTag);
         sPartyAmount = view.findViewById(R.id.sPartyAmount);
         etPostDetails = view.findViewById(R.id.etPostDetails);
         npHour = view.findViewById(R.id.npHour);
@@ -78,6 +80,11 @@ public class ComposeFragment extends Fragment {
         sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sPartyAmount.setAdapter(sizeAdapter);
 
+        ArrayAdapter<CharSequence> tagAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tag_array, android.R.layout.simple_spinner_item);
+        tagAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTag.setAdapter(tagAdapter);
+
         setSpinnerListeners();
 
         btnPost.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +100,8 @@ public class ComposeFragment extends Fragment {
         if(!validInput())
             return;
         final String postDetail = etPostDetails.getText().toString();
-        final String gameTag    = spinnerGame.getSelectedItem().toString();
+        final String gameName   = spinnerGame.getSelectedItem().toString();
+        final String gameTag    = spinnerTag.getSelectedItem().toString();
         final int hour          = npHour.getValue();
         final int minute        = npMinute.getValue();
         final String vacancy    = sPartyAmount.getSelectedItem().toString();
@@ -103,14 +111,16 @@ public class ComposeFragment extends Fragment {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference postsRef = database.getReference("posts");
         DatabaseReference newPostRef = postsRef.push();
+        String postId = newPostRef.getKey();
         Map<String, String> timestamp = ServerValue.TIMESTAMP;
         String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Post post = new Post(gameTag, Integer.parseInt(vacancy), timestamp, user, partyTimer);
+        Post post = new Post(gameName, Integer.parseInt(vacancy), timestamp, user, partyTimer);
+        post.setTag(gameTag);
         post.setBody(postDetail);
+        post.setId(postId);
         newPostRef.setValue(post);
 
         //update '/users' database
-        String postId = newPostRef.getKey();
         DatabaseReference currUserRef = database.getReference("users").child(user + "/posts");
         DatabaseReference newUserPostRef = currUserRef.child(postId);
         newUserPostRef.setValue(post);
@@ -125,6 +135,7 @@ public class ComposeFragment extends Fragment {
         MainActivity m = (MainActivity) getActivity();
         m.fragmentManager.beginTransaction().hide(m.active).show(m.homeFragment).commit();
         m.active = m.homeFragment;
+        m.bottomNavigationView.setSelectedItemId(R.id.home);
     }
 
     private void setSpinnerListeners() {
