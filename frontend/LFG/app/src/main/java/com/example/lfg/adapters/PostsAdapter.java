@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -78,7 +79,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 }
             });
             playerCount = itemView.findViewById(R.id.playerCount);
-            // timeLeft = itemView.findViewById(R.id.timeLeft);
+            timeLeft = itemView.findViewById(R.id.timeLeft);
             tag1 = itemView.findViewById(R.id.tag1);
             logo = itemView.findViewById(R.id.logo);
         }
@@ -106,6 +107,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
             playerCount.setText(""+post.getSize());
             tag1.setText(post.getTag());
+            long time = post.getTimeEnd()-System.currentTimeMillis();
+            int minutes = (int) (time/60000);
+            String timeMessage = "Time left: " + minutes/60 + ":" + minutes%60;
+            if(minutes < 60){
+                timeMessage = "Time left: " + minutes%60 + " minutes";
+            }
+            if(minutes == 0)
+                timeMessage = "less than a minute left";
+            timeLeft.setText(timeMessage);
         }
     }
 }

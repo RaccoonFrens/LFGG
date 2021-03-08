@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         fragmentManager.popBackStack();
                         fragmentManager.popBackStack();
                         active = homeFragment;
+                       // HomeFragment t = (HomeFragment) active;
+                       // t.loadData();
                         break;
                     case R.id.profile:
                     default:

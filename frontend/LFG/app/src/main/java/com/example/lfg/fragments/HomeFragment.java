@@ -71,6 +71,15 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        posts.clear();
+        postsAdapter.notifyDataSetChanged();
+        loadData();
+        Log.i("Hidden", "hi");
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvPosts);
@@ -100,7 +109,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void loadData(){
+    public void loadData(){
         database.goOnline();
 
         DatabaseReference ref = database.getReference("posts");
@@ -120,7 +129,9 @@ public class HomeFragment extends Fragment {
                     String id = (String) child.child("id").getValue();
                     Post currPost = new Post(game, size, logo, time + timer);
                     String body = (String) child.child("body").getValue();
+                    String tag = (String) child.child("tag").getValue();
                     currPost.setBody(body);
+                    currPost.setTag(tag);
                     currPost.setId(id);
                     currPost.setUser(userId);
                     DataSnapshot commentChild = child.child("comments");
