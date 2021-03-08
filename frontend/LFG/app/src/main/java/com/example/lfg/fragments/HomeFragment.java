@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
+import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -142,8 +143,13 @@ public class HomeFragment extends Fragment {
                         List<String> commentIds = new ArrayList<>();
                         for (DataSnapshot currComment : commentChild.getChildren()) {
                             String commentId = (String) currComment.child("id").getValue();
+                            String commentUserId = (String) currComment.child("userId").getValue();
+                            String commentUsername = (String) currComment.child("username").getValue() ;
+                            String commentBody = (String) currComment.child("body").getValue();
+                            Comment c = new Comment(commentId, commentUserId, commentUsername, commentBody);
                             Log.i("comments", commentId);
                             commentIds.add(commentId);
+                            currPost.addReply(c);
                         }
                         currPost.setComments(commentIds);
                     }

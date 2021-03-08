@@ -167,6 +167,7 @@ public class PostFragment extends Fragment {
                 Comment comment = new Comment(commentId, userid, username, response);
                 newCommentRef.setValue(comment);
                 post.addComment(commentId);
+                post.addReply(comment);
 
                 comments.add(comment);
                 commentsAdapter.notifyDataSetChanged();

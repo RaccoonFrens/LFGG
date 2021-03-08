@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
+import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,7 @@ import com.google.firebase.database.ServerValue;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditFragment extends Fragment {
@@ -154,6 +156,12 @@ public class EditFragment extends Fragment {
                     updates.put("size", post.getSize());
                 updates.put("id", post.getId());
                 updates.put("user", post.getUser());
+                Map<String, Object> updateComments = new HashMap<>();
+                List<Comment> comments = post.getReplies();
+                for(Comment c: comments){
+                    updateComments.put(c.getId(), c);
+                }
+                updates.put("comments", updateComments);
                 Map<String, Object> childUpdates = new HashMap<>();
                 String postID = post.getId();
                 childUpdates.put("/posts/"+postID, updates);

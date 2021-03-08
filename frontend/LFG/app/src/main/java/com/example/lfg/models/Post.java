@@ -38,6 +38,7 @@ public class Post {
         this.user = user;
         this.timer = timer;
         comments = new ArrayList<>();
+        replies = new ArrayList<>();
     }
 
 
@@ -48,6 +49,7 @@ public class Post {
         this.logoName = logoName;
         this.timeEnd = timeEnd;
         comments = new ArrayList<>();
+        replies = new ArrayList<>();
     }
 
     public String getId() {
@@ -158,6 +160,7 @@ public class Post {
         comments.add(commentId);
     }
 
+    public void addReply(Comment comment){ replies.add(comment);}
     @Override
     public String toString() {
         return "Post{" +
