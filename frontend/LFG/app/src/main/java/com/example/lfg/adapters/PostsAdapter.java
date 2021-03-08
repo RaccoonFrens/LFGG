@@ -109,9 +109,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tag1.setText(post.getTag());
             long time = post.getTimeEnd()-System.currentTimeMillis();
             int minutes = (int) (time/60000);
-            String timeMessage = "Time left: " + minutes/60 + ":" + minutes%60;
+            String format = "%d:%02d";
+            String timeMessage = "Time left: " + String.format(format, minutes/60, minutes%60);
             if(minutes < 60){
-                timeMessage = "Time left: " + minutes%60 + " minutes";
+                timeMessage = minutes%60 + " minutes left";
             }
             if(minutes == 0)
                 timeMessage = "less than a minute left";

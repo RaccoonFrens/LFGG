@@ -133,7 +133,9 @@ public class HomeFragment extends Fragment {
                     currPost.setBody(body);
                     currPost.setTag(tag);
                     currPost.setId(id);
+                    currPost.setTime(time);
                     currPost.setUser(userId);
+                    currPost.setTimer(timer);
                     DataSnapshot commentChild = child.child("comments");
                     if(commentChild != null) {
                         Log.i("comments", "success");

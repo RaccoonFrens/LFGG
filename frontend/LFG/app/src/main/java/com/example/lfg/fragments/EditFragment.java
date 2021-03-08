@@ -23,9 +23,14 @@ import android.widget.Toast;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditFragment extends Fragment {
     public static final String TAG = "MainActivity";
@@ -102,18 +107,61 @@ public class EditFragment extends Fragment {
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validInput())
-                    return;
                 final String postDetail = etPostDetails.getText().toString();
-                final String gameName    = spinnerGame.getSelectedItem().toString();
+                final String gameName   = spinnerGame.getSelectedItem().toString();
                 final String gameTag    = spinnerTag.getSelectedItem().toString();
                 final int hour          = npHour.getValue();
                 final int minute        = npMinute.getValue();
                 final String vacancy    = sPartyAmount.getSelectedItem().toString();
-                final int partyTimer    = hour * 60 + minute;
-                //TODO: implement
+                final long partyTimer    = (hour * 3600 + minute * 60) * 1000;
+
                 Log.i(TAG, "Deets: " + postDetail + " Game tag: " + gameTag + " Timer: " + partyTimer + " minutes Vacancy: " + vacancy);
-                Toast.makeText(getContext(), "save post clicked", Toast.LENGTH_SHORT).show();
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                //DatabaseReference postRef = database.getReference("posts").child(post.getId());
+
+                HashMap<String, Object> updates = new HashMap<>();
+                if(!postDetail.isEmpty()){
+                    updates.put("body", postDetail);
+                }
+                else
+                    updates.put("body", post.getBody());
+                if(!gameName.isEmpty()){
+                    updates.put("game", gameName);
+                    updates.put("logoName", gameName+".png");
+                }
+                else{
+                    updates.put("game", post.getGame());
+                    updates.put("logoName", post.getLogoName());
+                }
+                if(!gameTag.isEmpty()){
+                    updates.put("tag", gameTag);
+                }
+                else
+                    updates.put("tag", post.getTag());
+                if(partyTimer != 0){
+                    updates.put("timer", partyTimer);
+                    Map<String, String> timestamp = ServerValue.TIMESTAMP;
+                    updates.put("timestamp", timestamp);
+                }
+                else{
+                    updates.put("timer", post.getTimer());
+                    updates.put("timestamp", post.getTime());
+                }
+                if(!vacancy.isEmpty()){
+                    updates.put("size", Integer.parseInt(vacancy));
+                }
+                else
+                    updates.put("size", post.getSize());
+                updates.put("id", post.getId());
+                updates.put("user", post.getUser());
+                Map<String, Object> childUpdates = new HashMap<>();
+                String postID = post.getId();
+                childUpdates.put("/posts/"+postID, updates);
+                childUpdates.put("/users/"+postID, updates);
+                database.updateChildren(childUpdates);
+
+
+                openHomeActivity();
             }
         });
 
@@ -203,6 +251,16 @@ public class EditFragment extends Fragment {
 
             }
         });
+    }
+
+    private void openHomeActivity() {
+        //final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        // fragmentManager.beginTransaction().replace(R.id.flContainer, new HomeFragment()).commit();
+
+        MainActivity m = (MainActivity) getActivity();
+        m.fragmentManager.beginTransaction().hide(m.active).show(m.homeFragment).commit();
+        m.active = m.homeFragment;
+        m.bottomNavigationView.setSelectedItemId(R.id.home);
     }
 
     private boolean validInput() {
