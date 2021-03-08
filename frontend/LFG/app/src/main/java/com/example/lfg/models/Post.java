@@ -4,6 +4,8 @@ package com.example.lfg.models;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Post {
         this.logoName = game + ".png";
         this.user = user;
         this.timer = timer;
+        comments = new ArrayList<>();
     }
 
 
@@ -44,6 +47,7 @@ public class Post {
         this.size = size;
         this.logoName = logoName;
         this.timeEnd = timeEnd;
+        comments = new ArrayList<>();
     }
 
     public String getId() {
@@ -148,6 +152,10 @@ public class Post {
 
     public void setComments(List<String> comments) {
         this.comments = comments;
+    }
+
+    public void addComment(String commentId){
+        comments.add(commentId);
     }
 
     @Override

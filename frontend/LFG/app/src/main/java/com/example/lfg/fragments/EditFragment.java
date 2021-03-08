@@ -127,6 +127,7 @@ public class EditFragment extends Fragment {
                 database.getReference("users").child(userId).child("posts").child(postId).removeValue();
                 if(post.getComments() != null) {
                     for (String commentId : post.getComments()) {
+                        Log.i("deletePost", commentId);
                         database.getReference("comments").child(commentId).removeValue();
                     }
                 }
