@@ -157,7 +157,7 @@ public class EditFragment extends Fragment {
                 Map<String, Object> childUpdates = new HashMap<>();
                 String postID = post.getId();
                 childUpdates.put("/posts/"+postID, updates);
-                childUpdates.put("/users/"+postID, updates);
+                childUpdates.put("/users/" + post.getUser()+ "/posts/"+postID, updates);
                 database.updateChildren(childUpdates);
 
 
