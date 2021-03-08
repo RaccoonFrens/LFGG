@@ -28,12 +28,12 @@ LFGG, looking for game group is an app to find people to play games together
 
 **Required Must-have Stories**
 
- * [ ] Make a public post
- * [ ] Edit/Delete Post
-    * [ ] Have the post expire after x time
- * [ ] Display other posts from a server
+ * [x] Make a public post
+ * [x] Edit/Delete Post
+    * [x] Have the post expire after x time
+ * [x] Display other posts from a server
  * [ ] Respond/message poster
- * [ ] Tag of game
+ * [x] Tag of game
     * [ ] Filter by tag
  * [ ] Time of post (or relative time of post)
  * [ ] Push-notifications 
@@ -251,3 +251,5 @@ else{
 
 ### Sprint #1
 <img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/LFGGSprint1.gif" width=250><br>
+### Sprint #2
+<img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/sprint2.gif" width=250><br>
