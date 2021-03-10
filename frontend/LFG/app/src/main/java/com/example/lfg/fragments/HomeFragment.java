@@ -77,7 +77,6 @@ public class HomeFragment extends Fragment {
         posts.clear();
         postsAdapter.notifyDataSetChanged();
         loadData();
-        Log.i("Hidden", "hi");
     }
 
     @Override
@@ -97,8 +96,6 @@ public class HomeFragment extends Fragment {
                 User postUser = post.getAuthor();
                 Fragment fragment = new PostFragment(post, postUser);
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
-
-                //TODO: show post details
             }
         };
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);

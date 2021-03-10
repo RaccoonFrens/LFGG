@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,6 @@ public class PostFragment extends Fragment {
     private ImageView ivEdit;
     private ImageView ivBack;
     private EditText etComment;
-    private Button btnSubmit;
     String userid;
     String username;
 
@@ -101,7 +101,6 @@ public class PostFragment extends Fragment {
         ivEdit = view.findViewById(R.id.ivEdit);
         ivBack = view.findViewById(R.id.ivBack);
         etComment  = view.findViewById(R.id.etComment);
-        btnSubmit = view.findViewById(R.id.btnSubmit);
 
         rvComments = view.findViewById(R.id.rvComments);
         comments  = new ArrayList<>();
@@ -113,6 +112,17 @@ public class PostFragment extends Fragment {
         ItemLongClickListener itemLongClickListener = new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
+                Comment comment = comments.get(position);
+                if(comment.getUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    comments.remove(position);
+                    commentsAdapter.notifyItemRemoved(position);
+                    Log.i("LongClick", comment.getId());
+                    String commentId = comment.getId();
+                    database.getReference("posts").child(post.getId()).child("comments").child(commentId).removeValue();
+                    database.getReference("comments").child(commentId).removeValue();
+
+                }
+                Log.i("LongClick", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             }
         };
@@ -152,49 +162,38 @@ public class PostFragment extends Fragment {
 
         tvBody.setText(post.getBody());
         getComments();
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+        etComment.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                String response = etComment.getText().toString();
-                if(response.length() < 1){
-                    return;
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if((keyEvent.getAction() == keyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)){
+                    String response = etComment.getText().toString();
+                    if(response.length() < 1){
+                        return false;
+                    }
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference commentRef = database.getReference("comments");
+                    DatabaseReference newCommentRef = commentRef.push();
+                    String commentId = newCommentRef.getKey();
+
+                    Comment comment = new Comment(commentId, userid, username, response);
+                    newCommentRef.setValue(comment);
+                    post.addComment(commentId);
+                    post.addReply(comment);
+
+                    comments.add(comment);
+                    commentsAdapter.notifyDataSetChanged();
+
+                    String postId = post.getId();
+                    DatabaseReference currPostRef = database.getReference("posts").child(postId + "/comments");
+                    DatabaseReference newCommentPostRef = currPostRef.child(commentId);
+                    newCommentPostRef.setValue(comment);
+                    etComment.setText("");
+                    return true;
                 }
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference commentRef = database.getReference("comments");
-                DatabaseReference newCommentRef = commentRef.push();
-                String commentId = newCommentRef.getKey();
-
-                Comment comment = new Comment(commentId, userid, username, response);
-                newCommentRef.setValue(comment);
-                post.addComment(commentId);
-                post.addReply(comment);
-
-                comments.add(comment);
-                commentsAdapter.notifyDataSetChanged();
-
-                String postId = post.getId();
-                DatabaseReference currPostRef = database.getReference("posts").child(postId + "/comments");
-                DatabaseReference newCommentPostRef = currPostRef.child(commentId);
-                newCommentPostRef.setValue(comment);
-               // DatabaseReference currPostRef = database.getReference("posts").child()
-               /* FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference postsRef = database.getReference("posts");
-                DatabaseReference newPostRef = postsRef.push();
-                Map<String, String> timestamp = ServerValue.TIMESTAMP;
-                String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Post post = new Post(gameTag, Integer.parseInt(vacancy), timestamp, user, partyTimer);
-                post.setBody(postDetail);
-                newPostRef.setValue(post);
-
-                //update '/users' database
-                String postId = newPostRef.getKey();
-                DatabaseReference currUserRef = database.getReference("users").child(user + "/posts");
-                DatabaseReference newUserPostRef = currUserRef.child(postId);
-                newUserPostRef.setValue(post);*/
-
+                return false;
             }
         });
-
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
