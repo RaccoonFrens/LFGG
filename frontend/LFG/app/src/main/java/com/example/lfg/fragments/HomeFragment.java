@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
     String scrollID;
     int index;
 
-    List<Post> posts;
+    public List<Post> posts;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -195,6 +196,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
 
     class Sortbytime implements Comparator<Post>{
 

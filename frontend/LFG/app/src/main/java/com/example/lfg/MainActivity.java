@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.flContainer, profileFragment, "profileFragment").hide(profileFragment).commit();
         fragmentManager.beginTransaction().add(R.id.flContainer, composeFragment, "composeFragment").hide(composeFragment).commit();
         fragmentManager.beginTransaction().add(R.id.flContainer,homeFragment, "homeFragment").commit();
-
         prefs = getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         getUser();

@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -20,11 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.CommentsAdapter;
 import com.example.lfg.adapters.PostsAdapter;
+import com.example.lfg.adapters.UserAdapter;
 import com.example.lfg.interfaces.ItemLongClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
@@ -56,11 +60,14 @@ public class PostFragment extends Fragment {
     User user;
     private TextView tvBody;
     private TextView tvUsername;
+    private TextView tvTime;
     private ImageView ivEdit;
     private ImageView ivBack;
     private EditText etComment;
+    private Button btnJoinParty;
     String userid;
     String username;
+    String currUsername;
 
 
     private RecyclerView rvComments;
@@ -68,7 +75,11 @@ public class PostFragment extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
 
+    private RecyclerView rvParty;
+    private UserAdapter userAdapter;
+
     List<Comment> comments;
+    List<User> users;
 
     FirebaseDatabase database;
 
@@ -98,16 +109,20 @@ public class PostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tvBody = view.findViewById(R.id.tvBody);
         tvUsername = view.findViewById(R.id.tvUsername);
+        tvTime = view.findViewById(R.id.tvTime);
         ivEdit = view.findViewById(R.id.ivEdit);
         ivBack = view.findViewById(R.id.ivBack);
         etComment  = view.findViewById(R.id.etComment);
+        btnJoinParty = view.findViewById(R.id.btnJoinParty);
 
         rvComments = view.findViewById(R.id.rvComments);
+        rvParty = view.findViewById(R.id.rvParty);
         comments  = new ArrayList<>();
+        users = new ArrayList<>();
         MainActivity m = (MainActivity) getActivity();
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
-
+        currUsername = prefs.getString("username", null);
 
         ItemLongClickListener itemLongClickListener = new ItemLongClickListener() {
             @Override
@@ -127,30 +142,43 @@ public class PostFragment extends Fragment {
             }
         };
 
+        ItemLongClickListener partyLongClickListener = new ItemLongClickListener() {
+            @Override
+            public void onItemLongClicked(int position) {
+                User user = users.get(position);
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(post.getUser())){
+                    users.remove(position);
+                    userAdapter.notifyItemRemoved(position);
+                    database.getReference("posts").child(post.getId()).child("party").child(user.getId()).removeValue();
+                }
+            }
+        };
+
         commentsAdapter = new CommentsAdapter(getContext(), comments, itemLongClickListener);
         rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
         rvComments.setAdapter(commentsAdapter);
+
+        userAdapter = new UserAdapter(getContext(), users, partyLongClickListener);
+        rvParty.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        rvParty.setAdapter(userAdapter);
+
         database = FirebaseDatabase.getInstance();
         database.goOnline();
 
         userid = post.getUser();
+        getUsername();
+        getParty();
         Log.i("userID", userid);
-        //fragmentManager = getActivity().getSupportFragmentManager();
-       /* database.getReference("users").child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                    String username = (String) task.getResult().child("username").getValue();
-                    tvUsername.setText(username);
-                }
-            }
-        });*/
-        username = prefs.getString("username", null);
-        tvUsername.setText(username);
+        long time = post.getTimeEnd()-System.currentTimeMillis();
+        int minutes = (int) (time/60000);
+        String timeMessage = "Party open for " + minutes/60 + " hours and " + minutes%60 + " minutes";
+        if(minutes < 60){
+            timeMessage = "Party open for " + minutes%60 + " minutes";
+        }
+        if(minutes == 0)
+            timeMessage = "Party open for less than a minute";
+        tvTime.setText(timeMessage);
 
 
 
@@ -171,17 +199,15 @@ public class PostFragment extends Fragment {
                     if(response.length() < 1){
                         return false;
                     }
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference commentRef = database.getReference("comments");
                     DatabaseReference newCommentRef = commentRef.push();
                     String commentId = newCommentRef.getKey();
-
-                    Comment comment = new Comment(commentId, userid, username, response);
+                    Comment comment = new Comment(commentId, FirebaseAuth.getInstance().getCurrentUser().getUid(), currUsername, response);
                     newCommentRef.setValue(comment);
                     post.addComment(commentId);
                     post.addReply(comment);
 
-                    comments.add(comment);
+                    comments.add(0, comment);
                     commentsAdapter.notifyDataSetChanged();
 
                     String postId = post.getId();
@@ -209,12 +235,29 @@ public class PostFragment extends Fragment {
                 m.fragmentManager.popBackStackImmediate();
             }
         });
+
+        btnJoinParty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                if(users.size() >= post.getSize()){
+                    Toast.makeText(getContext(), "Party is full", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for(User user: users){
+                    if(user.getId().equals(currUserId)){
+                        Toast.makeText(getContext(), "You are already in the party.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                getUsername(currUserId);
+            }
+        });
+
     }
 
     private void getComments() {
         database.goOnline();
-
-
         String postId = post.getId();
         DatabaseReference ref = database.getReference("posts").child(postId).child("comments");
         ref.addValueEventListener(new ValueEventListener() {
@@ -232,11 +275,77 @@ public class PostFragment extends Fragment {
                     comments.add(comment);
 
                 }
-
+                Collections.reverse(comments);
                 commentsAdapter.notifyDataSetChanged();
             }
             @Override public void onCancelled(DatabaseError databaseError) {
                 Log.e("getComments", "The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+    private void getParty(){
+        database.goOnline();
+        String postId = post.getId();
+        DatabaseReference ref = database.getReference("posts").child(postId).child("party");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                users.clear();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    Log.i("get", child.getKey());
+                    String mUserId = (String) child.child("id").getValue();
+                    String mEmail = (String) child.child("email").getValue();
+                    String mUsername = (String) child.child("username").getValue();
+                    User user = new User(mUserId, mUsername, mEmail);
+                    users.add(user);
+
+                }
+                userAdapter.notifyDataSetChanged();
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {
+                Log.e("getUser", "The read failed: " + databaseError.getCode());
+            }
+        });
+
+    }
+
+    public void getUsername(){
+        FirebaseDatabase.getInstance().getReference().child("users").child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    username = (String) task.getResult().child("username").getValue();
+                    tvUsername.setText(username);
+                }
+            }
+        });
+    }
+
+    public void getUsername(String userId){
+        FirebaseDatabase.getInstance().getReference().child("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    currUsername = (String) task.getResult().child("username").getValue();
+                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    User user = new User(userId, currUsername, email);
+                    users.add(user);
+                    Log.i("btnParty", user.toString());
+                    userAdapter.notifyDataSetChanged();
+
+                    DatabaseReference currPostRef = database.getReference("posts").child(post.getId()).child("party");
+                    DatabaseReference newUserRef = currPostRef.child(userId);
+                    newUserRef.setValue(user);
+                }
             }
         });
     }
