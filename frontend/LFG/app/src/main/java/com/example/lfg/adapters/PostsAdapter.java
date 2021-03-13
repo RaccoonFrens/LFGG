@@ -3,19 +3,17 @@ package com.example.lfg.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.lfg.R;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Post;
@@ -28,7 +26,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -99,7 +96,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             });
             playerCount = itemView.findViewById(R.id.playerCount);
             timeLeft = itemView.findViewById(R.id.timeLeft);
-            tag1 = itemView.findViewById(R.id.tag1);
+            tag1 = itemView.findViewById(R.id.tag);
             logo = itemView.findViewById(R.id.logo);
         }
 
@@ -124,17 +121,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
             } catch (IOException e ) {}
 
-            playerCount.setText(""+post.getSize());
+            playerCount.setText(post.getSize() + " players");
             tag1.setText(post.getTag());
+            if(tag1.getText().toString().equals("Casual")){
+                tag1.setBackgroundColor(Color.parseColor("#4E88E6"));
+            }
             long time = post.getTimeEnd()-System.currentTimeMillis();
             int minutes = (int) (time/60000);
             String format = "%d:%02d";
-            String timeMessage = "Time left: " + String.format(format, minutes/60, minutes%60);
+            String timeMessage = String.format(format, minutes/60, minutes%60);
             if(minutes < 60){
-                timeMessage = minutes%60 + " minutes left";
+                timeMessage = minutes%60 + " mins";
             }
             if(minutes == 0)
-                timeMessage = "less than a minute left";
+                timeMessage = "< 1 min";
             timeLeft.setText(timeMessage);
         }
     }

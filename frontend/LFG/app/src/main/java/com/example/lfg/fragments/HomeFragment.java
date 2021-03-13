@@ -117,7 +117,9 @@ public class HomeFragment extends Fragment {
         setSpinnerListeners();
 
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        //gridLayoutManager.setMeasuredDimension(10, 10);
+        rvPosts.setLayoutManager(gridLayoutManager);
         rvPosts.setAdapter(postsAdapter);
         database = FirebaseDatabase.getInstance();
         loadData();
