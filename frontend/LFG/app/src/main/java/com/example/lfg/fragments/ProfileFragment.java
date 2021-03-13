@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
+import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,7 +111,8 @@ public class ProfileFragment extends Fragment {
         });
 
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
-        rvUserPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rvUserPosts.setLayoutManager(gridLayoutManager);
         rvUserPosts.setAdapter(postsAdapter);
         database = FirebaseDatabase.getInstance();
         loadData();
@@ -130,50 +133,60 @@ public class ProfileFragment extends Fragment {
                     if(!child.child("user").getValue().toString().equals(mUser.getUid())){
                         continue;
                     }
-                    //User tempUser = new User();
                     Log.i("get", child.getKey());
-               /*     tempUser.setId((String) child.child("author").child("id").getValue());
-                    tempUser.setUsername((String) child.child("author").child("username").getValue());
-                    tempUser.setEmail((String) child.child("author").child("email").getValue());
-                    //tempUser.setEmail(child.child("author").child("posts").getValue());
-                    tempPost.setId((String) child.child("id").getValue());
-                    tempPost.setAuthor(tempUser);
-                    tempPost.setBody((String) child.child("body").getValue());
-                    tempPost.setTag((String) child.child("tag").getValue());
-                    tempPost.setDuration((Date) child.child("duration").getValue());
-                    tempPost.setCreatedAt((Date) child.child("createdAt").getValue());
-                    tempPost.setSize((int) ((long) child.child("size").getValue()));
-                    tempPost.setLogoName("minecraft_logo.png");
-                    //tempPost.setReplies(child.child("replies").getValue());
-                    //thePosts.add(tempPost);*/
                     String game = (String) child.child("game").getValue();
                     int size = (int) ((long) child.child("size").getValue());
                     long time = (long) child.child("timestamp").getValue();
                     long timer = (long) child.child("timer").getValue();
                     String logo = (String) child.child("logoName").getValue();
                     String userId = (String) child.child("user").getValue();
-                    Post currPost = new Post(game, size, logo, time+timer);
-                    currPost.setUser(userId);
+                    String id = (String) child.child("id").getValue();
+                    Post currPost = new Post(game, size, logo, time + timer);
                     String body = (String) child.child("body").getValue();
+                    String tag = (String) child.child("tag").getValue();
                     currPost.setBody(body);
-                    Date postTimestamp = new Date(time+timer);
+                    currPost.setTag(tag);
+                    currPost.setId(id);
+                    currPost.setTime(time);
+                    currPost.setUser(userId);
+                    currPost.setTimer(timer);
+                    DataSnapshot commentChild = child.child("comments");
+                    if(commentChild != null) {
+                        Log.i("comments", "success");
+                        List<String> commentIds = new ArrayList<>();
+                        for (DataSnapshot currComment : commentChild.getChildren()) {
+                            String commentId = (String) currComment.child("id").getValue();
+                            String commentUserId = (String) currComment.child("userId").getValue();
+                            String commentUsername = (String) currComment.child("username").getValue() ;
+                            String commentBody = (String) currComment.child("body").getValue();
+                            Comment c = new Comment(commentId, commentUserId, commentUsername, commentBody);
+                            Log.i("comments", commentId);
+                            commentIds.add(commentId);
+                            currPost.addReply(c);
+                        }
+                        currPost.setComments(commentIds);
+                    }
+                    Date postTimestamp = new Date(time + timer);
                     Log.i("TIME", String.valueOf(time));
                     long currentTimestamp = System.currentTimeMillis();
                     Date currentTime = new Date(currentTimestamp);
-                    if(postTimestamp.before(currentTime)){
+                    if (postTimestamp.before(currentTime)) {
                         String postId = child.getKey();
                         ref.child(postId).removeValue();
                         database.getReference("users").child(userId).child("posts").child(postId).removeValue();
+                        if(currPost.getComments() != null) {
+                            for (String commentId : currPost.getComments()) {
+                                database.getReference("comments").child(commentId).removeValue();
+                            }
+                        }
                         Log.i("expired", "timestamp: " + postTimestamp.toString());
                         Log.i("expired", "current time: " + currentTime.toString());
-                        //posts.add(currPost);
-                    }
-                    else{
+                    } else {
                         Log.i("active", game + " timestamp: " + postTimestamp.toString());
                         Log.i("active", game + " current time: " + currentTime.toString());
                         posts.add(currPost);
+
                     }
-                    //currPost.setLogoName("fortnite_logo.png");
 
                 }
 

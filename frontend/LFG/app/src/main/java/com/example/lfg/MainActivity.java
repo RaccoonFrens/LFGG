@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     String username = (String) data.child("username").getValue();
                     Log.i("Username", data.toString());
                     Log.i("Username", username);
-                    Toast.makeText(getApplicationContext(), username, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), username, Toast.LENGTH_SHORT).show();
                     edit.putString("username", username);
                     edit.commit();
                 }

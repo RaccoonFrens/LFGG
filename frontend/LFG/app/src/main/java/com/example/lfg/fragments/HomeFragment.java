@@ -118,7 +118,6 @@ public class HomeFragment extends Fragment {
 
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        //gridLayoutManager.setMeasuredDimension(10, 10);
         rvPosts.setLayoutManager(gridLayoutManager);
         rvPosts.setAdapter(postsAdapter);
         database = FirebaseDatabase.getInstance();
@@ -203,25 +202,12 @@ public class HomeFragment extends Fragment {
                         }
                         Log.i("expired", "timestamp: " + postTimestamp.toString());
                         Log.i("expired", "current time: " + currentTime.toString());
-                        //posts.add(currPost);
                     } else {
                         Log.i("active", game + " timestamp: " + postTimestamp.toString());
                         Log.i("active", game + " current time: " + currentTime.toString());
-                        /* for use later in ProfileFragment
-                        String username = prefs.getString("username", null);
-                        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                         if (username == null)
-                            Toast.makeText(getContext(), "username not saved", Toast.LENGTH_SHORT).show();
-                        User postUser = new User(userId, username, email);
-                        currPost.setAuthor(postUser);
-                        currPost.setId(child.getKey());
-                        Log.i("POST", child.getKey());*/
                         posts.add(currPost);
 
                     }
-
-
-                    //currPost.setLogoName("fortnite_logo.png");
 
                 }
 
