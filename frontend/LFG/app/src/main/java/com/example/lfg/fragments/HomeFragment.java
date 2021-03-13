@@ -17,7 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.lfg.R;
@@ -48,8 +52,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class HomeFragment extends Fragment {
     public static final String TAG = "HomeFragment";
     private RecyclerView rvPosts;
+    private ProgressBar progressBar;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
+    private Spinner spinnerFilter;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
     String scrollID;
@@ -77,6 +83,7 @@ public class HomeFragment extends Fragment {
         super.onHiddenChanged(hidden);
         posts.clear();
         postsAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.VISIBLE);
         loadData();
     }
 
@@ -84,7 +91,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rvPosts = view.findViewById(R.id.rvPosts);
+        progressBar = view.findViewById(R.id.progressBar);
         posts = new ArrayList<>();
+
+        spinnerFilter = view.findViewById(R.id.spinnerFilter);
+        ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.game_array, android.R.layout.simple_spinner_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFilter.setAdapter(filterAdapter);
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -99,11 +113,32 @@ public class HomeFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
             }
         };
+
+        setSpinnerListeners();
+
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         rvPosts.setAdapter(postsAdapter);
         database = FirebaseDatabase.getInstance();
         loadData();
+    }
+
+    private void setSpinnerListeners() {
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0){
+                    postsAdapter.filterPosts("all");
+                }
+                else{
+                    String game = spinnerFilter.getItemAtPosition(i).toString();
+                    postsAdapter.filterPosts(game);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 
 
@@ -190,6 +225,7 @@ public class HomeFragment extends Fragment {
 
                 Collections.sort(posts, new Sortbytime());
                 postsAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override public void onCancelled(DatabaseError databaseError) {
                 Log.e(TAG, "The read failed: " + databaseError.getCode());

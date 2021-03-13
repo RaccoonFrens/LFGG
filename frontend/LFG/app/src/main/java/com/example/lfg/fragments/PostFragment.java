@@ -156,7 +156,9 @@ public class PostFragment extends Fragment {
         };
 
         commentsAdapter = new CommentsAdapter(getContext(), comments, itemLongClickListener);
-        rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setReverseLayout(true);
+        rvComments.setLayoutManager(layoutManager);
         rvComments.setAdapter(commentsAdapter);
 
         userAdapter = new UserAdapter(getContext(), users, partyLongClickListener);
@@ -275,7 +277,6 @@ public class PostFragment extends Fragment {
                     comments.add(comment);
 
                 }
-                Collections.reverse(comments);
                 commentsAdapter.notifyDataSetChanged();
             }
             @Override public void onCancelled(DatabaseError databaseError) {

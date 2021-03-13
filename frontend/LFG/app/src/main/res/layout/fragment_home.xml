@@ -6,11 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPosts"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinnerFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/game_array" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:reverseLayout="false" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

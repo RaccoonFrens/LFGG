@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +37,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     String DATABASEURL = "gs://lfgg-78154.appspot.com";
     Context context;
     List<Post> posts;
+    List<Post> filteredPosts;
     ItemClickListener itemClickListener;
 
     public PostsAdapter(Context context, List<Post> posts, ItemClickListener itemClickListener){
         this.context = context;
         this.posts = posts;
+        this.filteredPosts = posts;
         this.itemClickListener = itemClickListener;
     }
 
@@ -53,13 +56,29 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Post post = posts.get(position);
+        Post post = filteredPosts.get(position);
         holder.bind(post);
     }
 
+    public void filterPosts(String filterTag){
+        Log.i("PostsAdapter tag: ", filterTag);
+        if(!filterTag.equals("all")) {
+            List<Post> filteredList = new ArrayList<>();
+            for (Post post : posts) {
+                if (post.getGame().equals(filterTag)) {
+                    filteredList.add(post);
+                }
+            }
+            filteredPosts = filteredList;
+        }
+        else{
+            filteredPosts = posts;
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
-    public int getItemCount() {
-        return posts.size();
+    public int getItemCount() { return filteredPosts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
