@@ -8,10 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -27,13 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lfg.LoginActivity;
-import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
-import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -56,14 +52,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
-    private Button btnLogout;
     private TextView tvUsername;
     private TextView tvUserDetails;
     private EditText etBio;
     private RecyclerView rvUserPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
-    private LinearLayout linearLayout;
     private TextInputLayout etLayout;
 
     List<Post> posts;
@@ -90,11 +84,9 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();
-        btnLogout = view.findViewById(R.id.btnLogout);
         tvUsername = view.findViewById(R.id.tvUsername);
-         tvUserDetails = view.findViewById(R.id.tvUserDetails);
+        tvUserDetails = view.findViewById(R.id.tvUserDetails);
         etBio = view.findViewById(R.id.etBio);
-        linearLayout = view.findViewById(R.id.linearLayout);
         etLayout = view.findViewById(R.id.etLayout);
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -120,16 +112,6 @@ public class ProfileFragment extends Fragment {
                 //TODO: show post details
             }
         };
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
 
         etBio.setOnClickListener(new View.OnClickListener() {
             @Override

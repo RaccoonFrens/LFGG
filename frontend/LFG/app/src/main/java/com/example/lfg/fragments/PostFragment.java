@@ -124,6 +124,9 @@ public class PostFragment extends Fragment {
         edit = prefs.edit();
         currUsername = prefs.getString("username", null);
 
+        userid = post.getUser();
+        getUsername();
+
         ItemLongClickListener itemLongClickListener = new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
@@ -168,9 +171,6 @@ public class PostFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         database.goOnline();
 
-        userid = post.getUser();
-        getUsername();
-        getParty();
         Log.i("userID", userid);
         long time = post.getTimeEnd()-System.currentTimeMillis();
         int minutes = (int) (time/60000);
@@ -181,9 +181,6 @@ public class PostFragment extends Fragment {
         if(minutes == 0)
             timeMessage = "Party open for less than a minute";
         tvTime.setText(timeMessage);
-
-
-
 
         if(!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(userid)){
             Log.i("PostFrag", userid);
@@ -242,7 +239,11 @@ public class PostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String currUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                if(users.size() >= post.getSize()){
+                if(currUserId.equals(post.getUser())){
+                    Toast.makeText(getContext(), "You are the party leader.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(users.size() > post.getSize()){
                     Toast.makeText(getContext(), "Party is full", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -293,6 +294,8 @@ public class PostFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 users.clear();
+                User currUser = new User(userid, username, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                users.add(currUser);
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Log.i("get", child.getKey());
                     String mUserId = (String) child.child("id").getValue();
@@ -322,6 +325,7 @@ public class PostFragment extends Fragment {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     username = (String) task.getResult().child("username").getValue();
                     tvUsername.setText(username);
+                    getParty();
                 }
             }
         });

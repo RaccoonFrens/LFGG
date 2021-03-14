@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private EditText etUsername;
+    private EditText etConfirmPassword;
     private Button btnRegister;
     private Button btnLogin;
 
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etUsername = findViewById(R.id.etUsername);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
 
@@ -155,6 +157,18 @@ public class RegisterActivity extends AppCompatActivity {
         if(etUsername.getText().toString().isEmpty()){
             valid = false;
             etUsername.setError("Field cannot be left blank");
+        }
+
+        if(etConfirmPassword.getText().toString().isEmpty()){
+            valid = false;
+            etConfirmPassword.setError("Field cannot be left empty");
+        }
+
+        if(!etConfirmPassword.getText().toString().equals(etPassword.getText().toString()) &&
+            !etPassword.getText().toString().isEmpty() && !etConfirmPassword.getText().toString().isEmpty()){
+            etConfirmPassword.setError("Passwords do not match!");
+            etPassword.setError("Passwords do not match!");
+            valid = false;
         }
 
         return valid;
