@@ -58,11 +58,8 @@ public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
     private Button btnLogout;
     private TextView tvUsername;
-<<<<<<< HEAD
     private TextView tvUserDetails;
     private EditText etBio;
-=======
->>>>>>> 5967fc340508b3a8d0b4c1443b6ab364b406d70d
     private RecyclerView rvUserPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
@@ -95,16 +92,14 @@ public class ProfileFragment extends Fragment {
         posts = new ArrayList<>();
         btnLogout = view.findViewById(R.id.btnLogout);
         tvUsername = view.findViewById(R.id.tvUsername);
-<<<<<<< HEAD
-        tvUserDetails = view.findViewById(R.id.tvUserDetails);
+         tvUserDetails = view.findViewById(R.id.tvUserDetails);
         etBio = view.findViewById(R.id.etBio);
         linearLayout = view.findViewById(R.id.linearLayout);
         etLayout = view.findViewById(R.id.etLayout);
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-=======
->>>>>>> 5967fc340508b3a8d0b4c1443b6ab364b406d70d
+
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         String username = prefs.getString("username", null);
