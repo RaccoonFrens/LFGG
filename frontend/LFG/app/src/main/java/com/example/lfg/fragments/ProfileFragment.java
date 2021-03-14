@@ -50,7 +50,6 @@ public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
     private Button btnLogout;
     private TextView tvUsername;
-    private TextView tvUserDetails;
     private RecyclerView rvUserPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
@@ -79,7 +78,6 @@ public class ProfileFragment extends Fragment {
         posts = new ArrayList<>();
         btnLogout = view.findViewById(R.id.btnLogout);
         tvUsername = view.findViewById(R.id.tvUsername);
-        tvUserDetails = view.findViewById(R.id.tvUserDetails);
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         String username = prefs.getString("username", null);

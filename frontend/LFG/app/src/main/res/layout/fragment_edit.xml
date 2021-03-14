@@ -42,15 +42,6 @@
                     android:isScrollContainer="true"
                     tools:text="I've got a 2 stack looking for some back up rushing B, we playing mirage, D2, and inferno. Add me on steam here: https://steamcommunity.com/profiles/thelegend27" />
 
-                <EditText
-                    android:id="@+id/etGameTags"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:ems="10"
-                    android:hint="Write a game tag"
-                    android:inputType="textShortMessage"
-                    tools:text="Tag the game" />
                 <Spinner
                     android:id="@+id/spinnerTag"
                     android:layout_width="match_parent"

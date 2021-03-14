@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/partyLayout"
-            card_view:reverseLayout="false" />
+            card_view:reverseLayout="false"/>
 
     </RelativeLayout>
 
