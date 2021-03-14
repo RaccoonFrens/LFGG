@@ -9,9 +9,12 @@ public class User {
     String id;
     String username;
     String email;
+    String bio;
     List<Post> posts;
 
-    public User(){}
+    public User(){
+        bio = "";
+    }
 
     public User(String username, String email){
         this.username = username;

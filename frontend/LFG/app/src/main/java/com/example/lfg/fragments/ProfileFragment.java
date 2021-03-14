@@ -3,6 +3,7 @@ package com.example.lfg.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lfg.LoginActivity;
+import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
@@ -59,6 +62,7 @@ public class ProfileFragment extends Fragment {
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
     private TextInputLayout etLayout;
+    private ImageView ivSettings;
 
     List<Post> posts;
     private FirebaseAuth mAuth;
@@ -88,15 +92,18 @@ public class ProfileFragment extends Fragment {
         tvUserDetails = view.findViewById(R.id.tvUserDetails);
         etBio = view.findViewById(R.id.etBio);
         etLayout = view.findViewById(R.id.etLayout);
+        ivSettings = view.findViewById(R.id.ivSettings);
 
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
-        String username = prefs.getString("username", null);
-        if(username == null)
-            Toast.makeText(getContext(), "error loading username", Toast.LENGTH_SHORT).show();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        if(username.isEmpty())
+            username = prefs.getString("username", "username");
         tvUsername.setText(username);
         Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
         tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
@@ -117,6 +124,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 etBio.setFocusableInTouchMode(true);
+                if(etBio.getText().toString().equals("Tap to set bio"))
+                    etBio.setText("");
             }
         });
         
@@ -140,6 +149,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        ivSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity m = (MainActivity) getActivity();
+                Fragment fragment = new SettingsFragment();
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("profile").commit();
+            }
+        });
+
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rvUserPosts.setLayoutManager(gridLayoutManager);
@@ -151,6 +169,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setBio() {
+        database.goOnline();
         DatabaseReference userRef = database.getReference("users").child(userId);
         userRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -161,6 +180,7 @@ public class ProfileFragment extends Fragment {
                 else {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     String bio = (String) task.getResult().child("bio").getValue();
+                    Log.i("Bio", bio);
                     etBio.setText(bio);
                     etBio.setFocusable(false);
                 }

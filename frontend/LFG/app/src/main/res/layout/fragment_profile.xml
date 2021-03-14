@@ -5,33 +5,52 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    android:background="@drawable/border"
     android:orientation="vertical"
     tools:context=".fragments.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/ivProfile"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_account_circle_24" />
+        android:layout_height="250dp"
+        android:background="@drawable/party_border"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvUsername"
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_baseline_account_circle_24" />
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="username"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivSettings"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_below="@id/ivProfile"
-        android:layout_centerHorizontal="true"
-        android:text="username"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_baseline_settings_24" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvUsername"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="50dp"
         app:counterEnabled="true"
         app:counterMaxLength="140">
@@ -42,16 +61,16 @@
             android:layout_height="wrap_content"
             android:background="@drawable/border"
             android:gravity="center_vertical"
-            android:hint="About Me"
             android:inputType="textAutoCorrect"
-            android:minLines="2" />
+            android:minLines="2"
+            android:text="Tap to add bio" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tvUserDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/etLayout"
+        android:layout_below="@id/linearLayout"
         android:text="TextView" />
 
     <androidx.recyclerview.widget.RecyclerView

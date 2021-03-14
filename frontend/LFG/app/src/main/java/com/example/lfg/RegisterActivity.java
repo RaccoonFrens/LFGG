@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -90,17 +91,25 @@ public class RegisterActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                                             if (task.isSuccessful()) {
-                                                userToken = task.getResult().getToken();
-                                                edit.putString("userToken", userToken);
-                                                edit.commit();
-                                                Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
+                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                String username = etUsername.getText().toString();
+                                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                        .setDisplayName(username).build();
+                                                user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Log.d(TAG, "username set");
+                                                        }
+                                                    }
+                                                });
 
-                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                                               FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                 String uid = mAuth.getCurrentUser().getUid();
                                                 DatabaseReference currUserRef = database.getReference("users").child(uid);
-                                                String username = etUsername.getText().toString();
-                                                User user = new User(username, email);
-                                                currUserRef.setValue(user);
+                                                User mUser = new User(uid, username, email);
+                                                currUserRef.setValue(mUser);
 
                                                 openLoginActivity();
                                             } else {
