@@ -159,6 +159,8 @@ public class HomeFragment extends Fragment {
         database.goOnline();
 
         DatabaseReference ref = database.getReference("posts");
+        posts.clear();
+        postsAdapter.notifyDataSetChanged();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
