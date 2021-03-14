@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+=======
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> 5967fc340508b3a8d0b4c1443b6ab364b406d70d
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
@@ -26,6 +31,7 @@
         android:textStyle="bold"
         tools:text="username" />
 
+<<<<<<< HEAD
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etLayout"
         android:layout_width="match_parent"
@@ -52,6 +58,8 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
+=======
+>>>>>>> 5967fc340508b3a8d0b4c1443b6ab364b406d70d
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUserPosts"
         android:layout_width="match_parent"

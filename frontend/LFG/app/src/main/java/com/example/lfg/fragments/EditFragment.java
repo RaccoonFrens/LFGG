@@ -195,6 +195,10 @@ public class EditFragment extends Fragment {
         btnOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+=======
+                Toast.makeText(getContext(), "edit cancelled", Toast.LENGTH_SHORT).show();
+>>>>>>> 5967fc340508b3a8d0b4c1443b6ab364b406d70d
                 m.fragmentManager.popBackStackImmediate();
             }
         });
