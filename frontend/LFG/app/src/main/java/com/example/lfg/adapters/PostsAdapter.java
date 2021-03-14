@@ -121,7 +121,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
             } catch (IOException e ) {}
 
-            playerCount.setText(post.getSize() + " players");
+            playerCount.setText(post.getPlayers() + "/" + post.getSize() + " players");
             tag1.setText(post.getTag());
             if(tag1.getText().toString().equals("Casual")){
                 tag1.setBackgroundColor(Color.parseColor("#4E88E6"));
