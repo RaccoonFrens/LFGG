@@ -180,8 +180,10 @@ public class ProfileFragment extends Fragment {
                 else {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                     String bio = (String) task.getResult().child("bio").getValue();
-                    Log.i("Bio", bio);
-                    etBio.setText(bio);
+                    if(bio != null) {
+                        Log.i("Bio", bio);
+                        etBio.setText(bio);
+                    }
                     etBio.setFocusable(false);
                 }
             }

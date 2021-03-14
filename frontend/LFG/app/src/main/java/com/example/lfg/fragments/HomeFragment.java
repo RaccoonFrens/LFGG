@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment {
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
     private Spinner spinnerFilter;
+    private SwipeRefreshLayout swipeContainer;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
     String scrollID;
@@ -93,6 +95,7 @@ public class HomeFragment extends Fragment {
         rvPosts = view.findViewById(R.id.rvPosts);
         progressBar = view.findViewById(R.id.progressBar);
         posts = new ArrayList<>();
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         spinnerFilter = view.findViewById(R.id.spinnerFilter);
         ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -115,6 +118,14 @@ public class HomeFragment extends Fragment {
         };
 
         setSpinnerListeners();
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+                swipeContainer.setRefreshing(false);
+            }
+        });
 
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
