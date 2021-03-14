@@ -34,21 +34,20 @@ LFGG, looking for game group is an app to find people to play games together
  * [x] Display other posts from a server
  * [x] Respond/message poster
  * [x] Tag of game
-    * [ ] Filter by tag
+    * [x] Filter by tag
  * [x] Time of post (or relative time of post)
- * [ ] Push-notifications 
 
 **Optional Nice-to-have Stories**
 
  * [x] Register
     * [x] Login
     * [x] Logout
-    * [ ] User profile
+    * [x] User profile
+ * [ ] Push-notifications 
  * [ ] Nice UI
  * [ ] Show current game status of poster
- * [ ] Sort priority posts to the top
+ * [x] Sort priority posts to the top
  * [ ] Show in game details for popular games (those with API)
- * [ ] Sort priority posts to the top
  * [ ] Update profile/account settings
  * [ ] Search (for post details, profile)
  * [ ] Friends
