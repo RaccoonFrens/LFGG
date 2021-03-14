@@ -27,6 +27,7 @@ public class Post {
     long timer;
     long timeEnd;
     List<String> comments;
+    int players;
 
     public Post(){}
 
@@ -161,6 +162,11 @@ public class Post {
     }
 
     public void addReply(Comment comment){ replies.add(comment);}
+
+    public int getPlayers(){return players;}
+
+    public void setPlayers(int players){this.players = players;}
+
     @Override
     public String toString() {
         return "Post{" +

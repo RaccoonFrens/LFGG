@@ -165,6 +165,11 @@ public class HomeFragment extends Fragment {
                     Post currPost = new Post(game, size, logo, time + timer);
                     String body = (String) child.child("body").getValue();
                     String tag = (String) child.child("tag").getValue();
+                    int players = 0;
+                    if(child.hasChild("party")) {
+                        players = (int) child.child("party").getChildrenCount();
+                        currPost.setPlayers(players);
+                    }
                     currPost.setBody(body);
                     currPost.setTag(tag);
                     currPost.setId(id);
@@ -226,6 +231,14 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int compare(Post a, Post b) {
+            int aFill = a.getSize() - a.getPlayers();
+            int bFill = b.getSize() - b.getPlayers();
+            if(aFill == 0 && bFill == 0)
+                return (int) (a.getTimeEnd() - b.getTimeEnd());
+            if(aFill == 0)
+                return 1;
+            if(bFill == 0)
+                return -1;
             return (int) (a.getTimeEnd() - b.getTimeEnd());
         }
     }

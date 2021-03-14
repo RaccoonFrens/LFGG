@@ -183,7 +183,7 @@ public class ComposeFragment extends Fragment {
 
         if(spinnerGame.getSelectedItemPosition() == 0){
             valid = false;
-            Log.i(TAG, "No game tag");
+            Log.i(TAG, "No game");
             Toast.makeText(getContext(), "Select a game", Toast.LENGTH_SHORT).show();
         }
 
@@ -191,6 +191,12 @@ public class ComposeFragment extends Fragment {
             valid = false;
             Log.i(TAG, "Timer is empty");
             Toast.makeText(getContext(), "Please set a timer", Toast.LENGTH_SHORT).show();
+        }
+
+        if(spinnerTag.getSelectedItemPosition() == 0){
+            valid = false;
+            Log.i(TAG, "No game tag");
+            Toast.makeText(getContext(), "Choose competitive or casual", Toast.LENGTH_SHORT).show();
         }
 
         return valid;
