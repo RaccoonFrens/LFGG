@@ -40,7 +40,6 @@ public class EditFragment extends Fragment {
     private Spinner spinnerGame;
     private Spinner spinnerTag;
     private EditText    etPostDetails;
-    private EditText    etGameTags;
     private NumberPicker npHour;
     private NumberPicker npMinute;
     private Button      btnPost;
@@ -70,7 +69,6 @@ public class EditFragment extends Fragment {
         spinnerGame = view.findViewById(R.id.spinnerGame);
         spinnerTag = view.findViewById(R.id.spinnerTag);
         etPostDetails = view.findViewById(R.id.etPostDetails);
-        etGameTags = view.findViewById(R.id.etGameTags);
         npHour = view.findViewById(R.id.npHour);
         npMinute = view.findViewById(R.id.npMinute);
         btnPost = view.findViewById(R.id.btnPost);
@@ -85,6 +83,9 @@ public class EditFragment extends Fragment {
         npHour.setMaxValue(23);
         npMinute.setMinValue(0);
         npMinute.setMaxValue(59);
+
+        npHour.setValue((int)((post.getTimeEnd() - System.currentTimeMillis()) / 60000 / 60));
+        npMinute.setValue((int)((post.getTimeEnd() - System.currentTimeMillis()) / 60000 % 60));
 
         etPostDetails.setText(post.getBody());
 
@@ -194,7 +195,6 @@ public class EditFragment extends Fragment {
         btnOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "other button clicked", Toast.LENGTH_SHORT).show();
                 m.fragmentManager.popBackStackImmediate();
             }
         });

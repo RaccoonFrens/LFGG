@@ -1,5 +1,6 @@
 package com.example.lfg.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,10 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +34,9 @@ import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,13 +59,18 @@ public class ProfileFragment extends Fragment {
     private Button btnLogout;
     private TextView tvUsername;
     private TextView tvUserDetails;
+    private EditText etBio;
     private RecyclerView rvUserPosts;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
+    private LinearLayout linearLayout;
+    private TextInputLayout etLayout;
+
     List<Post> posts;
     private FirebaseAuth mAuth;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
+    String userId;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -80,13 +93,20 @@ public class ProfileFragment extends Fragment {
         btnLogout = view.findViewById(R.id.btnLogout);
         tvUsername = view.findViewById(R.id.tvUsername);
         tvUserDetails = view.findViewById(R.id.tvUserDetails);
+        etBio = view.findViewById(R.id.etBio);
+        linearLayout = view.findViewById(R.id.linearLayout);
+        etLayout = view.findViewById(R.id.etLayout);
+
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         String username = prefs.getString("username", null);
         if(username == null)
             Toast.makeText(getContext(), "error loading username", Toast.LENGTH_SHORT).show();
         tvUsername.setText(username);
-
+        Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
+        tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClicked(int position) {
@@ -110,13 +130,61 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        etBio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etBio.setFocusableInTouchMode(true);
+            }
+        });
+        
+        etBio.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if((keyEvent.getAction() == keyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
+                    String bio = etBio.getText().toString();
+                    if(bio.length() < 1){
+                        return false;
+                    }
+                    DatabaseReference userRef = database.getReference("users").child(userId).child("bio");
+                    userRef.setValue(bio);
+                    View v = getActivity().getCurrentFocus();
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    etBio.setFocusable(false);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         postsAdapter = new PostsAdapter(getContext(), posts, itemClickListener);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rvUserPosts.setLayoutManager(gridLayoutManager);
         rvUserPosts.setAdapter(postsAdapter);
         database = FirebaseDatabase.getInstance();
         loadData();
+        setBio();
+
     }
+
+    private void setBio() {
+        DatabaseReference userRef = database.getReference("users").child(userId);
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String bio = (String) task.getResult().child("bio").getValue();
+                    etBio.setText(bio);
+                    etBio.setFocusable(false);
+                }
+            }
+        });
+    }
+
     private void loadData(){
         database.goOnline();
 
