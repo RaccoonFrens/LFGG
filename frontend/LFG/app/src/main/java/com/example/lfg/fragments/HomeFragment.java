@@ -273,6 +273,10 @@ public class HomeFragment extends Fragment {
         numPosts++;
     }
 
+    public static void decreasePostCount(){
+        numPosts--;
+    }
+
     class Sortbytime implements Comparator<Post>{
 
         @Override
