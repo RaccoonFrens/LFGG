@@ -1,12 +1,17 @@
 package com.example.lfg.fragments;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -62,6 +68,7 @@ public class HomeFragment extends Fragment {
     SharedPreferences.Editor edit;
     String scrollID;
     int index;
+    static int numPosts = 0;
 
     public List<Post> posts;
 
@@ -164,6 +171,10 @@ public class HomeFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(numPosts < dataSnapshot.getChildrenCount()){
+                    showNotification((int) dataSnapshot.getChildrenCount() - numPosts);
+                }
+                numPosts = (int) dataSnapshot.getChildrenCount();
                 posts.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     User tempUser = new User();
@@ -239,6 +250,28 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    public void showNotification(int numNewPosts){
+        String NEW_POST_CHANNEL_ID = "new_post_channel";
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
+                .setSmallIcon(R.drawable.other)
+                .setContentTitle("New Post")
+                .setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true);
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel new_post = new NotificationChannel(NEW_POST_CHANNEL_ID, "new post", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(new_post);
+        }
+
+        notificationManager.notify(0, builder.build());
+    }
+
+    public static void addPostCount(){
+        numPosts++;
+    }
 
     class Sortbytime implements Comparator<Post>{
 
