@@ -58,7 +58,7 @@ public class UsernameFragment extends Fragment {
 
 
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        if(username.isEmpty())
+        if(username != null)
             username = user.getUsername();
 
         etUsername.setText(username);
