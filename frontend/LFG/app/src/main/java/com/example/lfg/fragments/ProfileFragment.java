@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,8 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
+import com.bumptech.glide.Glide;
 import com.example.lfg.LoginActivity;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
@@ -46,9 +49,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -79,6 +83,8 @@ public class ProfileFragment extends Fragment {
     private static String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
     //https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/ZXjtyVKWGR6x3xVYEo9wDqxYBJhlm50WNGYDBsBq4yWE-1o
     public static String summonerId;
+
+    private ImageView ivProfile;
 
     List<Post> posts;
     private FirebaseAuth mAuth;
@@ -111,14 +117,23 @@ public class ProfileFragment extends Fragment {
         ivSettings = view.findViewById(R.id.ivSettings);
         btnAdd = view.findViewById(R.id.btn_LName);
         etLeagueName = view.findViewById(R.id.etLeagueName);
+        ivProfile = view.findViewById(R.id.ivProfile);
+
 
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        Uri profileUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+        if(profileUri!= null){
+            Log.i("Uri", profileUri.toString());
+            Glide.with(getContext())
+                    .load(profileUri.toString())
+                    .circleCrop()
+                    .into(ivProfile);
+        }
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        if(username.isEmpty())
+        if(username == null)
             username = prefs.getString("username", "username");
         tvUsername.setText(username);
         Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
