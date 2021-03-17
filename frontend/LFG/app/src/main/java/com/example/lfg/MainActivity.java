@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void getUser() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

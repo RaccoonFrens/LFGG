@@ -124,7 +124,7 @@ public class ComposeFragment extends Fragment {
         DatabaseReference currUserRef = database.getReference("users").child(user + "/posts");
         DatabaseReference newUserPostRef = currUserRef.child(postId);
         newUserPostRef.setValue(post);
-
+        HomeFragment.addPostCount();
         openHomeActivity();
     }
 
