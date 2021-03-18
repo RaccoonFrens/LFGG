@@ -2,7 +2,7 @@ package com.example.lfg.fragments;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ClipData;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -25,21 +24,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -252,12 +246,16 @@ public class HomeFragment extends Fragment {
 
     public void showNotification(int numNewPosts){
         String NEW_POST_CHANNEL_ID = "new_post_channel";
-
+        Intent intent = new Intent(this.getActivity(), MainActivity.class);
+        intent.putExtra("active", "home");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getActivity(), 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Post")
                 .setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
                 .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
                 .setOnlyAlertOnce(true);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -269,9 +267,7 @@ public class HomeFragment extends Fragment {
         notificationManager.notify(0, builder.build());
     }
 
-    public static void addPostCount(){
-        numPosts++;
-    }
+    public static void addPostCount(){ numPosts++; }
 
     public static void decreasePostCount(){
         numPosts--;
