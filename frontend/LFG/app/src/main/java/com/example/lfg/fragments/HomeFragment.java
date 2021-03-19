@@ -4,6 +4,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -20,6 +23,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -57,7 +61,6 @@ public class HomeFragment extends Fragment {
     private ProgressBar progressBar;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
-    //private Spinner spinnerFilter;
     private SwipeRefreshLayout swipeContainer;
     ArrayAdapter<CharSequence> filterAdapter;
     private Button btnFilter;
@@ -102,12 +105,9 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         posts = new ArrayList<>();
         swipeContainer = view.findViewById(R.id.swipeContainer);
-
-        //spinnerFilter = view.findViewById(R.id.spinnerFilter);
         filterAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.game_array, android.R.layout.simple_spinner_item);
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerFilter.setAdapter(filterAdapter);
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -122,8 +122,6 @@ public class HomeFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
             }
         };
-
-        setSpinnerListeners();
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -143,17 +141,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.i("HomeFragment", "I have been pressed");
         if(item.getItemId() == R.id.filter){
-            Log.i("HomeFragment", "true " + String.valueOf(item.getItemId()));
             displayPopupWindow();
             return true;
         }
         else{
-            Log.i("HomeFragment", String.valueOf(item.getItemId()));
             return false;
         }
-        //return super.onOptionsItemSelected(item);
     }
 
     private void displayPopupWindow() {
@@ -161,7 +155,17 @@ public class HomeFragment extends Fragment {
         View layout = getLayoutInflater().inflate(R.layout.pop_up_filter, null);
         popup.setContentView(layout);
         popup.setOutsideTouchable(true);
-        popup.setFocusable(true);
+        popup.setTouchable(true);
+        ColorDrawable colorDrawable = new ColorDrawable(Color.BLACK);
+        colorDrawable.setAlpha(220);
+        popup.setBackgroundDrawable(colorDrawable);
+        popup.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popup.dismiss();
+                return true;
+            }
+        });
         popup.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popup.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
         popup.showAtLocation(layout, Gravity.TOP, 0, 0);
@@ -179,30 +183,11 @@ public class HomeFragment extends Fragment {
                     String game = spinnerFilter.getItemAtPosition(i).toString();
                     postsAdapter.filterPosts(game);
                 }
+                popup.dismiss();
             }
         });
         popup.update(0, 300, LinearLayout.LayoutParams.MATCH_PARENT, -1);
     }
-
-    private void setSpinnerListeners() {
-        /*spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i == 0){
-                    postsAdapter.filterPosts("all");
-                }
-                else{
-                    String game = spinnerFilter.getItemAtPosition(i).toString();
-                    postsAdapter.filterPosts(game);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });*/
-    }
-
-
 
     public void loadData(){
         database.goOnline();
