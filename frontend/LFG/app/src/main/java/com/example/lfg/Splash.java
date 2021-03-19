@@ -21,7 +21,7 @@ public class Splash extends AppCompatActivity {
 
         ImageView ivGif =  findViewById(R.id.iv_logo);
         //GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(imageView);
-        Glide.with(this).load(R.raw.rainbow).into(ivGif);
+        Glide.with(this).load(R.raw.raccoon).into(ivGif);
 
         btn_Launch = findViewById(R.id.btn_launch);
         btn_Launch.setOnClickListener(new View.OnClickListener() {
