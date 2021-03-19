@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,25 +61,16 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch(item.getItemId()){
                     case R.id.post:
-                        fragmentManager.beginTransaction().hide(active).show(composeFragment).commit();
-                        fragmentManager.popBackStack();
-                        fragmentManager.popBackStack();
-                        active = composeFragment;
+                        setActive(composeFragment);
                         break;
                     case R.id.home:
-                        fragmentManager.beginTransaction().hide(active).show(homeFragment).commit();
-                        fragmentManager.popBackStack();
-                        fragmentManager.popBackStack();
-                        active = homeFragment;
+                        setActive(homeFragment);
                        // HomeFragment t = (HomeFragment) active;
                        // t.loadData();
                         break;
                     case R.id.profile:
                     default:
-                        fragmentManager.beginTransaction().hide(active).show(profileFragment).commit();
-                        fragmentManager.popBackStack();
-                        fragmentManager.popBackStack();
-                        active = profileFragment;
+                        setActive(profileFragment);
                         break;
                 }
                 //fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
@@ -86,7 +78,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.home);
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String theFrag = intent.getStringExtra("active");
+        if(theFrag != null) {
+            if (theFrag.equals("home") && active != homeFragment) {
+                Log.i("MainActivity", "Activity switched to home");
+                setActive(homeFragment);
+            }
+            else{
+                Log.i("MainActivity", "Activity already home");
+            }
+        }
+    }
+
+    private void setActive(Fragment theActive){
+        fragmentManager.beginTransaction().hide(active).show(theActive).commit();
+        fragmentManager.popBackStack();
+        fragmentManager.popBackStack();
+        active = theActive;
     }
 
     @Override
@@ -106,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void getUser() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();

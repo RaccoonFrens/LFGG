@@ -3,7 +3,10 @@ package com.example.lfg.fragments;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+<<<<<<< HEAD
 import android.content.ClipData;
+=======
+>>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -26,10 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
@@ -38,10 +38,6 @@ import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -266,10 +262,15 @@ public class HomeFragment extends Fragment {
                 .setContentIntent(pendingIntent)
                 .setOnlyAlertOnce(true);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel new_post = new NotificationChannel(NEW_POST_CHANNEL_ID, "new post", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(new_post);
         }
+<<<<<<< HEAD
         notificationManager.notify(0, builder.build());
     }
     public static void addPostCount(){ numPosts++; }
@@ -278,6 +279,17 @@ public class HomeFragment extends Fragment {
     }
 
 
+=======
+
+        notificationManager.notify(0, builder.build());
+    }
+
+    public static void addPostCount(){ numPosts++; }
+
+    public static void decreasePostCount(){
+        numPosts--;
+    }
+>>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
 
     class Sortbytime implements Comparator<Post>{
 
