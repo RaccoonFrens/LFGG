@@ -2,7 +2,9 @@ package com.example.lfg.fragments;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,6 +36,7 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
@@ -286,11 +289,16 @@ public class HomeFragment extends Fragment {
     public void showNotification(int numNewPosts){
         String NEW_POST_CHANNEL_ID = "new_post_channel";
 
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra("active", "home");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Post")
                 .setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
                 .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOnlyAlertOnce(true);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
