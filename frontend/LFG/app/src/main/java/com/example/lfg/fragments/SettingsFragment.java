@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.User;
@@ -33,14 +35,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.UUID;
+
+import okhttp3.Headers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -50,16 +59,26 @@ public class SettingsFragment extends Fragment {
     FirebaseDatabase database;
     private TextView tvUsernameArrow;
     private TextView tvEmailArrow;
+    private TextView tvLeagueUserArrow;
 
     private LinearLayout layoutUsername;
     private LinearLayout layoutEmail;
     private LinearLayout layoutPassword;
+    private LinearLayout layoutLeagueUser;
 
     private ImageView ivProfile;
+
+    private String RIOT_API_KEY = "RGAPI-20190ff7-230a-4ddd-afdc-fed4bfba5d26"; //expires after 24 hours [3/18 4:53 pm]
+    private static String summoner_URL = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
+    //https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/lolo1163?api_key=RGAPI-7dd4cdc6-34b8-4e35-9117-5c5548e0a13d
+    private static String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
+    //https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/ZXjtyVKWGR6x3xVYEo9wDqxYBJhlm50WNGYDBsBq4yWE-1o
+    public static String summonerId;
 
     String userId;
     String username;
     String email;
+    String leagueId;
 
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
@@ -78,9 +97,11 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tvUsernameArrow = view.findViewById(R.id.tvUsernameArrow);
         tvEmailArrow = view.findViewById(R.id.tvEmailArrow);
+        tvLeagueUserArrow = view.findViewById(R.id.tvLeagueUserArrow);
         layoutEmail = view.findViewById(R.id.layoutEmail);
         layoutUsername = view.findViewById(R.id.layoutUsername);
         layoutPassword = view.findViewById(R.id.layoutPassword);
+        layoutLeagueUser = view.findViewById(R.id.layoutLeagueUser);
         ivProfile = view.findViewById(R.id.ivProfile);
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
@@ -97,6 +118,28 @@ public class SettingsFragment extends Fragment {
         tvEmailArrow.setText(email);
         MainActivity m = (MainActivity) getActivity();
         User user = new User(userId, username, email);
+
+        database = FirebaseDatabase.getInstance();
+
+        database.getReference("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("SettingsFragment", "Error getting data", task.getException());
+                }
+                else {
+                    if(task != null){
+                        leagueId = String.valueOf(task.getResult().child("LeagueId").getValue());
+                        if(leagueId != null) {
+                            tvLeagueUserArrow.setText(String.valueOf(task.getResult().child("LeagueName").getValue()));
+                        }
+                        else{
+                            tvLeagueUserArrow.setText("no LOL username");
+                        }
+                    }
+                }
+            }
+        });
 
         Uri profileUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         if(profileUri!= null){
@@ -127,6 +170,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment fragment = new PasswordFragment(user);
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("settings").commit();
+            }
+        });
+
+        layoutLeagueUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new LeagueUserFragment(user, leagueId);
                 m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("settings").commit();
             }
         });

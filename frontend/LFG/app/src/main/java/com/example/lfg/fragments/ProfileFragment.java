@@ -74,16 +74,6 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase database;
     private TextInputLayout etLayout;
     private ImageView ivSettings;
-    private EditText etLeagueName;
-    private Button btnAdd;
-
-    private String RIOT_API_KEY = "RGAPI-84ed6122-226c-4ea9-a72d-9dfa2d17d8ab"; //expires after 24 hours [3/17 6:43 pm]
-    private static String summoner_URL = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
-    //https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/lolo1163?api_key=RGAPI-7dd4cdc6-34b8-4e35-9117-5c5548e0a13d
-    private static String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
-    //https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/ZXjtyVKWGR6x3xVYEo9wDqxYBJhlm50WNGYDBsBq4yWE-1o
-    public static String summonerId;
-
     private ImageView ivProfile;
 
     List<Post> posts;
@@ -115,8 +105,6 @@ public class ProfileFragment extends Fragment {
         etBio = view.findViewById(R.id.etBio);
         etLayout = view.findViewById(R.id.etLayout);
         ivSettings = view.findViewById(R.id.ivSettings);
-        btnAdd = view.findViewById(R.id.btn_LName);
-        etLeagueName = view.findViewById(R.id.etLeagueName);
         ivProfile = view.findViewById(R.id.ivProfile);
 
 
@@ -179,48 +167,6 @@ public class ProfileFragment extends Fragment {
                 return false;
             }
         });
-
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String sumName = etLeagueName.getText().toString();
-                summoner_URL = summoner_URL+sumName+"?api_key="+RIOT_API_KEY;
-
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.get(summoner_URL, new TextHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Headers headers, String response) {
-                                // called when response HTTP status is "200 OK"
-                                Log.d("ProfileFragment", "onSuccess" + response);
-                                JSONObject summoner = new JSONObject();
-                                try {
-                                    summoner = new JSONObject(response);
-                                }catch (JSONException err){
-                                    Log.d("Error", err.toString());
-                                }
-
-                                try {
-                                    summonerId = summoner.getString("id");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Log.d("ProfileFragment", "unique summoner id = " + summonerId);
-                                DatabaseReference userRef = database.getReference("users").child(userId).child("LeagueId");
-                                userRef.setValue(summonerId);
-                                Toast.makeText(getContext(), "Sum Id is: " + summonerId, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
-                                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                                Log.d("ProfileFragment", "onFailure" + errorResponse);
-                            }
-                        }
-                );
-            }
-        });
-
 
         ivSettings.setOnClickListener(new View.OnClickListener() {
             @Override

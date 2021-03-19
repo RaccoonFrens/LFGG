@@ -74,24 +74,6 @@
         android:layout_below="@id/linearLayout"
         android:text="TextView" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/etLeagueName"
-        android:layout_width="197dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="210dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="61dp"
-        android:layout_weight="1"
-        android:background="@drawable/border"
-        android:gravity="center_vertical"
-        android:inputType="textAutoCorrect"
-        android:minLines="2"
-        android:text="enter league user name" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUserPosts"
         android:layout_width="match_parent"
@@ -99,17 +81,5 @@
         android:layout_below="@id/tvUserDetails" >
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/btn_LName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="312dp"
-        android:layout_marginBottom="190dp"
-        android:text="add" />
 
 </RelativeLayout>

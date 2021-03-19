@@ -102,4 +102,41 @@
             app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutLeagueUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutPassword"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvLeagueUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="League of Legends Username" />
+
+        <TextView
+            android:id="@+id/tvLeagueUserArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOL Username"
+            android:textAlignment="viewEnd"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Logout"
+        android:textSize="24sp" />
+
 </RelativeLayout>
