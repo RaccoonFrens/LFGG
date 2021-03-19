@@ -73,10 +73,10 @@ public class PostFragment extends Fragment {
     private EditText etComment;
     private Button btnJoinParty;
     private TextView tvMatch;
-    public String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
-    String RIOT_API_KEY = "RGAPI-84ed6122-226c-4ea9-a72d-9dfa2d17d8ab"; //expires after 24 hours [3/17 6:43 pm]
+    public final String match_URL_base = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
+    String RIOT_API_KEY = "RGAPI-fb0400e8-fd7c-4e93-84c1-c0b523778091"; //expires after 24 hours [3/19 5:53 pm]
     String matchTime;
-    String summonerId;
+    String leagueName;
     String userid;
     String username;
     String currUsername;
@@ -409,10 +409,10 @@ public class PostFragment extends Fragment {
                 }
                 else {
                     //fetch summonerID of post creator
-                    summonerId = (String) task.getResult().child("LeagueId").getValue();
-                    Log.d("PostFragment", "summoner ID is: " + summonerId);
+                    leagueName = (String) task.getResult().child("LeagueName").getValue();
+                    Log.d("PostFragment", "summoner ID is: " + leagueName);
                     //open http client to make API request
-                    match_URL = match_URL+summonerId+"?api_key="+RIOT_API_KEY;
+                    String match_URL = match_URL_base+leagueName+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.get(match_URL, new TextHttpResponseHandler() {
                                 @Override
@@ -442,6 +442,10 @@ public class PostFragment extends Fragment {
                                 public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
                                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
+                                    if(statusCode == 400){
+                                        tvMatch.setText("Not currently in game");
+                                    }
+
                                 }
                             }
                     );

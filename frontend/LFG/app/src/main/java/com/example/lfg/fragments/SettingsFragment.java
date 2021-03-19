@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
+import com.example.lfg.LoginActivity;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.User;
@@ -66,6 +68,8 @@ public class SettingsFragment extends Fragment {
     private LinearLayout layoutPassword;
     private LinearLayout layoutLeagueUser;
 
+    private Button btnLogout;
+
     private ImageView ivProfile;
 
     private String RIOT_API_KEY = "RGAPI-20190ff7-230a-4ddd-afdc-fed4bfba5d26"; //expires after 24 hours [3/18 4:53 pm]
@@ -103,6 +107,7 @@ public class SettingsFragment extends Fragment {
         layoutPassword = view.findViewById(R.id.layoutPassword);
         layoutLeagueUser = view.findViewById(R.id.layoutLeagueUser);
         ivProfile = view.findViewById(R.id.ivProfile);
+        btnLogout = view.findViewById(R.id.btnLogout);
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -111,6 +116,7 @@ public class SettingsFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = firebaseUser.getUid();
         username = firebaseUser.getDisplayName();
+        Log.i("SettingsFragment", "Username: " + username);
         if(username == null)
             username = prefs.getString("username", "username");
         email = firebaseUser.getEmail();
@@ -189,6 +195,15 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
 
     }
 

@@ -11,12 +11,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/game_array" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeContainer"
             android:layout_width="match_parent"

@@ -2,10 +2,7 @@ package com.example.lfg.fragments;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ClipData;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,15 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
-import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
@@ -57,8 +57,11 @@ public class HomeFragment extends Fragment {
     private ProgressBar progressBar;
     private PostsAdapter postsAdapter;
     private FirebaseDatabase database;
-    private Spinner spinnerFilter;
+    //private Spinner spinnerFilter;
     private SwipeRefreshLayout swipeContainer;
+    ArrayAdapter<CharSequence> filterAdapter;
+    private Button btnFilter;
+    private Spinner spinnerFilter;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
     String scrollID;
@@ -78,6 +81,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -99,11 +103,11 @@ public class HomeFragment extends Fragment {
         posts = new ArrayList<>();
         swipeContainer = view.findViewById(R.id.swipeContainer);
 
-        spinnerFilter = view.findViewById(R.id.spinnerFilter);
-        ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(getContext(),
+        //spinnerFilter = view.findViewById(R.id.spinnerFilter);
+        filterAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.game_array, android.R.layout.simple_spinner_item);
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFilter.setAdapter(filterAdapter);
+        //spinnerFilter.setAdapter(filterAdapter);
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -137,8 +141,51 @@ public class HomeFragment extends Fragment {
         loadData();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.i("HomeFragment", "I have been pressed");
+        if(item.getItemId() == R.id.filter){
+            Log.i("HomeFragment", "true " + String.valueOf(item.getItemId()));
+            displayPopupWindow();
+            return true;
+        }
+        else{
+            Log.i("HomeFragment", String.valueOf(item.getItemId()));
+            return false;
+        }
+        //return super.onOptionsItemSelected(item);
+    }
+
+    private void displayPopupWindow() {
+        PopupWindow popup = new PopupWindow(getActivity());
+        View layout = getLayoutInflater().inflate(R.layout.pop_up_filter, null);
+        popup.setContentView(layout);
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        popup.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
+        popup.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        popup.showAtLocation(layout, Gravity.TOP, 0, 0);
+        btnFilter = layout.findViewById(R.id.btnFilter);
+        spinnerFilter = layout.findViewById(R.id.spinnerFilter);
+        spinnerFilter.setAdapter(filterAdapter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = spinnerFilter.getSelectedItemPosition();
+                if(i == 0){
+                    postsAdapter.filterPosts("all");
+                }
+                else{
+                    String game = spinnerFilter.getItemAtPosition(i).toString();
+                    postsAdapter.filterPosts(game);
+                }
+            }
+        });
+        popup.update(0, 300, LinearLayout.LayoutParams.MATCH_PARENT, -1);
+    }
+
     private void setSpinnerListeners() {
-        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i == 0){
@@ -152,7 +199,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
-        });
+        });*/
     }
 
 
