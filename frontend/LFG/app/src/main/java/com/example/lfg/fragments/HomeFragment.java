@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -95,6 +96,11 @@ public class HomeFragment extends Fragment {
         posts.clear();
         postsAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.VISIBLE);
+        if(hidden){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        }else{
+            ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        }
         loadData();
     }
 
@@ -320,4 +326,16 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
 }
