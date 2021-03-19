@@ -125,6 +125,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tag1.setText(post.getTag());
             if(tag1.getText().toString().equals("Casual")){
                 tag1.setBackgroundColor(Color.parseColor("#4E88E6"));
+            }else{
+                tag1.setBackgroundColor(Color.parseColor("#E6AC4E"));
             }
             long time = post.getTimeEnd()-System.currentTimeMillis();
             int minutes = (int) (time/60000);
