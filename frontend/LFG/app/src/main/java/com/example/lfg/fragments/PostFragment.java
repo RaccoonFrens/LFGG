@@ -55,12 +55,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
-=======
+
 
 import okhttp3.Headers;
 
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
 import static android.content.Context.MODE_PRIVATE;
 
 import okhttp3.Headers;
@@ -75,10 +73,6 @@ public class PostFragment extends Fragment {
     private EditText etComment;
     private Button btnJoinParty;
     private TextView tvMatch;
-<<<<<<< HEAD
-=======
-
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
     public String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
     String RIOT_API_KEY = "RGAPI-84ed6122-226c-4ea9-a72d-9dfa2d17d8ab"; //expires after 24 hours [3/17 6:43 pm]
     String matchTime;
@@ -205,20 +199,13 @@ public class PostFragment extends Fragment {
             Log.i("PostFrag", userid);
             ivEdit.setVisibility(View.GONE);
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
         if(post.getGame().equals("League of Legends")){
             getMatch();
             tvMatch.setVisibility(View.VISIBLE);
         }else{
             tvMatch.setVisibility(View.INVISIBLE);
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
         tvBody.setText(post.getBody());
         getComments();
 
@@ -412,7 +399,6 @@ public class PostFragment extends Fragment {
         });
     }
 
-    //used to get league match data
     public void getMatch(){
         //uses the userid from post.getUserId()
         FirebaseDatabase.getInstance().getReference().child("users").child(userid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -428,10 +414,9 @@ public class PostFragment extends Fragment {
                     //open http client to make API request
                     match_URL = match_URL+summonerId+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();
-<<<<<<< HEAD
                     client.get(match_URL, new TextHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, String response) {
+                                @Override
+                                public void onSuccess(int statusCode, Headers headers, String response) {
                                     // called when response HTTP status is "200 OK"
                                     Log.d("PostFragment", "match onSuccess" + response);
                                     //put response into an json object
@@ -459,46 +444,9 @@ public class PostFragment extends Fragment {
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
                                 }
                             }
-=======
-                        client.get(match_URL, new TextHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Headers headers, String response) {
-                                // called when response HTTP status is "200 OK"
-                                Log.d("PostFragment", "match onSuccess" + response);
-                                //put response into an json object
-                                JSONObject match = new JSONObject();
-                                try {
-                                    match = new JSONObject(response);
-                                }catch (JSONException err){
-                                    Log.d("Error", err.toString());
-                                }
-                                //parse json object into matchTime
-                                //can also be used to store other things
-                                try {
-                                    matchTime = match.getString("gameStartTime");
-                                    tvMatch.setText("Match time:" + matchTime);
-                                } catch (JSONException e) {
-                                    matchTime = "0";
-                                    tvMatch.setText("Match time:" + matchTime);
-                                    e.printStackTrace();
-                                }
-                                Log.d("PostFragment", "Match in progress since " + matchTime);
-                            }
-                            @Override
-                            public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
-                                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                                Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
-                            }
-                        }
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
                     );
                 } //end else
             }//end on complete
         }); //end firebase get instance
     } //end getMatch
-<<<<<<< HEAD
-
-=======
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
-
 }

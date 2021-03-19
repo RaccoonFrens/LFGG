@@ -3,10 +3,7 @@ package com.example.lfg.fragments;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-<<<<<<< HEAD
 import android.content.ClipData;
-=======
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -250,46 +247,30 @@ public class HomeFragment extends Fragment {
 
     public void showNotification(int numNewPosts){
         String NEW_POST_CHANNEL_ID = "new_post_channel";
-        Intent intent = new Intent(this.getActivity(), MainActivity.class);
-        intent.putExtra("active", "home");
-        PendingIntent pendingIntent = PendingIntent.getActivity(this.getActivity(), 0, intent, 0);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Post")
                 .setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
                 .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
                 .setOnlyAlertOnce(true);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-<<<<<<< HEAD
-=======
 
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel new_post = new NotificationChannel(NEW_POST_CHANNEL_ID, "new post", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(new_post);
         }
-<<<<<<< HEAD
-        notificationManager.notify(0, builder.build());
-    }
-    public static void addPostCount(){ numPosts++; }
-    public static void decreasePostCount(){
-        numPosts--;
-    }
-
-
-=======
 
         notificationManager.notify(0, builder.build());
     }
 
-    public static void addPostCount(){ numPosts++; }
+    public static void addPostCount(){
+        numPosts++;
+    }
 
     public static void decreasePostCount(){
         numPosts--;
     }
->>>>>>> 9ede613c4d7e9eeae8cadf2135afb6fd924240c5
 
     class Sortbytime implements Comparator<Post>{
 
