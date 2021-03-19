@@ -11,6 +11,9 @@ public class User {
     String email;
     String bio;
     List<Post> posts;
+    String league_id;
+    String sum_name;
+    String league_region;
 
     public User(){
         bio = "";
@@ -25,6 +28,30 @@ public class User {
         this.id = id;
         this.username = username;
         this.email = email;
+    }
+
+    public String getLeague_id() {
+        return league_id;
+    }
+
+    public void setLeague_id(String league_id) {
+        this.league_id = league_id;
+    }
+
+    public String getSum_name() {
+        return sum_name;
+    }
+
+    public void setSum_name(String sum_name) {
+        this.sum_name = sum_name;
+    }
+
+    public String getLeague_region() {
+        return league_region;
+    }
+
+    public void setLeague_region(String league_region) {
+        this.league_region = league_region;
     }
 
     public String getId() {

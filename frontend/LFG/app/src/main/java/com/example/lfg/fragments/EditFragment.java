@@ -188,6 +188,7 @@ public class EditFragment extends Fragment {
                         database.getReference("comments").child(commentId).removeValue();
                     }
                 }
+                HomeFragment.decreasePostCount();
                 openHome();
             }
         });

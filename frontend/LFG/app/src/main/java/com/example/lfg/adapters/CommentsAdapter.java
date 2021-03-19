@@ -1,19 +1,27 @@
 package com.example.lfg.adapters;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.lfg.R;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.interfaces.ItemLongClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -52,6 +60,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         private TextView etComment;
         private TextView etUsername;
+        private ImageView ivIcon;
 
         public ViewHolder(@NonNull View itemView, ItemLongClickListener itemLongClickListener) {
             super(itemView);
@@ -64,11 +73,32 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             });
             etComment = itemView.findViewById(R.id.tvComment);
             etUsername = itemView.findViewById(R.id.tvUsername);
+            ivIcon = itemView.findViewById(R.id.ivIcon);
         }
 
         public void bind(Comment comment) {
             etComment.setText(comment.getBody());
             etUsername.setText(comment.getUsername());
+            ivIcon.setVisibility(View.INVISIBLE);
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            storageRef.child("images/"+comment.getUserId()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    //comment.setPhotoUrl(uri.toString());
+                    //comments.set(i, comment);
+                    Log.i("update", uri.toString());
+                    Glide.with(context).load(uri.toString()).circleCrop().into(ivIcon);
+                    ivIcon.setVisibility(View.VISIBLE);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    //comments.add(comment);
+                    Log.i("update", "failed");
+                }
+            });
         }
     }
 

@@ -209,7 +209,7 @@ public class SettingsFragment extends Fragment {
     private void setProfile(Uri filePath) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        final StorageReference ref = storageRef.child("images/mountains.jpg");
+        final StorageReference ref = storageRef.child("images");
         UploadTask uploadTask = ref.putFile(filePath);
 
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {

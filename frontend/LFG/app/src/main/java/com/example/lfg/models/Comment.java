@@ -1,6 +1,7 @@
 package com.example.lfg.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.storage.StorageReference;
 
 @IgnoreExtraProperties
 public class Comment {
@@ -9,6 +10,8 @@ public class Comment {
     String userId;
     String username;
     String body;
+    String photoUrl;
+    StorageReference photoReference;
 
     public Comment(){}
 
@@ -58,5 +61,21 @@ public class Comment {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public StorageReference getPhotoReference() {
+        return photoReference;
+    }
+
+    public void setPhotoReference(StorageReference photoReference) {
+        this.photoReference = photoReference;
     }
 }
