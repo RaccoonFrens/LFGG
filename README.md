@@ -255,7 +255,7 @@ else{
 ### Sprint #3
 <img src="https://github.com/TheRaccoonFrens/LFGG/blob/main/LFGGSprint3.gif" width=250><br>
 
-#Credits: 
+# Credits: 
 This project was made possible by the incredibly helpful TechFellows at CodePath, thank you all for guiding us through our rough patches of development.
 
 A special thank you to @Kuromippy for providing the animated splash icon! It really ties the app together :)
