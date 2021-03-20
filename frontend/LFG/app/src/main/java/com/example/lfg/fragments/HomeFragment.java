@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +21,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.transition.ChangeBounds;
+import android.transition.ChangeImageTransform;
+import android.transition.ChangeTransform;
+import android.transition.Explode;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,6 +61,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -127,7 +134,30 @@ public class HomeFragment extends Fragment {
                 final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Post post = posts.get(position);
                 User postUser = post.getAuthor();
+                //Fragment currFrag = fragmentManager.findFragmentByTag("homeFragment");
                 Fragment fragment = new PostFragment(post, postUser);
+                /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    // Inflate transitions to apply
+                    Transition changeTransform = TransitionInflater.from(getContext()).
+                            inflateTransition(R.transition.change_image_transition);
+                    Transition explodeTransform = TransitionInflater.from(getContext()).
+                            inflateTransition(android.R.transition.explode);
+                    Transition bottomTransform = TransitionInflater.from(getContext()).
+                            inflateTransition((android.R.transition.slide_bottom));
+                    Transition topTransformation = TransitionInflater.from(getContext()).
+                            inflateTransition((android.R.transition.slide_bottom));
+                    Transition fadeTransform = TransitionInflater.from(getContext()).
+                            inflateTransition((android.R.transition.fade));
+                    //currFrag.setReenterTransition(bottomTransform);
+                    //TransitionSet transitionSet = new TransitionSet();
+                    //transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+                    //transitionSet.addTransition(new ChangeBounds()).addTransition(new ChangeTransform()).addTransition(new ChangeImageTransform());
+                    fragment.setEnterTransition(bottomTransform);
+                    fragment.postponeEnterTransition(100, TimeUnit.MILLISECONDS);
+                    fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
+                    //fragmentManager.beginTransaction().addSharedElement(view.findViewById(R.id.logo), "logo").replace(R.id.flContainer, fragment).addToBackStack("home").commit();
+
+                }*/
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("home").commit();
             }
         };

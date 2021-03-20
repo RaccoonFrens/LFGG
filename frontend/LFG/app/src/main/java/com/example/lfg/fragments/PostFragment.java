@@ -1,6 +1,8 @@
 package com.example.lfg.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Movie;
 import android.os.Bundle;
 
@@ -37,6 +39,8 @@ import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,11 +50,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -71,9 +80,12 @@ public class PostFragment extends Fragment {
     private TextView tvTime;
     private ImageView ivEdit;
     private ImageView ivBack;
+    private ImageView ivGameLogo;
     private EditText etComment;
     private Button btnJoinParty;
     private TextView tvMatch;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    final String DATABASEURL = "gs://lfgg-78154.appspot.com";
     public final String match_URL_base = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
     String RIOT_API_KEY = "RGAPI-fb0400e8-fd7c-4e93-84c1-c0b523778091"; //expires after 24 hours [3/19 5:53 pm]
     String matchTime;
@@ -128,6 +140,7 @@ public class PostFragment extends Fragment {
         ivBack = view.findViewById(R.id.ivBack);
         etComment  = view.findViewById(R.id.etComment);
         btnJoinParty = view.findViewById(R.id.btnJoinParty);
+        ivGameLogo = view.findViewById(R.id.logo);
 
         rvComments = view.findViewById(R.id.rvComments);
         rvParty = view.findViewById(R.id.rvParty);
@@ -184,6 +197,23 @@ public class PostFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         database.goOnline();
+
+        StorageReference storageRef = storage.getReferenceFromUrl(DATABASEURL).child(post.getLogoName());
+
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    ivGameLogo.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
 
         Log.i("userID", userid);
         long time = post.getTimeEnd()-System.currentTimeMillis();

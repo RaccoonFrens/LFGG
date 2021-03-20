@@ -55,6 +55,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:contentDescription="Game logo"
+                android:transitionName="logo"
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <TextView
