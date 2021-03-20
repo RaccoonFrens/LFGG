@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/border"
     android:orientation="vertical"
+    android:paddingTop="30dp"
     tools:context=".fragments.ProfileFragment">
 
     <LinearLayout
@@ -64,6 +65,16 @@
         android:layout_marginBottom="5dp"
         android:src="@drawable/ic_baseline_settings_24" />
 
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_baseline_add_circle_24" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etLayout"
         android:layout_width="match_parent"
@@ -100,16 +111,6 @@
         android:layout_below="@id/linearLayout">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-    <ImageView
-        android:id="@+id/ivAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_baseline_add_24" />
 
 
 </RelativeLayout>
