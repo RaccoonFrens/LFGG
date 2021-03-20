@@ -347,8 +347,12 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                partyNumList.remove(postIdList.indexOf(snapshot.getKey()));
-                postIdList.remove(snapshot.getKey());
+                try{
+                    partyNumList.remove(postIdList.indexOf(snapshot.getKey()));
+                    postIdList.remove(snapshot.getKey());
+                }catch(ArrayIndexOutOfBoundsException e){
+
+                }
             }
 
             @Override
