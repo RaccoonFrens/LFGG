@@ -176,28 +176,24 @@ public class MainActivity extends AppCompatActivity {
         ref.child("requests").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("MainActivity", "Req snapshot " + snapshot.toString());
                 int theNewNum = (int) snapshot.getChildrenCount();
-                if(theNewNum > friendReqNum){
-                    showNotification(theNewNum - friendReqNum);
-                    friendReqNum =  theNewNum;
+                if(theNewNum != 0){
+                    showNotification(0);
                 }
+                //if(theNewNum > friendReqNum){
+                //    showNotification(theNewNum - friendReqNum);
+                //    friendReqNum+=theNewNum;
+                //}
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                int theNum = (int) snapshot.getChildrenCount();
-                if(theNum > friendReqNum){
-                    showNotification(theNum - friendReqNum);
-                    friendReqNum = theNum;
-                }else{
-                    friendReqNum = 0;
-                }
+
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                friendReqNum = 0;
+                //friendReqNum--;
             }
 
             @Override
@@ -221,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NEW_FRIEND_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Friend Request")
-                .setContentText("You have " + friendReqs + " friend requests!")
+                .setContentText("You have friend request(s)!")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
