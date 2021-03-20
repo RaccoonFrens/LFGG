@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
             ivSettings.setVisibility(View.INVISIBLE);
             btnFriends.setVisibility(View.INVISIBLE);
             etBio.setEnabled(false);
-            if(etBio.getText().toString().equals("Tap to Add Bio"))
+            if(etBio.getText().toString().equals("Tap to add bio"))
                 etBio.setText("Hello");
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
