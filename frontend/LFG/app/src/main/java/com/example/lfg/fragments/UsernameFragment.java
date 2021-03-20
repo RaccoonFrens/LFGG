@@ -80,13 +80,13 @@ public class UsernameFragment extends Fragment {
                 String username = etUsername.getText().toString();
                 if(username.isEmpty()){
                     etUsername.setError("Enter a username");
+                    return;
                 }
 
                 FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName("Jane Q. User")
-                        .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                        .setDisplayName(username)
                         .build();
 
                 mUser.updateProfile(profileUpdates)
@@ -95,9 +95,11 @@ public class UsernameFragment extends Fragment {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Log.d("UsernameChange", "User profile updated.");
+                                    m.fragmentManager.popBackStackImmediate();
                                 }
                             }
                         });
+
             }
         });
 

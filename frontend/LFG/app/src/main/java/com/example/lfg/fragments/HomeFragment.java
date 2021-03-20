@@ -328,7 +328,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if(!postIdList.contains(snapshot.getKey())) {
-                    if(snapshot.child("user").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    String snapchild = (String)snapshot.child("user").getValue();
+                    if(snapchild == null){
+                        return;
+                    }
+                    else if(snapchild.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         postIdList.add(snapshot.getKey());
                         partyNumList.add((int) snapshot.child("party").getChildrenCount());
                     }

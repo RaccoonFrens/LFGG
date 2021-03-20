@@ -294,7 +294,11 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 posts.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if(!child.child("user").getValue().toString().equals(userId)){
+                    String c_child = (String) child.child("user").getValue();
+                    if(c_child == null){
+                        return;
+                    }
+                    else if(!c_child.equals(userId)){
                         continue;
                     }
                     Log.i("get", child.getKey());
