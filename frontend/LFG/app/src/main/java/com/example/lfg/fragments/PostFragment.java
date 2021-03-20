@@ -92,6 +92,7 @@ public class PostFragment extends Fragment {
     String RIOT_API_KEY = "RGAPI-b409a18d-667d-4a23-ae58-74249c736b06"; //expires after 24 hours [3/21 12:13 am]
     String matchTime;
     String leagueName;
+    String leagueId;
     String userid;
     String username;
     String currUsername;
@@ -476,8 +477,8 @@ public class PostFragment extends Fragment {
                 }
                 else {
                     //fetch summonerID of post creator
-                    leagueName = (String) task.getResult().child("LeagueName").getValue();
-                    Log.d("PostFragment", "summoner ID is: " + leagueName);
+                    leagueId = (String) task.getResult().child("LeagueId").getValue();
+                    Log.d("PostFragment", "summoner ID is: " + leagueId);
                     //open http client to make API request
                     String match_URL = match_URL_base+leagueName+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();

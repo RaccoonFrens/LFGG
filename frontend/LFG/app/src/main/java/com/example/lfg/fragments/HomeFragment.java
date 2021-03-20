@@ -339,7 +339,7 @@ public class HomeFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if(postIdList.contains(snapshot.getKey())){
                     if((int)snapshot.child("party").getChildrenCount() > partyNumList.get(postIdList.indexOf(snapshot.getKey()))){
-                        showPartyNotification(snapshot.child("game").getValue().toString());
+                        showPartyNotification();//snapshot.child("game").getValue().toString());
                         partyNumList.set(partyNumList.get(postIdList.indexOf(snapshot.getKey())), (int) snapshot.child("party").getChildrenCount());
                     }
                 }
@@ -387,18 +387,18 @@ public class HomeFragment extends Fragment {
         notificationManager.notify(0, builder.build());
     }
 
-    private void showPartyNotification(String gameName){
+    private void showPartyNotification(){//String gameName){
         String NEW_PARTY_CHANNEL = "new_party_channel";
-
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra("active", "party");
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+        //Intent intent = new Intent(getContext(), MainActivity.class);
+        //intent.putExtra("active", "party");
+        //PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NEW_PARTY_CHANNEL)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Party Member")
-                .setContentText("Someone joined your " + gameName + " party!")
+                //.setContentText("Someone joined your " + gameName + " party!")
+                .setContentText("Someone joined your party!")
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+                //.setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setOnlyAlertOnce(true);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
