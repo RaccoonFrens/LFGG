@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="15dp"
+    android:background="#A19393"
     tools:context=".RegisterActivity">
 
     <TextView
@@ -26,6 +27,7 @@
         android:drawableStart="@drawable/ic_baseline_account_circle_24"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Username"
         android:inputType="text" />
 
@@ -40,6 +42,7 @@
         android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
@@ -51,9 +54,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#EDE9E9"
-        android:drawablePadding="5dp"
         android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Password"
         android:inputType="textPassword" />
 
@@ -65,9 +69,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#EDE9E9"
-        android:drawablePadding="5dp"
         android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Confirm Password"
         android:inputType="textPassword" />
 
@@ -78,6 +83,7 @@
         android:layout_below="@id/etConfirmPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
+        android:fontFamily="@font/amiko_semibold"
         android:text="Register" />
 
 
@@ -89,6 +95,7 @@
         android:layout_below="@id/btnRegister"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/amiko_semibold"
         android:text="Already have an account? Sign in!"
         android:textSize="10sp" />
 

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="#A19393"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -13,6 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
+        card_view:cardBackgroundColor="#A19393"
         card_view:cardElevation="20dp">
 
         <RelativeLayout
@@ -96,6 +98,7 @@
                                         android:id="@+id/tvLabelUser"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/amiko_semibold"
                                         android:text="Party leader:" />
 
                                     <TextView
@@ -104,6 +107,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="3dp"
                                         android:layout_toEndOf="@id/tvLabelUser"
+                                        android:fontFamily="@font/amiko_semibold"
                                         android:text="TextView"
                                         android:textStyle="bold" />
 
@@ -121,6 +125,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@id/tvUsername"
                                         android:layout_toStartOf="@id/logo"
+                                        android:fontFamily="@font/amiko_semibold"
                                         android:textSize="18sp"
                                         android:transitionName="body"
                                         tools:text="Hello World" />
@@ -146,9 +151,19 @@
                                         android:id="@+id/tvTime"
                                         android:layout_width="161dp"
                                         android:layout_height="wrap_content"
+                                        android:fontFamily="@font/amiko_semibold"
                                         android:inputType="textMultiLine"
                                         android:text="Party open for:"
                                         android:textSize="14sp" />
+
+                                    <TextView
+                                        android:id="@+id/league_status"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="2dp"
+                                        android:layout_marginRight="2dp"
+                                        android:fontFamily="@font/amiko_semibold"
+                                        android:text="Currently: in-game: 22:00 minutes" />
 
                                 </LinearLayout>
 
@@ -168,6 +183,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/rvParty"
+                        card_view:cardBackgroundColor="#A19393"
                         card_view:cardElevation="4dp">
 
                         <RelativeLayout
@@ -197,6 +213,7 @@
                                 android:layout_marginEnd="2dp"
                                 android:background="@drawable/border"
                                 android:ems="10"
+                                android:fontFamily="@font/amiko_semibold"
                                 android:hint="Reply..."
                                 android:inputType="textMultiLine|textPersonName" />
                         </RelativeLayout>

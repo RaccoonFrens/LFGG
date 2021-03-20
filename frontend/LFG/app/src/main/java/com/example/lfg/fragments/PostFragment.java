@@ -156,6 +156,17 @@ public class PostFragment extends Fragment {
         userid = post.getUser();
         getUsername();
 
+        ivGameLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User mUser = new User();
+                mUser.setId(userid);
+                mUser.setUsername(username);
+                Fragment fragment = new ProfileFragment(mUser);
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
+            }
+        });
+
         ItemLongClickListener itemLongClickListener = new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {

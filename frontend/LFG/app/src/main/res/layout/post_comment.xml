@@ -22,6 +22,7 @@
         android:layout_centerVertical="false"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/ivIcon"
+        android:fontFamily="@font/amiko_semibold"
         android:isScrollContainer="true"
         android:text="TextView" />
 
@@ -29,6 +30,7 @@
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/amiko_semibold"
         android:text="username"
         android:textStyle="bold" />
 </RelativeLayout>

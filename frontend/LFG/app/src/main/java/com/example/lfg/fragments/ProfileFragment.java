@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,6 +80,8 @@ public class ProfileFragment extends Fragment {
     SharedPreferences.Editor edit;
     String userId;
     String username;
+    String currUserId;
+    String currUsername;
 
     User user;
 
@@ -117,7 +120,10 @@ public class ProfileFragment extends Fragment {
         ivAdd = view.findViewById(R.id.ivAdd);
         btnFriends = view.findViewById(R.id.btnFriends);
         MainActivity m = (MainActivity) getActivity();
-
+        currUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currUsername = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        if (currUsername == null)
+            currUsername = prefs.getString("username", "username");
 
         if(user != null && !user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             userId = user.getId();
@@ -125,6 +131,9 @@ public class ProfileFragment extends Fragment {
             tvUsername.setText(username);
             ivSettings.setVisibility(View.INVISIBLE);
             btnFriends.setVisibility(View.INVISIBLE);
+            etBio.setEnabled(false);
+            if(etBio.getText().toString().equals("Tap to add bio"))
+                etBio.setText("Hello");
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             storageRef.child("images/"+userId).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -174,7 +183,7 @@ public class ProfileFragment extends Fragment {
                 username = prefs.getString("username", "username");
             tvUsername.setText(username);
             Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
-            tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
+            //tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
         }
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
@@ -238,9 +247,13 @@ public class ProfileFragment extends Fragment {
     }
 
     private void sendRequest() {
+        User mUser = new User();
         String mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference newRequestRef = database.getReference("users").child(mId + "/requests").child(userId);
-        newRequestRef.setValue(user);
+        mUser.setId(currUserId);
+        mUser.setUsername(currUsername);
+        DatabaseReference newRequestRef = database.getReference("users").child(userId).child("requests").child(mId);
+        newRequestRef.setValue(mUser);
+        Log.i("Profile", "Request sent " + userId + " "  + mId );
     }
 
     private void setBio() {

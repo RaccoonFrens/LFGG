@@ -5,13 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#A19393"
+    android:paddingTop="30dp">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#A19393"
         android:orientation="vertical"
         android:padding="7dp"
+        android:paddingTop="30dp"
         tools:context=".fragments.ComposeFragment">
 
 
@@ -19,7 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:orientation="vertical">
+            android:background="#A19393"
+            android:orientation="vertical"
+            android:paddingTop="30dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Enter post details:"
                     android:textSize="18sp" />
 
@@ -43,6 +50,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="#C4B5F4DE"
                     android:ems="10"
+                    android:fontFamily="@font/amiko_semibold"
                     android:gravity="start|top"
                     android:hint="Post details"
                     android:inputType="textMultiLine"
@@ -85,6 +93,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Hours"
                     android:textSize="18sp">
 
@@ -103,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Minutes"
                     android:textSize="18sp">
 
@@ -122,6 +132,7 @@
                 android:id="@+id/btnPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/amiko_semibold"
                 android:text="Post"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />
