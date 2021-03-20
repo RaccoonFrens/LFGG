@@ -252,7 +252,7 @@ public class ProfileFragment extends Fragment {
         mUser.setId(currUserId);
         mUser.setId(currUsername);
         DatabaseReference newRequestRef = database.getReference("users").child(userId).child("requests").child(mId);
-        newRequestRef.setValue(user);
+        newRequestRef.setValue(mUser);
         Log.i("Profile", "Request sent " + userId + " "  + mId );
     }
 
