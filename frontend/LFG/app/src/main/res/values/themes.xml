@@ -4,17 +4,19 @@
     <!-- Base application theme. -->
     <style name="Theme.LFG" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary" >#BFACA1</item>
-        <item name="colorPrimaryVariant">#BFACA1</item>
-        <item name="colorOnPrimary">#2C2C30</item>
+        <item name="colorPrimary" >#55423d</item>
+        <item name="colorPrimaryVariant">#271c19</item>
+        <item name="colorOnPrimary">#271c19</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#CBD4D4</item>
-        <item name="colorSecondaryVariant">#CBD4D4</item>
-        <item name="colorOnSecondary">#2C2C30</item>
+        <item name="colorSecondary">#fff3ec</item>
+        <item name="colorSecondaryVariant">#fffffe</item>
+        <item name="colorOnSecondary">#140d0b</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowContentTransitions">true</item>
+
+
     </style>
 
 </resources>

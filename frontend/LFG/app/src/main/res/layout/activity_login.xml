@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
+    android:background="#A19393"
     tools:context=".LoginActivity">
 
     <TextView
@@ -14,7 +14,12 @@
         android:layout_below="@id/ivAppIcon"
         android:fontFamily="@font/bowlby_one_sc"
         android:gravity="center"
+        android:shadowColor="#B6B2B2"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="15"
         android:text="@string/app_name"
+        android:textColor="#5E4545"
         android:textSize="60sp" />
 
     <ImageView
@@ -36,6 +41,7 @@
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
@@ -47,9 +53,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#EDE9E9"
-        android:drawablePadding="5dp"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
+        android:fontFamily="@font/amiko_semibold"
         android:hint="Password"
         android:inputType="textPassword" />
 
@@ -60,7 +67,12 @@
         android:layout_below="@id/etPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="Log in" />
+        android:backgroundTint="#513C36"
+        android:fontFamily="@font/amiko_semibold"
+        android:shadowColor="#FFFFFF"
+        android:text="Log in"
+        android:textColor="#CFCFCA"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -70,6 +82,7 @@
         android:layout_below="@id/btnLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:fontFamily="@font/amiko_semibold"
         android:text="Don't have an account? Register here!"
-        android:textSize="10sp" />
+        android:textSize="12sp" />
 </RelativeLayout>
