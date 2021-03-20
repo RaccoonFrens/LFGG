@@ -480,7 +480,7 @@ public class PostFragment extends Fragment {
                     leagueId = (String) task.getResult().child("LeagueId").getValue();
                     Log.d("PostFragment", "summoner ID is: " + leagueId);
                     //open http client to make API request
-                    String match_URL = match_URL_base+leagueName+"?api_key="+RIOT_API_KEY;
+                    String match_URL = match_URL_base+leagueId+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.get(match_URL, new TextHttpResponseHandler() {
                                 @Override
