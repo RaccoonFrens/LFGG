@@ -506,7 +506,7 @@ public class PostFragment extends Fragment {
                                         //tvMatch.setText("Match time:" + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000) + " minutes");
                                         e.printStackTrace();
                                     }
-                                    Log.d("PostFragment", "Match in progress since " + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000));
+                                   // Log.d("PostFragment", "Match in progress since " + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000));
                                     tvMatch.setBackgroundColor(Color.parseColor("#01873D"));
                                 }
                                 @Override
