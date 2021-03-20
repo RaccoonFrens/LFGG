@@ -243,8 +243,9 @@ public class ProfileFragment extends Fragment {
 
     private void sendRequest() {
         String mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference newRequestRef = database.getReference("users").child(mId + "/requests").child(userId);
+        DatabaseReference newRequestRef = database.getReference("users").child(userId).child("requests").child(mId);
         newRequestRef.setValue(user);
+        Log.i("Profile", "Request sent " + userId + " "  + mId );
     }
 
     private void setBio() {

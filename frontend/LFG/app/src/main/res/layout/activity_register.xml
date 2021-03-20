@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="15dp"
+    android:background="#A19393"
     tools:context=".RegisterActivity">
 
     <TextView
@@ -51,8 +52,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#EDE9E9"
-        android:drawablePadding="5dp"
         android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
@@ -65,8 +66,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#EDE9E9"
-        android:drawablePadding="5dp"
         android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="5dp"
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword" />

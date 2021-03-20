@@ -160,8 +160,8 @@ public class PostFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 User mUser = new User();
-                mUser.setId(post.getId());
-                mUser.setUsername(post.getUser());
+                mUser.setId(userid);
+                mUser.setUsername(username);
                 Fragment fragment = new ProfileFragment(mUser);
                 m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
             }
