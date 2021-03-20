@@ -31,7 +31,10 @@ import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
+import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,6 +45,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 import java.util.ArrayList;
@@ -64,14 +69,25 @@ public class ProfileFragment extends Fragment {
     private TextInputLayout etLayout;
     private ImageView ivSettings;
     private ImageView ivProfile;
+    private ImageView ivAdd;
+    private Button btnFriends;
+
+
     List<Post> posts;
     private FirebaseAuth mAuth;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
     String userId;
+    String username;
+
+    User user;
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    public ProfileFragment(User user){
+        this.user = user;
     }
 
 
@@ -98,26 +114,68 @@ public class ProfileFragment extends Fragment {
         etLayout = view.findViewById(R.id.etLayout);
         ivSettings = view.findViewById(R.id.ivSettings);
         ivProfile = view.findViewById(R.id.ivProfile);
+        ivAdd = view.findViewById(R.id.ivAdd);
+        btnFriends = view.findViewById(R.id.btnFriends);
+        MainActivity m = (MainActivity) getActivity();
 
 
+        if(user != null && !user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            userId = user.getId();
+            username = user.getUsername();
+            tvUsername.setText(username);
+            ivSettings.setVisibility(View.INVISIBLE);
+            btnFriends.setVisibility(View.INVISIBLE);
 
-        prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-        edit = prefs.edit();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Uri profileUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
-        if(profileUri!= null){
-            Log.i("Uri", profileUri.toString());
-            Glide.with(getContext())
-                    .load(profileUri.toString())
-                    .circleCrop()
-                    .into(ivProfile);
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            storageRef.child("images/"+userId).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.i("update", uri.toString());
+                    Glide.with(getContext()).load(uri.toString()).circleCrop().into(ivProfile);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.i("update", "failed");
+                }
+            });
+
+            ivAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendRequest();
+                }
+            });
+            
+
+        } else {
+            btnFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Fragment fragment = new FriendRequestFragment();
+                    m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("profile").commit();
+                }
+            });
+            ivAdd.setVisibility(View.GONE);
+            prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+            edit = prefs.edit();
+            userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            Uri profileUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+            if (profileUri != null) {
+                Log.i("Uri", profileUri.toString());
+                Glide.with(getContext())
+                        .load(profileUri.toString())
+                        .circleCrop()
+                        .into(ivProfile);
+            }
+            username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            if (username == null)
+                username = prefs.getString("username", "username");
+            tvUsername.setText(username);
+            Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
+            tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
         }
-        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        if(username == null)
-            username = prefs.getString("username", "username");
-        tvUsername.setText(username);
-        Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
-        tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClicked(int position) {
@@ -139,7 +197,7 @@ public class ProfileFragment extends Fragment {
                     etBio.setText("");
             }
         });
-        
+
         etBio.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
@@ -179,6 +237,12 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void sendRequest() {
+        String mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference newRequestRef = database.getReference("users").child(mId + "/requests").child(userId);
+        newRequestRef.setValue(user);
+    }
+
     private void setBio() {
         database.goOnline();
         DatabaseReference userRef = database.getReference("users").child(userId);
@@ -214,7 +278,7 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 posts.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if(!child.child("user").getValue().toString().equals(mUser.getUid())){
+                    if(!child.child("user").getValue().toString().equals(userId)){
                         continue;
                     }
                     Log.i("get", child.getKey());
