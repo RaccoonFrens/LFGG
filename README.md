@@ -260,5 +260,4 @@ This project was made possible by the incredibly helpful TechFellows at CodePath
 
 A special thank you to @Kuromippy for providing the animated splash icon! It really ties the app together :)
 
-RaccoonFrens Team
-Josh, Fred, Victor
+RaccoonFrens Team: Josh, Fred, Victor
