@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment {
 
     private ImageView ivProfile;
 
-    private String RIOT_API_KEY = "RGAPI-20190ff7-230a-4ddd-afdc-fed4bfba5d26"; //expires after 24 hours [3/18 4:53 pm]
+    private String RIOT_API_KEY = "RGAPI-b409a18d-667d-4a23-ae58-74249c736b06"; //expires after 24 hours [3/18 4:53 pm]
     private static String summoner_URL = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
     //https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/lolo1163?api_key=RGAPI-7dd4cdc6-34b8-4e35-9117-5c5548e0a13d
     private static String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";

@@ -61,6 +61,6 @@ public class FirebaseMessageReceiver
             notificationManager.createNotificationChannel(cloud_messaging);
         }
 
-        notificationManager.notify(0, builder.build());
+        notificationManager.notify(2, builder.build());
     }
 }

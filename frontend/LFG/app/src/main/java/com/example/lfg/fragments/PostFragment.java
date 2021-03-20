@@ -88,7 +88,7 @@ public class PostFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     final String DATABASEURL = "gs://lfgg-78154.appspot.com";
     public final String match_URL_base = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
-    String RIOT_API_KEY = "RGAPI-fb0400e8-fd7c-4e93-84c1-c0b523778091"; //expires after 24 hours [3/19 5:53 pm]
+    String RIOT_API_KEY = "RGAPI-b409a18d-667d-4a23-ae58-74249c736b06"; //expires after 24 hours [3/21 12:13 am]
     String matchTime;
     String leagueName;
     String userid;
