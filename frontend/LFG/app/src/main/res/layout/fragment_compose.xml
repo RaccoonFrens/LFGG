@@ -6,13 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A19393"
+    android:background="#7C7474"
+    android:outlineProvider="none"
     android:paddingTop="30dp">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#A19393"
+        android:background="#685E5E"
         android:orientation="vertical"
         android:padding="7dp"
         android:paddingTop="30dp"
@@ -48,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="#C4B5F4DE"
+                    android:background="#C4CCCCCC"
                     android:ems="10"
                     android:fontFamily="@font/amiko_semibold"
                     android:gravity="start|top"
@@ -62,12 +63,16 @@
                     android:id="@+id/spinnerTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/tag_array" />
+                    android:elevation="1dp"
+                    android:entries="@array/tag_array"
+                    android:outlineProvider="bounds" />
 
                 <Spinner
                     android:id="@+id/spinnerGame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:backgroundTint="#C4CCCCCC"
                     android:entries="@array/game_array" />
 
 
@@ -76,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:elevation="1dp"
                     android:entries="@array/size_array"
                     tools:layout_editor_absoluteX="223dp"
                     tools:layout_editor_absoluteY="431dp" />
@@ -87,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 

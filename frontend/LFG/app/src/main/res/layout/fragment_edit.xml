@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A19393"
+    android:background="#685E5E"
     android:orientation="vertical"
     android:paddingTop="50dp"
     tools:context=".fragments.EditFragment">
@@ -14,19 +14,24 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#685E5E"
+        android:backgroundTint="#685E5E"
         card_view:cardElevation="20dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#A19393"
+            android:background="#685E5E"
             android:orientation="vertical"
-            android:padding="7dp">
+            android:padding="7dp"
+            android:paddingBottom="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="#A19393"
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,6 +76,7 @@
                         android:id="@+id/spinnerGame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="#C4DACCBC"
                         android:entries="@array/game_array" />
 
                     <Spinner
@@ -143,7 +149,7 @@
                         android:background="#0000FF"
                         android:fontFamily="@font/amiko_semibold"
                         android:text="Save Post"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#fff3ec"
                         android:textSize="24sp" />
                 </LinearLayout>
 
@@ -165,7 +171,7 @@
                         android:fontFamily="@font/amiko_semibold"
                         android:text="Cancel"
                         android:textAllCaps="true"
-                        android:textColor="#00152C"
+                        android:textColor="#fff3ec"
                         android:textSize="18sp" />
 
                     <Button
@@ -179,7 +185,7 @@
                         android:background="#FF0000"
                         android:fontFamily="@font/amiko_semibold"
                         android:text="Delete Post"
-                        android:textColor="#A5E3CF"
+                        android:textColor="#C52B00"
                         android:textSize="18sp"
                         app:rippleColor="#FFFFFF" />
 
