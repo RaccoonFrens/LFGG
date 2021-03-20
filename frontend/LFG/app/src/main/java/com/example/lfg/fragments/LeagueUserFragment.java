@@ -48,7 +48,7 @@ public class LeagueUserFragment extends Fragment{
         String leagueSumName;
 
 
-        private String RIOT_API_KEY = "RGAPI-fb0400e8-fd7c-4e93-84c1-c0b523778091"; //expires after 24 hours [3/18 4:53 pm]
+        private String RIOT_API_KEY = "RGAPI-b409a18d-667d-4a23-ae58-74249c736b06"; //expires after 24 hours [3/18 4:53 pm]
         private static final String summoner_URL_base = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/";
         //https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/lolo1163?api_key=RGAPI-7dd4cdc6-34b8-4e35-9117-5c5548e0a13d
         private static String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";

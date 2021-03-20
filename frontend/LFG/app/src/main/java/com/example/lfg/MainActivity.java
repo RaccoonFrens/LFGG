@@ -1,13 +1,20 @@
 package com.example.lfg;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +32,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +41,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
+import java.util.Objects;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
     public final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -136,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
         database.goOnline();
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        database.getReference("users").child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        DatabaseReference ref = database.getReference("users").child(userId);
+        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
@@ -154,6 +166,56 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void showNotification(int friendReqs){
+        String NEW_FRIEND_CHANNEL_ID = "new_friend_request_channel";
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("active", "friends");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NEW_FRIEND_CHANNEL_ID)
+                .setSmallIcon(R.drawable.other)
+                .setContentTitle("New Friend Request")
+                .setContentText("You have " + friendReqs + " friend requests!")
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOnlyAlertOnce(true);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel new_friend_req = new NotificationChannel(NEW_FRIEND_CHANNEL_ID, "New Friend Request", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(new_friend_req);
+        }
+
+        notificationManager.notify(1, builder.build());
     }
 
 }
