@@ -173,7 +173,8 @@
                                     style="@android:style/Widget.Material.Light.Button"
                                     android:layout_width="100dp"
                                     android:layout_height="60dp"
-                                    android:text="Join Party!" />
+                                    android:text="Join Party!"
+                                    android:textColor="#fff3ec" />
 
                             </LinearLayout>
                         </RelativeLayout>
