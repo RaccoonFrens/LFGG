@@ -13,6 +13,7 @@
         android:id="@+id/ivIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:src="@drawable/ic_baseline_person_24"
         android:layout_gravity="center_horizontal" />
 
     <TextView
