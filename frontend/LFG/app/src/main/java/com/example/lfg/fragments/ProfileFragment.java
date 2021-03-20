@@ -64,7 +64,6 @@ public class ProfileFragment extends Fragment {
     private TextInputLayout etLayout;
     private ImageView ivSettings;
     private ImageView ivProfile;
-    private FloatingActionButton FAB;
     List<Post> posts;
     private FirebaseAuth mAuth;
     SharedPreferences prefs;
@@ -89,8 +88,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FAB = getActivity().findViewById(R.id.floatingActionButton);
-        FAB.setVisibility(View.INVISIBLE); //HIDE FAB
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();

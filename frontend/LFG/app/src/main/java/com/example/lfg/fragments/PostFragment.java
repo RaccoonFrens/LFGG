@@ -141,6 +141,7 @@ public class PostFragment extends Fragment {
         etComment  = view.findViewById(R.id.etComment);
         btnJoinParty = view.findViewById(R.id.btnJoinParty);
         ivGameLogo = view.findViewById(R.id.logo);
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         rvComments = view.findViewById(R.id.rvComments);
         rvParty = view.findViewById(R.id.rvParty);

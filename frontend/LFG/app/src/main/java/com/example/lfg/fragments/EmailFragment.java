@@ -61,6 +61,8 @@ public class EmailFragment extends Fragment {
 
         m = (MainActivity) getActivity();
 
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
+
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

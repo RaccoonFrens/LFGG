@@ -75,6 +75,7 @@ public class EditFragment extends Fragment {
         btnPost = view.findViewById(R.id.btnPost);
         btnDeletePost = view.findViewById(R.id.btnDeletePost);
         btnOther = view.findViewById(R.id.btnCancel);
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         m = (MainActivity) getActivity();
 
