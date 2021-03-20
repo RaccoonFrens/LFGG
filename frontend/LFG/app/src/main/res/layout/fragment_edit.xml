@@ -6,7 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#A19393"
     android:orientation="vertical"
+    android:paddingTop="50dp"
     tools:context=".fragments.EditFragment">
 
     <androidx.cardview.widget.CardView
@@ -16,7 +18,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#A19393"
             android:orientation="vertical"
             android:padding="7dp">
 

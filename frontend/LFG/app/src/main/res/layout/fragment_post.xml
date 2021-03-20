@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="#A19393"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -13,6 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
+        card_view:cardBackgroundColor="#A19393"
         card_view:cardElevation="20dp">
 
         <RelativeLayout
@@ -166,6 +168,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/rvParty"
+                        card_view:cardBackgroundColor="#A19393"
                         card_view:cardElevation="4dp">
 
                         <RelativeLayout
