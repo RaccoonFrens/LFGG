@@ -65,22 +65,16 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="5dp"
+                        android:background="#C4DACCBC"
                         android:padding="6dp"
+                        card_view:cardBackgroundColor="#C4DACCBC"
                         card_view:cardElevation="1dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="4dp">
-
-                            <TextView
-                                android:id="@+id/league_status"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/partyLayout"
-                                android:layout_marginStart="2dp"
-                                android:layout_marginRight="2dp"
-                                android:text="Currently: in-game: 22:00 minutes" />
+                            android:layout_margin="4dp"
+                            android:background="#C4DACCBC">
 
                             <androidx.cardview.widget.CardView
                                 android:id="@+id/card_view"
@@ -92,7 +86,8 @@
 
                                 <RelativeLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:background="#C4DACCBC">
 
                                     <TextView
                                         android:id="@+id/tvLabelUser"
@@ -138,12 +133,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_below="@id/card_view"
+                                android:background="#C4DACCBC"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
+                                    android:background="#C4DACCBC"
                                     android:gravity="center_vertical"
                                     android:orientation="vertical">
 
