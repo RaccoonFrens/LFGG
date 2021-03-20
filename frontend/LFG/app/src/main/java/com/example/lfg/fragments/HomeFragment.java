@@ -248,7 +248,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(numPosts < dataSnapshot.getChildrenCount()){
-                    showNotification((int) dataSnapshot.getChildrenCount() - numPosts);
+                    showNotification();//(int) dataSnapshot.getChildrenCount() - numPosts);
                 }
                 numPosts = (int) dataSnapshot.getChildrenCount();
                 posts.clear();
@@ -371,7 +371,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    public void showNotification(int numNewPosts){
+    //public void showNotification(){}
+
+
+    public void showNotification(){//int numNewPosts){
         String NEW_POST_CHANNEL_ID = "new_post_channel";
 
         Intent intent = new Intent(getContext(), MainActivity.class);
@@ -380,7 +383,8 @@ public class HomeFragment extends Fragment {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Post")
-                .setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
+                //.setContentText("There are " + numNewPosts + " new groups waiting for you to join!")
+                .setContentText("There is a new group waiting for you!")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
