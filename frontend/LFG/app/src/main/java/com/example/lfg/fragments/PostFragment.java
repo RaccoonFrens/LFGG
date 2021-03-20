@@ -159,7 +159,10 @@ public class PostFragment extends Fragment {
         ivGameLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new ProfileFragment(user);
+                User mUser = new User();
+                mUser.setId(post.getId());
+                mUser.setUsername(post.getUser());
+                Fragment fragment = new ProfileFragment(mUser);
                 m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
             }
         });
