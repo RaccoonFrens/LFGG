@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsFragment" >
+    android:paddingTop="50dp"
+    tools:context=".fragments.SettingsFragment">
 
     <ImageView
         android:id="@+id/ivProfile"
