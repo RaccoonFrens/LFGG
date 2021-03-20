@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment {
     String scrollID;
     int index;
     static int numPosts = 0;
-    private FloatingActionButton FAB;
     public List<Post> posts;
 
     public HomeFragment() {
@@ -119,9 +118,8 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //view.findViewById(R.id.floatingActionButton).setVisibility(View.VISIBLE); //show FAB
-        FAB = getActivity().findViewById(R.id.floatingActionButton);
-        FAB.setVisibility(View.VISIBLE); //SHOW FAB
+        //Show the FAB
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.VISIBLE); //SHOW FAB
 
         rvPosts = view.findViewById(R.id.rvPosts);
         progressBar = view.findViewById(R.id.progressBar);

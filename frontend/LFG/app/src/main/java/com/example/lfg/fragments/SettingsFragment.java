@@ -109,7 +109,7 @@ public class SettingsFragment extends Fragment {
         layoutLeagueUser = view.findViewById(R.id.layoutLeagueUser);
         ivProfile = view.findViewById(R.id.ivProfile);
         btnLogout = view.findViewById(R.id.btnLogout);
-
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
 

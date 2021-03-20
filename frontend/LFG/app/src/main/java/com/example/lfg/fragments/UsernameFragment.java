@@ -57,6 +57,7 @@ public class UsernameFragment extends Fragment {
         tvSave = view.findViewById(R.id.tvSave);
         etUsername = view.findViewById(R.id.etUsername);
 
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         if(username != null)

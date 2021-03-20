@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:background="#ccc"
-    android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
 
+    tools:context=".MainActivity">
+    <!-- android:fitsSystemWindows="true"-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -29,6 +29,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigationView"
         android:layout_below="@+id/toolbar"
+        android:layout_gravity="bottom"
         android:layout_marginTop="0dp"
         android:background="#ccc"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

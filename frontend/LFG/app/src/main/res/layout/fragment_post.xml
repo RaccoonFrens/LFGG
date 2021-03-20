@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
         card_view:cardElevation="20dp">
 
@@ -113,8 +113,8 @@
                                         android:layout_below="@id/tvUsername"
                                         android:layout_toStartOf="@id/logo"
                                         android:textSize="18sp"
-                                        tools:text="Hello World"
-                                        android:transitionName="body"/>
+                                        android:transitionName="body"
+                                        tools:text="Hello World" />
                                 </RelativeLayout>
 
                             </androidx.cardview.widget.CardView>
