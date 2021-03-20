@@ -80,6 +80,8 @@ public class ProfileFragment extends Fragment {
     SharedPreferences.Editor edit;
     String userId;
     String username;
+    String currUserId;
+    String currUsername;
 
     User user;
 
@@ -118,7 +120,10 @@ public class ProfileFragment extends Fragment {
         ivAdd = view.findViewById(R.id.ivAdd);
         btnFriends = view.findViewById(R.id.btnFriends);
         MainActivity m = (MainActivity) getActivity();
-
+        currUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        currUsername = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        if (currUsername == null)
+            currUsername = prefs.getString("username", "username");
 
         if(user != null && !user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
             userId = user.getId();
@@ -242,7 +247,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void sendRequest() {
+        User mUser = new User();
         String mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mUser.setId(currUserId);
+        mUser.setId(currUsername);
         DatabaseReference newRequestRef = database.getReference("users").child(userId).child("requests").child(mId);
         newRequestRef.setValue(user);
         Log.i("Profile", "Request sent " + userId + " "  + mId );
