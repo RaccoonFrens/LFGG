@@ -37,6 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/logo"
                 android:background="#e6ac4e"
+                android:fontFamily="@font/amiko_semibold"
                 android:gravity="center"
                 android:minWidth="70dp"
                 android:minHeight="25dp"
@@ -85,6 +86,7 @@
                 android:layout_toEndOf="@id/logo"
                 android:drawableStart="@drawable/ic_baseline_timer_10"
                 android:drawablePadding="2dp"
+                android:fontFamily="@font/amiko_semibold"
                 android:gravity="center_vertical"
                 android:text="5 minutes"
                 android:textSize="12sp" />

@@ -41,6 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Edit post details:"
                         android:textSize="18sp"
                         android:transitionName="body" />
@@ -53,6 +54,7 @@
                         android:layout_marginBottom="5dp"
                         android:background="#C4B5F4DE"
                         android:ems="10"
+                        android:fontFamily="@font/amiko_semibold"
                         android:gravity="start|top"
                         android:hint="Post details"
                         android:inputType="textMultiLine"
@@ -93,6 +95,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Hours"
                         android:textSize="18sp">
 
@@ -111,6 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Minutes"
                         android:textSize="18sp">
 
@@ -137,6 +141,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:background="#0000FF"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Save Post"
                         android:textColor="#FFFFFF"
                         android:textSize="24sp" />
@@ -157,6 +162,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="0.5"
                         android:background="#00FF00"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Cancel"
                         android:textAllCaps="true"
                         android:textColor="#00152C"
@@ -171,6 +177,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_weight="0.5"
                         android:background="#FF0000"
+                        android:fontFamily="@font/amiko_semibold"
                         android:text="Delete Post"
                         android:textColor="#A5E3CF"
                         android:textSize="18sp"

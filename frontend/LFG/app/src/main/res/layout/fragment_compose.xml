@@ -38,6 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Enter post details:"
                     android:textSize="18sp" />
 
@@ -49,6 +50,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="#C4B5F4DE"
                     android:ems="10"
+                    android:fontFamily="@font/amiko_semibold"
                     android:gravity="start|top"
                     android:hint="Post details"
                     android:inputType="textMultiLine"
@@ -91,6 +93,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Hours"
                     android:textSize="18sp">
 
@@ -109,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:fontFamily="@font/amiko_semibold"
                     android:text="Minutes"
                     android:textSize="18sp">
 
@@ -128,6 +132,7 @@
                 android:id="@+id/btnPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/amiko_semibold"
                 android:text="Post"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp" />

@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/amiko_semibold"
             android:text="username"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -91,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/border"
+            android:fontFamily="@font/amiko_semibold"
             android:gravity="center_vertical"
             android:inputType="textAutoCorrect"
             android:minLines="2"

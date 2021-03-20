@@ -18,6 +18,7 @@
             android:id="@+id/tvCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/amiko_semibold"
             android:text="Cancel"
             android:textAlignment="viewStart" />
 
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:fontFamily="@font/amiko_semibold"
             android:gravity="center"
             android:text="Username"
             android:textSize="18sp"
@@ -36,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:fontFamily="@font/amiko_semibold"
             android:text="Save"
             android:textAlignment="viewEnd"
             android:textColor="@color/design_default_color_error" />
@@ -49,7 +52,8 @@
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:fontFamily="@font/amiko_semibold" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>
