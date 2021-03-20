@@ -149,6 +149,7 @@
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/amiko_semibold"
         android:text="Logout"
+        android:textColor="#fff3ecFF"
         android:textSize="24sp" />
 
 </RelativeLayout>

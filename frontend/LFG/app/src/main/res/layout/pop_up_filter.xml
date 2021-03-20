@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/amiko_semibold"
                 android:text="Filter"
+                android:textColor="#fff3ec"
                 android:textSize="18sp" />
 
         </LinearLayout>
