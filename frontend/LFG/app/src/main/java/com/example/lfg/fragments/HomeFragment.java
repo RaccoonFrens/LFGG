@@ -49,6 +49,7 @@ import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment {
     String scrollID;
     int index;
     static int numPosts = 0;
-
+    private FloatingActionButton FAB;
     public List<Post> posts;
 
     public HomeFragment() {
@@ -117,6 +118,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //view.findViewById(R.id.floatingActionButton).setVisibility(View.VISIBLE); //show FAB
+        FAB = getActivity().findViewById(R.id.floatingActionButton);
+        FAB.setVisibility(View.VISIBLE); //SHOW FAB
+
         rvPosts = view.findViewById(R.id.rvPosts);
         progressBar = view.findViewById(R.id.progressBar);
         posts = new ArrayList<>();
@@ -180,11 +186,18 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        Fragment profileFragment  = new ProfileFragment();
+
         if(item.getItemId() == R.id.filter){
             displayPopupWindow();
             return true;
         }
-        else{
+        else if(item.getItemId() == R.id.profile){
+            //open profile fragment
+            fragmentManager.beginTransaction().replace(R.id.flContainer, profileFragment).addToBackStack("home").commit();
+            return true;
+        }else{
             return false;
         }
     }

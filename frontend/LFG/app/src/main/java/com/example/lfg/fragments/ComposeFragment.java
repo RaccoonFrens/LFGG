@@ -25,6 +25,7 @@ import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,7 +44,7 @@ public class ComposeFragment extends Fragment {
     private NumberPicker npHour;
     private NumberPicker npMinute;
     private Button      btnPost;
-
+    private FloatingActionButton FAB;
     public ComposeFragment() {
         // Required empty public constructor
     }
@@ -58,6 +59,9 @@ public class ComposeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
+
         spinnerGame = view.findViewById(R.id.spinnerGame);
         spinnerTag = view.findViewById(R.id.spinnerTag);
         sPartyAmount = view.findViewById(R.id.sPartyAmount);

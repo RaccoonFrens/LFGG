@@ -33,6 +33,7 @@ import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,7 +64,7 @@ public class ProfileFragment extends Fragment {
     private TextInputLayout etLayout;
     private ImageView ivSettings;
     private ImageView ivProfile;
-
+    private FloatingActionButton FAB;
     List<Post> posts;
     private FirebaseAuth mAuth;
     SharedPreferences prefs;
@@ -80,12 +81,17 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        FAB = getActivity().findViewById(R.id.floatingActionButton);
+        FAB.setVisibility(View.INVISIBLE); //HIDE FAB
+
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();
         tvUsername = view.findViewById(R.id.tvUsername);
