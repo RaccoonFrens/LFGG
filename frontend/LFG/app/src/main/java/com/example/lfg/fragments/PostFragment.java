@@ -511,11 +511,8 @@ public class PostFragment extends Fragment {
                                 public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
                                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
-                                    if(statusCode == 400){
-                                        tvMatch.setText("Not currently in game");
-                                        tvMatch.setBackgroundColor(Color.parseColor("#D38075"));
-                                    }
-
+                                    tvMatch.setText("Not currently in game");
+                                    tvMatch.setBackgroundColor(Color.parseColor("#D38075"));
                                 }
                             }
                     );
