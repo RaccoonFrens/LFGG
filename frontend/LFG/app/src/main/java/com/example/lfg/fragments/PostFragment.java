@@ -498,10 +498,12 @@ public class PostFragment extends Fragment {
                                     //can also be used to store other things
                                     try {
                                         matchTime = match.getString("gameStartTime");
-                                        tvMatch.setText("Match time:" + matchTime);
+                                        //tvMatch.setText("Match time:" + matchTime);
+                                        tvMatch.setText("Currently in-game!");
                                     } catch (JSONException e) {
                                         matchTime = "0";
-                                        tvMatch.setText("Match time:" + matchTime);
+                                        //tvMatch.setText("Match time:" + matchTime);
+                                        tvMatch.setText("Currently in-game!");
                                         e.printStackTrace();
                                     }
                                     Log.d("PostFragment", "Match in progress since " + matchTime);
