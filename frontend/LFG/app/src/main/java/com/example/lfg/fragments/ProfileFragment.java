@@ -178,7 +178,7 @@ public class ProfileFragment extends Fragment {
                 username = prefs.getString("username", "username");
             tvUsername.setText(username);
             Date createdAt = new Date(FirebaseAuth.getInstance().getCurrentUser().getMetadata().getCreationTimestamp());
-            tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
+            //tvUserDetails.setText("Member since: " + createdAt.toLocaleString());
         }
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
