@@ -339,7 +339,7 @@ public class HomeFragment extends Fragment {
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if(postIdList.contains(snapshot.getKey())){
                     if((int)snapshot.child("party").getChildrenCount() > partyNumList.get(postIdList.indexOf(snapshot.getKey()))){
-                        showPartyNotification();
+                        showPartyNotification(snapshot.child("game").getValue().toString());
                         partyNumList.set(partyNumList.get(postIdList.indexOf(snapshot.getKey())), (int) snapshot.child("party").getChildrenCount());
                     }
                 }
@@ -387,7 +387,7 @@ public class HomeFragment extends Fragment {
         notificationManager.notify(0, builder.build());
     }
 
-    private void showPartyNotification(){
+    private void showPartyNotification(String gameName){
         String NEW_PARTY_CHANNEL = "new_party_channel";
 
         Intent intent = new Intent(getContext(), MainActivity.class);
@@ -396,7 +396,7 @@ public class HomeFragment extends Fragment {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NEW_PARTY_CHANNEL)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Party Member")
-                .setContentText("Someone joined your party!")
+                .setContentText("Someone joined your " + gameName + " party!")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
