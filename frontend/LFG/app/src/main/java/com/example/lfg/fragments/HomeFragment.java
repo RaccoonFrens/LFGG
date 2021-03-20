@@ -209,18 +209,11 @@ public class HomeFragment extends Fragment {
         popup.setOutsideTouchable(true);
         popup.setTouchable(true);
         ColorDrawable colorDrawable = new ColorDrawable(Color.BLACK);
-        colorDrawable.setAlpha(220);
+        colorDrawable.setAlpha(210);
         popup.setBackgroundDrawable(colorDrawable);
-        popup.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popup.dismiss();
-                return true;
-            }
-        });
         popup.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popup.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-        popup.showAtLocation(layout, Gravity.TOP, 0, 0);
+        popup.showAtLocation(layout, Gravity.CENTER, 0, 0);
         btnFilter = layout.findViewById(R.id.btnFilter);
         spinnerFilter = layout.findViewById(R.id.spinnerFilter);
         spinnerFilter.setAdapter(filterAdapter);

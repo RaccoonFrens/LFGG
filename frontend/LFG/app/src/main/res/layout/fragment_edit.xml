@@ -12,15 +12,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         card_view:cardElevation="20dp">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="7dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,7 +40,7 @@
                         android:layout_marginTop="10dp"
                         android:text="Edit post details:"
                         android:textSize="18sp"
-                        android:transitionName="body"/>
+                        android:transitionName="body" />
 
                     <EditText
                         android:id="@+id/etPostDetails"
