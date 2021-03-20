@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.CommentsAdapter;
 import com.example.lfg.adapters.FriendRequestAdapter;
@@ -69,6 +70,8 @@ public class FriendRequestFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rvRequests = view.findViewById(R.id.rvRequests);
         rvFriends = view.findViewById(R.id.rvFriends);
+        MainActivity m = (MainActivity) getActivity();
+
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
@@ -79,6 +82,9 @@ public class FriendRequestFragment extends Fragment {
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClicked(int position) {
+                User mUser  = friends.get(position);
+                Fragment fragment = new ProfileFragment(mUser);
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
 
             }
         };
@@ -121,6 +127,7 @@ public class FriendRequestFragment extends Fragment {
             }
         };
 
+
         requests = new ArrayList<>();
         friendRequestAdapter = new FriendRequestAdapter(getContext(), requests, itemClickListener, acceptClickListener, declineClickListener);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -134,7 +141,7 @@ public class FriendRequestFragment extends Fragment {
             }
         };
         friends = new ArrayList<>();
-        friendAdapter = new UserAdapter(getContext(), friends, itemLongClickListener);
+        friendAdapter = new UserAdapter(getContext(), friends, itemLongClickListener, itemClickListener);
         rvFriends.setLayoutManager(new GridLayoutManager(getContext(), 4));
         rvFriends.setAdapter(friendAdapter);
 
