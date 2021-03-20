@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:background="#ccc"
+    android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
     <FrameLayout

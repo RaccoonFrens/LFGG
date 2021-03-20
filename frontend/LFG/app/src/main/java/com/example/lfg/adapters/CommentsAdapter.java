@@ -30,11 +30,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     Context context;
     List<Comment> comments;
     ItemLongClickListener itemLongClickListener;
+    ItemClickListener itemClickListener;
 
-    public CommentsAdapter(Context context, List<Comment>  comments, ItemLongClickListener itemLongClickListener){
+    public CommentsAdapter(Context context, List<Comment>  comments, ItemLongClickListener itemLongClickListener, ItemClickListener itemClickListener){
         this.context = context;
         this.comments = comments;
         this.itemLongClickListener = itemLongClickListener;
+        this.itemClickListener = itemClickListener;
     }
 
 
@@ -69,6 +71,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 public boolean onLongClick(View view) {
                     itemLongClickListener.onItemLongClicked(getAdapterPosition());
                     return true;
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemClickListener.onItemClicked(getAdapterPosition());
                 }
             });
             etComment = itemView.findViewById(R.id.tvComment);

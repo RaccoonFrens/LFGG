@@ -31,6 +31,7 @@ import com.example.lfg.R;
 import com.example.lfg.adapters.CommentsAdapter;
 import com.example.lfg.adapters.PostsAdapter;
 import com.example.lfg.adapters.UserAdapter;
+import com.example.lfg.interfaces.ItemClickListener;
 import com.example.lfg.interfaces.ItemLongClickListener;
 import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
@@ -158,6 +159,28 @@ public class PostFragment extends Fragment {
             }
         };
 
+        ItemClickListener itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                Comment comment = comments.get(position);
+                User mUser = new User();
+                mUser.setId(comment.getUserId());
+                mUser.setUsername(comment.getUsername());
+                Fragment fragment = new ProfileFragment(mUser);
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
+            }
+        };
+
+        ItemClickListener partyItemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                User mUser = users.get(position);
+                Fragment fragment = new ProfileFragment(mUser);
+                m.fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).addToBackStack("user").commit();
+            }
+        };
+
+
         ItemLongClickListener partyLongClickListener = new ItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
@@ -171,13 +194,13 @@ public class PostFragment extends Fragment {
             }
         };
 
-        commentsAdapter = new CommentsAdapter(getContext(), comments, itemLongClickListener);
+        commentsAdapter = new CommentsAdapter(getContext(), comments, itemLongClickListener, itemClickListener);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
         rvComments.setLayoutManager(layoutManager);
         rvComments.setAdapter(commentsAdapter);
 
-        userAdapter = new UserAdapter(getContext(), users, partyLongClickListener);
+        userAdapter = new UserAdapter(getContext(), users, partyLongClickListener, partyItemClickListener);
         rvParty.setLayoutManager(new GridLayoutManager(getContext(), 4));
         rvParty.setAdapter(userAdapter);
 
