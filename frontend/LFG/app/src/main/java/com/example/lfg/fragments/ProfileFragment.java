@@ -126,6 +126,9 @@ public class ProfileFragment extends Fragment {
             tvUsername.setText(username);
             ivSettings.setVisibility(View.INVISIBLE);
             btnFriends.setVisibility(View.INVISIBLE);
+            etBio.setEnabled(false);
+            if(etBio.getText().toString().equals("Tap to Add Bio"))
+                etBio.setText("Hello");
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             storageRef.child("images/"+userId).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
