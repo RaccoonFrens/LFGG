@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -254,6 +255,7 @@ public class ProfileFragment extends Fragment {
         mUser.setUsername(currUsername);
         DatabaseReference newRequestRef = database.getReference("users").child(userId).child("requests").child(mId);
         newRequestRef.setValue(mUser);
+        Toast.makeText(getContext(), "Friend request sent", Toast.LENGTH_SHORT).show();
         Log.i("Profile", "Request sent " + userId + " "  + mId );
     }
 
