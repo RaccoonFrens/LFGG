@@ -13,7 +13,7 @@
         <item>Other</item>
     </string-array>
     <string-array name="size_array">
-        <item>Choose your party vacancy</item>
+        <item>Choose your party size</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

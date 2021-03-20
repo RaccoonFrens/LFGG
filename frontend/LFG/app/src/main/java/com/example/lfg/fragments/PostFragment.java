@@ -92,6 +92,7 @@ public class PostFragment extends Fragment {
     String RIOT_API_KEY = "RGAPI-b409a18d-667d-4a23-ae58-74249c736b06"; //expires after 24 hours [3/21 12:13 am]
     String matchTime;
     String leagueName;
+    String leagueId;
     String userid;
     String username;
     String currUsername;
@@ -476,10 +477,10 @@ public class PostFragment extends Fragment {
                 }
                 else {
                     //fetch summonerID of post creator
-                    leagueName = (String) task.getResult().child("LeagueName").getValue();
-                    Log.d("PostFragment", "summoner ID is: " + leagueName);
+                    leagueId = (String) task.getResult().child("LeagueId").getValue();
+                    Log.d("PostFragment", "summoner ID is: " + leagueId);
                     //open http client to make API request
-                    String match_URL = match_URL_base+leagueName+"?api_key="+RIOT_API_KEY;
+                    String match_URL = match_URL_base+leagueId+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.get(match_URL, new TextHttpResponseHandler() {
                                 @Override
@@ -497,24 +498,23 @@ public class PostFragment extends Fragment {
                                     //can also be used to store other things
                                     try {
                                         matchTime = match.getString("gameStartTime");
-                                        tvMatch.setText("Match time:" + matchTime);
+                                        tvMatch.setText("Currently in game!");
+                                        //tvMatch.setText("Match time:" + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000) + " minutes");
                                     } catch (JSONException e) {
                                         matchTime = "0";
-                                        tvMatch.setText("Match time:" + matchTime);
+                                        tvMatch.setText("Currently in game!");
+                                        //tvMatch.setText("Match time:" + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000) + " minutes");
                                         e.printStackTrace();
                                     }
-                                    Log.d("PostFragment", "Match in progress since " + matchTime);
+                                   // Log.d("PostFragment", "Match in progress since " + (System.currentTimeMillis() - Integer.parseInt(matchTime) / 60000));
                                     tvMatch.setBackgroundColor(Color.parseColor("#01873D"));
                                 }
                                 @Override
                                 public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
                                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
-                                    if(statusCode == 400){
-                                        tvMatch.setText("Not currently in game");
-                                        tvMatch.setBackgroundColor(Color.parseColor("#D38075"));
-                                    }
-
+                                    tvMatch.setText("Not currently in game");
+                                    tvMatch.setBackgroundColor(Color.parseColor("#D38075"));
                                 }
                             }
                     );
