@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
@@ -79,7 +80,7 @@ public class LeagueUserFragment extends Fragment{
             tvSave = view.findViewById(R.id.tvSave);
             etLOLUser = view.findViewById(R.id.etLeagueUser);
             etLOLUser.setText(user.getSum_name());
-
+            getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
             m = (MainActivity) getActivity();
 
             tvCancel.setOnClickListener(new View.OnClickListener() {
@@ -143,4 +144,17 @@ public class LeagueUserFragment extends Fragment{
                 }
             );
         }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
 }

@@ -1,14 +1,13 @@
 package com.example.lfg.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,18 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.TextHttpResponseHandler;
 import com.bumptech.glide.Glide;
-import com.example.lfg.LoginActivity;
 import com.example.lfg.MainActivity;
 import com.example.lfg.R;
 import com.example.lfg.adapters.PostsAdapter;
@@ -43,6 +36,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,16 +49,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import okhttp3.Headers;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -82,6 +71,7 @@ public class ProfileFragment extends Fragment {
     private ImageView ivProfile;
     private ImageView ivAdd;
     private Button btnFriends;
+
 
     List<Post> posts;
     private FirebaseAuth mAuth;
@@ -106,12 +96,16 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
+
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();
         tvUsername = view.findViewById(R.id.tvUsername);
@@ -359,5 +353,18 @@ public class ProfileFragment extends Fragment {
         public int compare(Post a, Post b) {
             return (int) (a.getTimeEnd() - b.getTimeEnd());
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

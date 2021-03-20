@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -56,6 +57,7 @@ public class UsernameFragment extends Fragment {
         tvSave = view.findViewById(R.id.tvSave);
         etUsername = view.findViewById(R.id.etUsername);
 
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         if(username != null)
@@ -99,5 +101,16 @@ public class UsernameFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

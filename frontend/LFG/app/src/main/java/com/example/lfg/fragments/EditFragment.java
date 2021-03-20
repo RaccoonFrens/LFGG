@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -74,6 +75,7 @@ public class EditFragment extends Fragment {
         btnPost = view.findViewById(R.id.btnPost);
         btnDeletePost = view.findViewById(R.id.btnDeletePost);
         btnOther = view.findViewById(R.id.btnCancel);
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         m = (MainActivity) getActivity();
 
@@ -204,6 +206,7 @@ public class EditFragment extends Fragment {
         setSpinnerListeners();
     }
 
+
     private void openHome() {
         m.fragmentManager.popBackStack("home", FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
@@ -303,4 +306,16 @@ public class EditFragment extends Fragment {
         return valid;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
 }

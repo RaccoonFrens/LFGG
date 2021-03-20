@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
@@ -59,6 +60,8 @@ public class EmailFragment extends Fragment {
         etEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         m = (MainActivity) getActivity();
+
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,5 +144,18 @@ public class EmailFragment extends Fragment {
         enterCredentials.show();
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 }

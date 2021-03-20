@@ -1,11 +1,14 @@
 package com.example.lfg.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Movie;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -37,6 +40,8 @@ import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,11 +51,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -71,13 +81,16 @@ public class PostFragment extends Fragment {
     private TextView tvTime;
     private ImageView ivEdit;
     private ImageView ivBack;
+    private ImageView ivGameLogo;
     private EditText etComment;
     private Button btnJoinParty;
     private TextView tvMatch;
-    public String match_URL = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
-    String RIOT_API_KEY = "RGAPI-84ed6122-226c-4ea9-a72d-9dfa2d17d8ab"; //expires after 24 hours [3/17 6:43 pm]
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    final String DATABASEURL = "gs://lfgg-78154.appspot.com";
+    public final String match_URL_base = "https://na1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/";
+    String RIOT_API_KEY = "RGAPI-fb0400e8-fd7c-4e93-84c1-c0b523778091"; //expires after 24 hours [3/19 5:53 pm]
     String matchTime;
-    String summonerId;
+    String leagueName;
     String userid;
     String username;
     String currUsername;
@@ -128,6 +141,8 @@ public class PostFragment extends Fragment {
         ivBack = view.findViewById(R.id.ivBack);
         etComment  = view.findViewById(R.id.etComment);
         btnJoinParty = view.findViewById(R.id.btnJoinParty);
+        ivGameLogo = view.findViewById(R.id.logo);
+        getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
         rvComments = view.findViewById(R.id.rvComments);
         rvParty = view.findViewById(R.id.rvParty);
@@ -206,6 +221,23 @@ public class PostFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         database.goOnline();
+
+        StorageReference storageRef = storage.getReferenceFromUrl(DATABASEURL).child(post.getLogoName());
+
+        try {
+            final File localFile = File.createTempFile("images", "png");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    ivGameLogo.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
 
         Log.i("userID", userid);
         long time = post.getTimeEnd()-System.currentTimeMillis();
@@ -432,10 +464,10 @@ public class PostFragment extends Fragment {
                 }
                 else {
                     //fetch summonerID of post creator
-                    summonerId = (String) task.getResult().child("LeagueId").getValue();
-                    Log.d("PostFragment", "summoner ID is: " + summonerId);
+                    leagueName = (String) task.getResult().child("LeagueName").getValue();
+                    Log.d("PostFragment", "summoner ID is: " + leagueName);
                     //open http client to make API request
-                    match_URL = match_URL+summonerId+"?api_key="+RIOT_API_KEY;
+                    String match_URL = match_URL_base+leagueName+"?api_key="+RIOT_API_KEY;
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.get(match_URL, new TextHttpResponseHandler() {
                                 @Override
@@ -465,6 +497,10 @@ public class PostFragment extends Fragment {
                                 public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
                                     // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
+                                    if(statusCode == 400){
+                                        tvMatch.setText("Not currently in game");
+                                    }
+
                                 }
                             }
                     );
@@ -472,4 +508,18 @@ public class PostFragment extends Fragment {
             }//end on complete
         }); //end firebase get instance
     } //end getMatch
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+
 }

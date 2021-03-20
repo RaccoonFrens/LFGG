@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,13 +8,31 @@
     android:background="#ccc"
     android:fitsSystemWindows="false"
     tools:context=".MainActivity">
+    <!-- android:fitsSystemWindows="true"-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigationView"
-        android:background="#ccc">
+        android:layout_below="@+id/toolbar"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="0dp"
+        android:background="#ccc"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </FrameLayout>
 
@@ -22,6 +40,24 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
+        android:layout_gravity="bottom|end"
+        android:fitsSystemWindows="false"
+        android:visibility="invisible"
         app:menu="@menu/menu_nav" />
-</RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="24dp"
+        android:clickable="true"
+        app:layout_behavior="com.example.lfg.models.ScrollAwareFABBehavior"
+        app:backgroundTint="#ff1da1f2"
+        app:layout_anchorGravity="end|bottom"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    <!-- app:layout_anchor="@+id/bottomNavigationView" -->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

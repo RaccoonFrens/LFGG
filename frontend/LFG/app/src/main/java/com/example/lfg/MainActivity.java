@@ -2,6 +2,7 @@ package com.example.lfg;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.lfg.fragments.ComposeFragment;
@@ -21,6 +23,7 @@ import com.example.lfg.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,22 +41,41 @@ public class MainActivity extends AppCompatActivity {
     public final Fragment profileFragment  = new ProfileFragment();
     public Fragment active = homeFragment;
     public BottomNavigationView bottomNavigationView;
+    public FloatingActionButton FAB;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        FAB = findViewById(R.id.floatingActionButton);
         fragmentManager.beginTransaction().add(R.id.flContainer, profileFragment, "profileFragment").hide(profileFragment).commit();
         fragmentManager.beginTransaction().add(R.id.flContainer, composeFragment, "composeFragment").hide(composeFragment).commit();
         fragmentManager.beginTransaction().add(R.id.flContainer,homeFragment, "homeFragment").commit();
         prefs = getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
         getUser();
+
+        FAB.setOnClickListener(new View.OnClickListener(){
+            final FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment composeFragment  = new ComposeFragment();
+            public void onClick(View v){
+                //open post fragment
+                //setActive(composeFragment);
+                fragmentManager.beginTransaction().replace(R.id.flContainer, composeFragment).addToBackStack("home").commit();
+            }
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -102,24 +124,12 @@ public class MainActivity extends AppCompatActivity {
         active = theActive;
     }
 
+    // Menu icons are inflated just as they were with actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_bar, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.logout){
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void getUser() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -145,4 +155,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

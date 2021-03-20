@@ -51,6 +51,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return new ViewHolder(view, itemClickListener);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = filteredPosts.get(position);
@@ -121,10 +122,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 });
             } catch (IOException e ) {}
 
-            playerCount.setText(post.getPlayers() + "/" + post.getSize() + " players");
+            playerCount.setText(post.getPlayers() + "/" + post.getSize()); //removed + " players"
             tag1.setText(post.getTag());
             if(tag1.getText().toString().equals("Casual")){
                 tag1.setBackgroundColor(Color.parseColor("#4E88E6"));
+            }else{
+                tag1.setBackgroundColor(Color.parseColor("#E6AC4E"));
             }
             long time = post.getTimeEnd()-System.currentTimeMillis();
             int minutes = (int) (time/60000);
