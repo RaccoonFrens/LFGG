@@ -43,14 +43,14 @@ LFGG, looking for game group is an app to find people to play games together
     * [x] Login
     * [x] Logout
     * [x] User profile
- * [ ] Push-notifications 
- * [ ] Nice UI
- * [ ] Show current game status of poster
+ * [x] Push-notifications 
+ * [x] Nice UI
+ * [x] Show current game status of poster
  * [x] Sort priority posts to the top
- * [ ] Show in game details for popular games (those with API)
- * [ ] Update profile/account settings
+ * [x] Show in game details for popular games (those with API)
+ * [x] Update profile/account settings
  * [ ] Search (for post details, profile)
- * [ ] Friends
+ * [x] Friends
  * [ ] Stat-tracking lobbies formed
  * [ ] Achievements (IE raid leader) 
 

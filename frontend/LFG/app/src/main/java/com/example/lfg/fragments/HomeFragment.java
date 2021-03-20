@@ -322,7 +322,8 @@ public class HomeFragment extends Fragment {
 
     public void showNotification(int numNewPosts){
         String NEW_POST_CHANNEL_ID = "new_post_channel";
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra("active", "home");
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Objects.requireNonNull(getContext()), NEW_POST_CHANNEL_ID)
