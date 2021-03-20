@@ -109,6 +109,9 @@ public class ProfileFragment extends Fragment {
 
         getActivity().findViewById(R.id.floatingActionButton).setVisibility(View.INVISIBLE); //HIDE FAB
 
+        prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
+        edit = prefs.edit();
+
         rvUserPosts = view.findViewById(R.id.rvUserPosts);
         posts = new ArrayList<>();
         tvUsername = view.findViewById(R.id.tvUsername);
@@ -166,8 +169,6 @@ public class ProfileFragment extends Fragment {
                 }
             });
             ivAdd.setVisibility(View.GONE);
-            prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
-            edit = prefs.edit();
             userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             Uri profileUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
