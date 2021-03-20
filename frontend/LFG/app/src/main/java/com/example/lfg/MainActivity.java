@@ -41,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -206,14 +208,39 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("MainActivity", "User err: " + error.toString());
             }
         });
+        ref.child("posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void showNotification(int friendReqs){
         String NEW_FRIEND_CHANNEL_ID = "new_friend_request_channel";
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("active", "friends");
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        getIntent().putExtra("active", "friends");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, getIntent(), 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NEW_FRIEND_CHANNEL_ID)
                 .setSmallIcon(R.drawable.other)
                 .setContentTitle("New Friend Request")

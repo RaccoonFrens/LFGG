@@ -3,6 +3,7 @@ package com.example.lfg.fragments;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.os.Bundle;
 
@@ -503,6 +504,7 @@ public class PostFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                     Log.d("PostFragment", "Match in progress since " + matchTime);
+                                    tvMatch.setBackgroundColor(Color.parseColor("#01873D"));
                                 }
                                 @Override
                                 public void onFailure(int statusCode, Headers headers, String errorResponse, Throwable t) {
@@ -510,6 +512,7 @@ public class PostFragment extends Fragment {
                                     Log.d("PostFragment", "match onFailure" + errorResponse + match_URL);
                                     if(statusCode == 400){
                                         tvMatch.setText("Not currently in game");
+                                        tvMatch.setBackgroundColor(Color.parseColor("#D38075"));
                                     }
 
                                 }

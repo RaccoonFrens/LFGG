@@ -50,6 +50,8 @@ import com.example.lfg.models.Comment;
 import com.example.lfg.models.Post;
 import com.example.lfg.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,6 +79,8 @@ public class HomeFragment extends Fragment {
     ArrayAdapter<CharSequence> filterAdapter;
     private Button btnFilter;
     private Spinner spinnerFilter;
+    List<String> postIdList;
+    List<Integer> partyNumList;
     SharedPreferences prefs;
     SharedPreferences.Editor edit;
     String scrollID;
@@ -131,6 +135,8 @@ public class HomeFragment extends Fragment {
 
         prefs = getActivity().getSharedPreferences("data", MODE_PRIVATE);
         edit = prefs.edit();
+        postIdList = new ArrayList<>();
+        partyNumList = new ArrayList<>();
 
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
@@ -318,6 +324,43 @@ public class HomeFragment extends Fragment {
                 Log.e(TAG, "The read failed: " + databaseError.getCode());
             }
         });
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(!postIdList.contains(snapshot.getKey())) {
+                    if(snapshot.child("user").getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        postIdList.add(snapshot.getKey());
+                        partyNumList.add((int) snapshot.child("party").getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(postIdList.contains(snapshot.getKey())){
+                    if((int)snapshot.child("party").getChildrenCount() > partyNumList.get(postIdList.indexOf(snapshot.getKey()))){
+                        showPartyNotification();
+                        partyNumList.set(partyNumList.get(postIdList.indexOf(snapshot.getKey())), (int) snapshot.child("party").getChildrenCount());
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                partyNumList.remove(postIdList.indexOf(snapshot.getKey()));
+                postIdList.remove(snapshot.getKey());
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void showNotification(int numNewPosts){
@@ -342,6 +385,30 @@ public class HomeFragment extends Fragment {
         }
 
         notificationManager.notify(0, builder.build());
+    }
+
+    private void showPartyNotification(){
+        String NEW_PARTY_CHANNEL = "new_party_channel";
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra("active", "party");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), NEW_PARTY_CHANNEL)
+                .setSmallIcon(R.drawable.other)
+                .setContentTitle("New Party Member")
+                .setContentText("Someone joined your party!")
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOnlyAlertOnce(true);
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel new_friend_req = new NotificationChannel(NEW_PARTY_CHANNEL, "New Party Member", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(new_friend_req);
+        }
+
+        notificationManager.notify(1, builder.build());
     }
 
     public static void addPostCount(){
