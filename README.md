@@ -14,6 +14,8 @@ Original App Design Project - README Template
 ### Description
 LFGG, looking for game group is an app to find people to play games together
 
+[Video Trailer](https://www.youtube.com/watch?v=KrYYju3lMFQ)
+
 ### App Evaluation
 - **Category:** Social
 - **Mobile:** Real-time updates and push notifications. Mobility to play and connect with easy access.
